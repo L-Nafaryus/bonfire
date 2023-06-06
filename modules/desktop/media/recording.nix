@@ -15,7 +15,7 @@ in {
 
         user.packages = with pkgs;
           (if cfg.audio.enable then [
-              unstable.audacity-gtk3
+              unstable.audacity
           ] else []) ++
 
           (if cfg.video.enable then [

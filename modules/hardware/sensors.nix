@@ -1,6 +1,6 @@
 { options, config, lib, pkgs, ... }:
 with lib;
-with lib.custon;
+with lib.custom;
 let
     cfg = config.modules.hardware.sensors;
 in {

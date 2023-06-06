@@ -32,8 +32,12 @@ with lib.custom;
     };
 
     config = {
-        user = {
-            name = let name = builtins.getEnv "USER"; in if elem user [ "" "root" ] then "nafaryus" else user;
+        user = 
+	let 
+	    user = builtins.getEnv "USER";
+	    name = if elem user [ "" "root" ] then "nafaryus" else user;
+	in {
+            inherit name;
             description = "L-Nafaryus";
             extraGroups = [ "wheel" ];
             isNormalUser = true;

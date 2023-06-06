@@ -72,7 +72,4 @@
     };
 
     services.openssh.startWhenNeeded = true;
-
-
-    system.stateVersion = "22.11";
 }

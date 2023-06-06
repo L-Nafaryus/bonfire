@@ -44,7 +44,7 @@ in {
             GTK_DATA_PREFIX = [ "${config.system.path}" ];
             QT_QPA_PLATFORMTHEME = "gnome";
             QT_STYLE_OVERRIDE = "kvantum";
-        }
+        };
 
         services.xserver.displayManager.sessionCommands = ''
             # GTK2_RC_FILES must be available to the display manager.

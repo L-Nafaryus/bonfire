@@ -2,10 +2,10 @@
 with lib;
 with lib.custom;
 let
-    cfg = config.modules.desktop.media.graphics;
+    cfg = config.modules.desktop.graphics;
     configDir = config.dotfiles.configDir;
 in {
-    options.modules.desktop.media.graphics = {
+    options.modules.desktop.graphics = {
         enable         = mkBoolOpt false;
         tools.enable   = mkBoolOpt true;
         raster.enable  = mkBoolOpt true;
@@ -30,7 +30,6 @@ in {
             (if cfg.raster.enable then [
                 krita
                 gimp
-                gimpPlugins.resynthesizer  # content-aware scaling in gimp
             ] else []) ++
 
             # Sprite sheets & animation
@@ -42,9 +41,5 @@ in {
             (if cfg.models.enable then [
                 unstable.blender-hip
             ] else []);
-
-        home.configFile = mkIf cfg.raster.enable {
-            "GIMP/2.10" = { source = "${configDir}/gimp"; recursive = true; };
-        };
     };
 }
