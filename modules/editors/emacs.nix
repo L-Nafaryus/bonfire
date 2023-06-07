@@ -9,9 +9,7 @@ in {
         enable = mkBoolOpt false;
         doom = rec {
             enable = mkBoolOpt false;
-            forgeUrl = mkOpt types.str "https://github.com";
-            repoUrl = mkOpt types.str "${forgeUrl}/doomemacs/doomemacs";
-            configRepoUrl = mkOpt types.str "${forgeUrl}/hlissner/doom-emacs-private";
+            repoUrl = mkOpt types.str "https://github.com/doomemacs/doomemacs";
         };
     };
 
@@ -56,9 +54,12 @@ in {
             installDoomEmacs = ''
                 if [ ! -d "$XDG_CONFIG_HOME/emacs" ]; then
                   git clone --depth=1 --single-branch "${cfg.doom.repoUrl}" "$XDG_CONFIG_HOME/emacs"
-                  git clone "${cfg.doom.configRepoUrl}" "$XDG_CONFIG_HOME/doom"
                 fi
             '';
         };
+
+	home.configFile = {
+	    "doom" = { source = "${configDir}/emacs/doom"; recursive = true; };
+	};
     };
 }
