@@ -39,7 +39,7 @@ with lib.custom;
 	in {
             inherit name;
             description = "L-Nafaryus";
-            extraGroups = [ "wheel" ];
+            extraGroups = [ "wheel" "networkmanager" ];
             isNormalUser = true;
             home = "/home/${name}";
             group = "users";

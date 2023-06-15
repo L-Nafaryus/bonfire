@@ -17,6 +17,7 @@
             communication = {
                 discord.enable = true;
             };
+            documents.enable = true;
             editors = {
                     vscodium.enable = true;
             };
@@ -43,9 +44,9 @@
         editors = {
             default = "nvim";
             emacs = {
-            enable = true;
-            doom.enable = true;
-        };
+                enable = true;
+                doom.enable = true;
+            };
             vim.enable = true;
         };
         shell = {
@@ -54,9 +55,11 @@
             gnupg.enable  = true;
             tmux.enable   = true;
             zsh.enable    = true;
+            taskwarrior.enable = true;
         };
         services = {
             ssh.enable = true;
+            nginx.enable = true;
         };
     };
 

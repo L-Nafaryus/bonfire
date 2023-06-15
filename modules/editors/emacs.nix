@@ -42,6 +42,8 @@ in {
             sqlite
             # :lang latex & :lang org (latex previews)
             texlive.combined.scheme-medium
+            # :lang nix
+            nixfmt
         ];
 
         env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];

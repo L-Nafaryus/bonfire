@@ -13,7 +13,7 @@ in {
             discord
             (makeDesktopItem {
                 name = "discord-x11";
-                desktopName = "Discord";
+                desktopName = "Discord XWayland";
                 genericName = "Discord via xwayland";
                 icon = "discord";
                 exec = "${discord}/bin/discord --use-gl=desktop";

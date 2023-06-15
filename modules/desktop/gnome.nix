@@ -17,8 +17,13 @@ in {
 
         services.xserver = {
             enable = true;
-            displayManager.gdm.enable = true;
+            displayManager.gdm.enable = false;
+            displayManager.lightdm.enable = true;
+            displayManager.gdm.wayland = false;
+
             desktopManager.gnome.enable = true;
+	    #autorun = false;
+	    #displayManager.startx.enable = true;
         };
 
     };

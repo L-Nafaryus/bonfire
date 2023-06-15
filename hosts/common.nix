@@ -2,12 +2,21 @@
 with builtins;
 with lib;
 {
-    networking.extraHosts = ''
-      192.168.156.1     router.home
+    networking = {
+        extraHosts = ''
+            192.168.156.1     router.home
+            192.168.156.35    elnafo.home
+        '';
+        firewall = {
+            enable = true;
+            allowedTCPPorts = [ 80 443 ];
+            #allowedUDPPortRanges = [
+            #    { from = 4000; to = 4007; }
+            #    { from = 8000; to = 8010; }
+            #];
+        };
+    };
 
-      # Hosts
-      192.168.1156.28   elnafo.home
-    '';
 
     ## Location config -- since Toronto is my 127.0.0.1
     time.timeZone = mkDefault "Asia/Yekaterinburg";
