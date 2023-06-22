@@ -12,6 +12,7 @@ in {
         user.packages = with pkgs; [
             onlyoffice-bin
             tectonic
+            biber
         ];
     };
 }

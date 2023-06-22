@@ -116,25 +116,28 @@
   (setq mu4e-confirm-quit nil)
   (setq mu4e-attachment-dir  "~/.mail/.attachments")
 
-(require 'mu4e-alert)
+  (require 'mu4e-alert)
 
-(setq mu4e-alert-interesting-mail-query "flag:unread AND maildir:/gmail-main/Inbox")
+  (setq mu4e-alert-interesting-mail-query "flag:unread AND maildir:/gmail-main/Inbox")
 
-(mu4e-alert-enable-mode-line-display)
+  (mu4e-alert-enable-mode-line-display)
 
-(defun refresh-mu4e-alert-mode-line ()
-(interactive)
-(mu4e~proc-kill)
-(async-shell-command "mbsync -a")
-(mu4e-alert-enable-mode-line-display)
-(mu4e-alert-enable-notifications)
+  (defun refresh-mu4e-alert-mode-line ()
+    (interactive)
+    (mu4e~proc-kill)
+    (async-shell-command "mbsync -a")
+    (mu4e-alert-enable-mode-line-display)
+    (mu4e-alert-enable-notifications)
+  )
+
+  (run-with-timer 0 60 'refresh-mu4e-alert-mode-line)
 )
 
-(run-with-timer 0 60 'refresh-mu4e-alert-mode-line)
+(after! projectile
+  (setq projectile-require-project-root nil)
+  (setq projectile-project-search-path '("~/projects"))
 )
-
-(setq projectile-require-project-root nil)
-(setq projectile-project-search-path '("~/projects"))
 
 (after! meson-mode
-    (add-hook 'meson-mode-hook 'company-mode))
+    (add-hook 'meson-mode-hook 'company-mode)
+)

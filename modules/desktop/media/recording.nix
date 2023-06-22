@@ -20,6 +20,7 @@ in {
 
           (if cfg.video.enable then [
               unstable.obs-studio
+              unstable.obs-studio-plugins.obs-vkcapture
               unstable.handbrake
               ffmpeg
           ] else []);

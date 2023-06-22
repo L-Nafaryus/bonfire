@@ -11,19 +11,18 @@ in {
 
     config = mkIf cfg.enable {
         environment.systemPackages = with pkgs; [
-            gnomeExtensions.containers
+            #gnomeExtensions.containers
             gnomeExtensions.tray-icons-reloaded
         ];
 
         services.xserver = {
             enable = true;
+            # TODO: unable to login with xorg, only wayland works
             displayManager.gdm.enable = false;
-            displayManager.lightdm.enable = true;
             displayManager.gdm.wayland = false;
+            displayManager.lightdm.enable = true;
 
             desktopManager.gnome.enable = true;
-	    #autorun = false;
-	    #displayManager.startx.enable = true;
         };
 
     };
