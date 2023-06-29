@@ -25,7 +25,10 @@
                 steam.enable = true;
             lutris.enable = true;
             };
-            graphics.enable = true;
+            graphics = {
+                enable = true;
+                models.enable = true;
+            };
             media = {
                 recording.enable = true;
             };
@@ -60,6 +63,7 @@
         services = {
             ssh.enable = true;
             nginx.enable = true;
+            podman.enable = true;
         };
     };
 

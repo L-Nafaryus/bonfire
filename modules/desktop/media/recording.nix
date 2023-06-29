@@ -23,6 +23,7 @@ in {
               unstable.obs-studio-plugins.obs-vkcapture
               unstable.handbrake
               ffmpeg
+              olive-editor
           ] else []);
     };
 }

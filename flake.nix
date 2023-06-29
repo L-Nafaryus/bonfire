@@ -40,6 +40,7 @@
         mkPkgs = pkgs: extraOverlays: import pkgs {
           inherit system;
           config.allowUnfree = true;
+          # config.cudaSupport = true;
           overlays = extraOverlays ++ (lib.attrValues self.overlays);
         };
 
