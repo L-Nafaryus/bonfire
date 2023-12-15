@@ -1,1 +1,2 @@
-
+templates/*/result*
+templates/*/flake.lock

@@ -18,5 +18,9 @@
         nixosModules = {
             bonfire = import ./nixosModules/bonfire.nix;
         };
+
+        templates = {
+            rust = { path = ./templates/rust; description = "Basic Rust template"; };
+        };
     };
 }
