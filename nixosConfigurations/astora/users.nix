@@ -49,6 +49,7 @@
             pinentry-program ${pkgs.pinentry.gtk2}/bin/pinentry
         '';
         home.file.".config/git/config".source = "${config.bonfire.configDir}/git/config";
+        home.file.".config/nvim" = { source = "${config.bonfire.configDir}/nvim"; recursive = true; };
     };
 
     programs.gnupg.agent = {

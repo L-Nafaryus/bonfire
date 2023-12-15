@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, agenix, inputs, ... }:
 {
     system.stateVersion = "23.11";
 
@@ -90,6 +90,9 @@
         gcc
 
         cachix
+        inputs.agenix.packages.${system}.default
+
+        helix
     ];
 
     programs = {
@@ -100,6 +103,8 @@
           defaultEditor = true;
         };
     };
+
+    programs.direnv.enable = true;
 
     fonts.packages = with pkgs; [ nerdfonts ];
 
