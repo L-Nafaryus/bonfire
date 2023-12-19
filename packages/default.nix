@@ -9,4 +9,5 @@ in forAllSystems(system: let pkgs = nixpkgsFor.${system}; in {
 
     netgen = pkgs.callPackage ./netgen {};
    
+    dearpygui = pkgs.callPackage ./dearpygui {};
 })
