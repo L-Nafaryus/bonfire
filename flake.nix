@@ -9,6 +9,9 @@
     };
 
     outputs = inputs @ { self, nixpkgs, home-manager, agenix, ... }: {
+
+        lib = import ./lib {};
+        
         nixosConfigurations = {
             astora = with nixpkgs; lib.nixosSystem {
                 system = "x86_64-linux";
@@ -29,5 +32,9 @@
         templates = {
             rust = { path = ./templates/rust; description = "Basic Rust template"; };
         };
+
+        packages = import ./packages { inherit self nixpkgs; };
+
+        apps = import ./apps { inherit self nixpkgs; };
     };
 }
