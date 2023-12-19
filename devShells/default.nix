@@ -1,3 +1,5 @@
+# self.devShells.${system}
+#
 { self, nixpkgs, ... }:
 let 
     forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" ];
@@ -10,4 +12,6 @@ in forAllSystems(system: let
     in {
     
     netgen = import ./netgen.nix { inherit pkgs bpkgs; };
+
+    openfoam = import ./openfoam.nix { inherit pkgs bpkgs; };
 })

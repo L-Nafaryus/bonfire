@@ -1,3 +1,5 @@
+# self.packages.${system}
+#
 { self, nixpkgs, ... }:
 let 
     forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" ];
@@ -10,4 +12,6 @@ in forAllSystems(system: let pkgs = nixpkgsFor.${system}; in {
     netgen = pkgs.callPackage ./netgen {};
    
     dearpygui = pkgs.callPackage ./dearpygui {};
+
+    openfoam = pkgs.callPackage ./openfoam {};
 })
