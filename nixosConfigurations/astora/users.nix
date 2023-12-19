@@ -23,6 +23,7 @@
         home.packages = with pkgs; [
             gnupg
             git
+            nnn
 
             gparted
 
@@ -39,6 +40,10 @@
             wireplumber
 
             gamemode
+
+            gimp
+            inkscape
+            blender
         ];
         
         xdg.enable = true;

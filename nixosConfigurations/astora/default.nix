@@ -25,6 +25,13 @@
     nixpkgs = {
         hostPlatform = lib.mkDefault "x86_64-linux";
         config.allowUnfree = true;
+        config.cudaSupport = false;
+
+        overlays = [
+            (final: prev: {
+                blender = prev.blender.override { cudaSupport = true; };
+            })
+        ];
     };
 
 # Services
@@ -84,6 +91,7 @@
         fishPlugins.grc
         fishPlugins.hydro
 
+        nnn
         fzf
         grc
 
