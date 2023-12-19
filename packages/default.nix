@@ -6,5 +6,7 @@ let
 in forAllSystems(system: let pkgs = nixpkgsFor.${system}; in {
     
     example = pkgs.callPackage ./example {};
+
+    netgen = pkgs.callPackage ./netgen {};
    
 })

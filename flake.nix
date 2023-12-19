@@ -36,5 +36,7 @@
         packages = import ./packages { inherit self nixpkgs; };
 
         apps = import ./apps { inherit self nixpkgs; };
+
+        devShells = import ./devShells { inherit self nixpkgs; };
     };
 }

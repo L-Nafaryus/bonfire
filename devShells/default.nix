@@ -9,7 +9,5 @@ in forAllSystems(system: let
         blib = self.lib;
     in {
     
-    example = blib.mkApp { drv = bpkgs.example; name = "hello-nix"; };
-   
-    netgen = blib.mkApp { drv = bpkgs.netgen; };
+    netgen = import ./netgen.nix { inherit pkgs bpkgs; };
 })
