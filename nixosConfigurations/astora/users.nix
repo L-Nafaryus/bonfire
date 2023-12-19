@@ -24,6 +24,7 @@
             gnupg
             git
             nnn
+            htop
 
             gparted
 
@@ -44,6 +45,7 @@
             gimp
             inkscape
             blender
+            ardour
         ];
         
         xdg.enable = true;
