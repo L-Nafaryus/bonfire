@@ -1,6 +1,11 @@
 {
     description = "Derivation lit";
 
+    nixConfig = {
+        extra-substituters = ["https://bonfire.cachix.org"];
+        extra-trusted-public-keys = ["bonfire.cachix.org-1:mzAGBy/Crdf8NhKail5ciK7ZrGRbPJJobW6TwFb7WYM="];
+    };
+
     inputs = {
         nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
         home-manager = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
