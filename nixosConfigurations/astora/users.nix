@@ -44,6 +44,7 @@
 
             gimp
             inkscape
+            imagemagick
             blender
             ardour
         ];
