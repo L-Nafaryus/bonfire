@@ -14,4 +14,6 @@ in forAllSystems(system: let pkgs = nixpkgsFor.${system}; in {
     dearpygui = pkgs.callPackage ./dearpygui {};
 
     openfoam = pkgs.callPackage ./openfoam {};
+
+    spoof-dpi = pkgs.callPackage ./spoof-dpi {};
 })

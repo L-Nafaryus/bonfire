@@ -12,4 +12,6 @@ in forAllSystems(system: let
     example = blib.mkApp { drv = bpkgs.example; name = "hello-nix"; };
    
     netgen = blib.mkApp { drv = bpkgs.netgen; };
+
+    spoof-dpi = blib.mkApp { drv = bpkgs.spoof-dpi; };
 })
