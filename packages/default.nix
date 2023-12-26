@@ -15,5 +15,5 @@ in forAllSystems(system: let pkgs = nixpkgsFor.${system}; in {
 
     openfoam = pkgs.callPackage ./openfoam {};
 
-    spoof-dpi = pkgs.callPackage ./spoof-dpi {};
+    spoofdpi = pkgs.callPackage ./spoofdpi {};
 })

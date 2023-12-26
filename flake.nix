@@ -11,9 +11,10 @@
         home-manager = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
         cachix = { url = "github:cachix/devenv/v0.6.3"; inputs.nixpkgs.follows = "nixpkgs"; };
         agenix = { url = "github:ryantm/agenix"; inputs.nixpkgs.follows = "nixpkgs"; };
+        crane = { url = "github:ipetkov/crane"; inputs.nixpkgs.follows = "nixpkgs"; };
     };
 
-    outputs = inputs @ { self, nixpkgs, home-manager, agenix, ... }: {
+    outputs = inputs @ { self, nixpkgs, home-manager, agenix, crane, ... }: {
 
         lib = import ./lib {};
         
@@ -25,6 +26,7 @@
                     agenix.nixosModules.default
                     ./nixosConfigurations/astora
                     ./nixosModules/bonfire.nix
+                    self.nixosModules.spoofdpi
                 ];
                 specialArgs = { inherit inputs; };
             };
@@ -32,6 +34,8 @@
 
         nixosModules = {
             bonfire = import ./nixosModules/bonfire.nix;
+
+            spoofdpi = import ./nixosModules/spoofdpi { inherit self; };
         };
 
         templates = {
@@ -42,6 +46,6 @@
 
         apps = import ./apps { inherit self nixpkgs; };
 
-        devShells = import ./devShells { inherit self nixpkgs; };
+        devShells = import ./devShells { inherit self nixpkgs crane; };
     };
 }

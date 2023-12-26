@@ -1,0 +1,10 @@
+[package]
+name = "rust-example"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "lit"
+
+[dependencies]
+clap = "4.4.11"

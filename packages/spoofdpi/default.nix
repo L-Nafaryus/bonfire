@@ -5,14 +5,14 @@
     vendorHash ? "sha256-ib9xRklkLfrDCuLf7zDkJE8lJiNiUMPZ01MDxvqho6o=", ...
 }:
 pkgs.buildGoModule {
-    pname = "spoof-dpi";
+    pname = "spoofdpi";
     inherit version;
 
     src = pkgs.fetchFromGitHub {
-        owner = "xzvc";
+        owner = "xvzc";
         repo = "SpoofDPI";
         rev = version;
-        hash = "sha256-kPCdOZl4m7KBb970TjJokXorKfnCvuV5Uq7lFQIh1z8=";
+        hash = hash;
     };
 
     inherit vendorHash;

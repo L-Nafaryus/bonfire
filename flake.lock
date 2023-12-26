@@ -46,6 +46,26 @@
         "type": "github"
       }
     },
+    "crane": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1702956644,
+        "narHash": "sha256-6XxZSkhb/OkxIx705RHTTLYZ2qemmEC7tODD8f21gKw=",
+        "owner": "ipetkov",
+        "repo": "crane",
+        "rev": "537ebb11db883f9076e37d83e3c7ee69a4abb48c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ipetkov",
+        "repo": "crane",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -282,6 +302,7 @@
       "inputs": {
         "agenix": "agenix",
         "cachix": "cachix",
+        "crane": "crane",
         "home-manager": "home-manager_2",
         "nixpkgs": "nixpkgs"
       }
