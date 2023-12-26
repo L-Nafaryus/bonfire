@@ -64,7 +64,13 @@
         startWhenNeeded = true;
     };
 
-    services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+    services.udev = {
+        packages = with pkgs; [ gnome.gnome-settings-daemon ];
+        extraRules = ''
+            KERNEL=="rtc0", GROUP="audio"
+            KERNEL=="hpet", GROUP="audio"
+        '';
+    };
 
     services.blueman.enable = true;
 
@@ -99,8 +105,6 @@
 
         cachix
         inputs.agenix.packages.${system}.default
-
-        helix
     ];
 
     programs = {

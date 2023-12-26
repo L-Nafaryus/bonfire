@@ -13,6 +13,7 @@
         initrd.kernelModules = [ ];
         kernelModules = [ "kvm-amd" "tcp_bbr" "coretemp" "nct6775" ];
         extraModulePackages = [ ];
+        kernelParams = [ "threadirqs" ];
 
         kernel.sysctl = {
             # The Magic SysRq key is a key combo that allows users connected to the
@@ -62,6 +63,12 @@
         acme.acceptTerms = true;
         sudo.extraConfig = ''Defaults timestamp_timeout=30'';
         rtkit.enable = true;
+        pam.loginLimits = [
+            { domain = "@audio"; item = "memlock"; type = "-"; value = "unlimited"; }
+            { domain = "@audio"; item = "rtprio"; type = "-"; value = "99"; }
+            { domain = "@audio"; item = "nofile"; type = "soft"; value = "99999"; }
+            { domain = "@audio"; item = "nofile"; type = "hard"; value = "99999"; }
+        ];
     };
 
     users.users.root.initialPassword = "nixos";

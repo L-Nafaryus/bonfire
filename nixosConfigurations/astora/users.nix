@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
 # Users
     users.users.nafaryus = {
@@ -47,6 +47,9 @@
             imagemagick
             blender
             ardour
+
+            calf
+            zynaddsubfx
         ];
         
         xdg.enable = true;
@@ -65,4 +68,20 @@
         enableSSHSupport = true;
         pinentryFlavor = "curses";
     };
+
+    environment.variables = let 
+        makePluginPath = name: (lib.makeSearchPath name [ 
+            "/etc/profiles/per-user/$USER/lib"
+            "/run/current-system/sw/lib" 
+            "$HOME/.nix-profile/lib" 
+        ]) + ":$HOME/.${name}";
+    in {
+        LADSPA_PATH = makePluginPath "ladspa";
+        LV2_PATH = makePluginPath "lv2";
+        VST_PATH = makePluginPath "vst";
+        VST3_PATH = makePluginPath "vst3";
+    };
+
+# Services
+    services.spoofdpi.enable = true;
 }
