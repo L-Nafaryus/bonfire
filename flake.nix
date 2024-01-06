@@ -30,7 +30,7 @@
                 specialArgs = { inherit inputs; };
             };
 
-            astora = with nixpkgs; lib.nixosSystem {
+            catarina = with nixpkgs; lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
                     ./nixosConfigurations/catarina
