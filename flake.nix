@@ -29,6 +29,16 @@
                 ];
                 specialArgs = { inherit inputs; };
             };
+
+            astora = with nixpkgs; lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                    ./nixosConfigurations/catarina
+                    ./nixosModules/bonfire.nix
+                    self.nixosModules.spoofdpi
+                ];
+                specialArgs = { inherit inputs; };
+            };
         };
 
         nixosModules = {
