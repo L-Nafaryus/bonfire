@@ -29,6 +29,7 @@
             gparted
 
             gnomeExtensions.appindicator
+            gnomeExtensions.vitals
             xclip
 
             firefox
@@ -40,8 +41,13 @@
             qpwgraph
             wireplumber
 
+            lutris
+            wine
+            winetricks
             gamemode
 
+            vlc
+            lollypop
             gimp
             inkscape
             imagemagick
@@ -50,6 +56,19 @@
 
             calf
             zynaddsubfx
+            lsp-plugins
+            x42-plugins
+
+            obs-studio
+            obs-studio-plugins.obs-vkcapture
+            obs-studio-plugins.input-overlay
+            obs-studio-plugins.obs-pipewire-audio-capture
+
+            qbittorrent
+
+            onlyoffice-bin
+
+            anydesk
         ];
         
         xdg.enable = true;

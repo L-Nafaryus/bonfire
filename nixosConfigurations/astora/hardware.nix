@@ -3,7 +3,7 @@
 # Boot 
     boot = {
         loader.systemd-boot.enable = true;
-        loader.systemd-boot.configurationLimit = 2;
+        loader.systemd-boot.configurationLimit = 5;
         loader.efi.canTouchEfiVariables = true;
 
         tmp.useTmpfs = lib.mkDefault true;
@@ -12,7 +12,10 @@
         initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
         initrd.kernelModules = [ ];
         kernelModules = [ "kvm-amd" "tcp_bbr" "coretemp" "nct6775" ];
-        extraModulePackages = [ ];
+        extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+        extraModprobeConfig = ''
+            options v4l2loopback devices=1 video_nr=1 card_label="OBS Camera" exclusive_caps=1
+        '';
         kernelParams = [ "threadirqs" ];
 
         kernel.sysctl = {
@@ -69,6 +72,7 @@
             { domain = "@audio"; item = "nofile"; type = "soft"; value = "99999"; }
             { domain = "@audio"; item = "nofile"; type = "hard"; value = "99999"; }
         ];
+        polkit.enable = true;
     };
 
     users.users.root.initialPassword = "nixos";
@@ -143,6 +147,4 @@
             LC_TIME = "en_US.UTF-8";
         };
     };
-
-
 }

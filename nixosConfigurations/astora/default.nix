@@ -1,4 +1,4 @@
-{ config, pkgs, lib, agenix, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
     system.stateVersion = "23.11";
 
@@ -31,6 +31,7 @@
             (final: prev: {
                 blender = prev.blender.override { cudaSupport = true; };
             })
+            inputs.nixgl.overlay
         ];
     };
 
@@ -104,7 +105,6 @@
         gcc
 
         cachix
-        inputs.agenix.packages.${system}.default
     ];
 
     programs = {
