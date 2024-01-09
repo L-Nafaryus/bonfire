@@ -78,11 +78,6 @@
 
     services.blueman.enable = true;
 
-    services.nginx = {
-        enable = true;
-        appendHttpConfig = "listen 127.0.0.1:80;";
-    };
-
 # Packages
     environment.systemPackages = with pkgs; [
         wget

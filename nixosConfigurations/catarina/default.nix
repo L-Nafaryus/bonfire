@@ -67,6 +67,14 @@
 
     services.blueman.enable = true;
 
+    services.nginx = {
+        enable = true;
+        recommendedProxySettings = true;
+        virtualHosts."astora" = {
+            root = "/var/www/astora";
+        };
+    };
+
     services.spoofdpi.enable = true;
 
 # Packages
