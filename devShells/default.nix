@@ -17,4 +17,6 @@ in forAllSystems(system: let
     openfoam = import ./openfoam.nix { inherit pkgs bpkgs; };
 
     rust = import ./rust.nix { inherit pkgs cranelib; };
+
+    go = import ./go.nix { inherit pkgs; };
 })
