@@ -128,6 +128,14 @@
             enable = true;
             allowedTCPPorts = [ 80 443 ];
         };
+
+        interfaces.wlo1.ipv4.addresses = [ {
+            address = "192.168.156.101";
+            prefixLength = 24;
+        } ];
+
+        defaultGateway = "192.168.156.1";
+        nameservers = [ "192.168.156.1" "8.8.8.8" ];
     };
 
 # Common
