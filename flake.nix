@@ -37,7 +37,7 @@
                     ./nixosModules/bonfire.nix
                     self.nixosModules.spoofdpi
                 ];
-                specialArgs = { inherit inputs; };
+                specialArgs = { inherit inputs self; };
             };
         };
 

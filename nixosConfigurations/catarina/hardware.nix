@@ -59,7 +59,6 @@
 # Security
     security = {
         protectKernelImage = true;
-        acme.acceptTerms = true;
         sudo.extraConfig = ''Defaults timestamp_timeout=30'';
         rtkit.enable = true;
     };
@@ -110,7 +109,7 @@
 
         firewall = {
             enable = true;
-            allowedTCPPorts = [ 80 443 ];
+            allowedTCPPorts = [ 80 443 3001 ];
         };
 
         interfaces.enp9s0.ipv4.addresses = [ {

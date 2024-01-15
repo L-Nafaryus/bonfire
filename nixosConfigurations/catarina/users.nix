@@ -10,4 +10,6 @@
         initialPassword = "nixos";
         shell = pkgs.fish;
     };
+
+    users.users.nginx.extraGroups = [ "acme" ];
 }

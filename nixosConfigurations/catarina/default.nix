@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, self, ... }:
 {
     system.stateVersion = "23.11";
 
@@ -28,6 +28,9 @@
         hostPlatform = lib.mkDefault "x86_64-linux";
         config.allowUnfree = true;
         config.cudaSupport = false;
+        config.packageOverrides = super: {
+            lego = self.packages.${pkgs.system}.lego; 
+        };
     };
 
 # Services
@@ -59,6 +62,7 @@
     services.openssh = {
         enable = true;
         startWhenNeeded = true;
+        settings.PasswordAuthentication = false;
     };
 
     services.udev = {
@@ -67,12 +71,116 @@
 
     services.blueman.enable = true;
 
+    services.fail2ban = {
+        enable = true;
+        maxretry = 5;
+        ignoreIP = [
+            "192.168.0.0/16"
+        ];
+        bantime = "24h";
+        bantime-increment = {
+            enable = true; 
+            multipliers = "1 2 4 8";
+            maxtime = "168h"; 
+            overalljails = true; 
+        };
+    };
+
+    security.acme = {
+        acceptTerms = true;
+        defaults.email = "l.nafaryus@gmail.com";
+        defaults.group = "nginx";
+
+        certs = {
+            "elnafo.ru" = {
+                domain = "elnafo.ru";
+                extraDomainNames = [ "*.elnafo.ru" ];
+                dnsProvider = "webnames";
+                credentialsFile = "/var/lib/secrets/certs.secret";
+                group = "nginx";
+                webroot = null;
+            };
+        };
+    };
+
     services.nginx = {
         enable = true;
+
         recommendedProxySettings = true;
-        virtualHosts."astora" = {
-            root = "/var/www/astora";
+        recommendedOptimisation = true;
+        recommendedGzipSettings = true;
+        recommendedTlsSettings = true; 
+
+        virtualHosts = {
+            "elnafo.ru" = {
+                forceSSL = true;
+                enableACME = true;
+                root = "/var/www";
+            };
+
+            "www.elnafo.ru" = {
+                forceSSL = true;
+                useACMEHost = "elnafo.ru";
+                globalRedirect = "elnafo.ru";
+            };
+
+            "vcs.elnafo.ru" = {
+                forceSSL = true;
+                useACMEHost = "elnafo.ru";
+                locations."/".proxyPass = "http://127.0.0.1:3001";
+            };
         };
+    };
+
+    services.postgresql = {
+        enable = true;
+        authentication = ''
+            # Type      Database    DB-User     Auth-Method     Ident-Map(optional)
+            local       gitea       all         ident           map=gitea-users
+        '';
+        identMap = ''
+            # MapName       System-User     DB-User
+            gitea-users     gitea           gitea
+        '';
+        ensureDatabases = [ "gitea" ];
+    };
+
+    services.gitea = {
+        enable = true;
+
+        settings = {
+            server = {
+                DOMAIN = "vcs.elnafo.ru";
+                ROOT_URL = "https://vcs.elnafo.ru/";
+                HTTP_ADDRESS = "127.0.0.1";
+                HTTP_PORT = 3001;
+            };
+
+            session.COOKIE_SECURE = true;
+
+            mailer = {
+                ENABLED = true;
+                FROM = "gitea@elnafo.ru";
+            };
+
+            service.DISABLE_REGISTRATION = true;
+
+            other = {
+                SHOW_FOOTER_VERSION = false;
+                SHOW_FOOTER_TEMPLATE_LOAD_TIME = false;
+            };
+        };
+
+        database = {
+            type = "postgres";
+            passwordFile = "/var/lib/secrets/gitea/gitea-dbpassword";
+            name = "gitea";
+            user = "gitea";
+        };
+
+        lfs.enable = true;
+
+        appName = "Elnafo VCS";
     };
 
     services.spoofdpi.enable = true;
