@@ -1,7 +1,7 @@
 [user]
     name = L-Nafaryus
     email = l.nafaryus@gmail.com
-    signingKey = C76D8DCD2727DBB7
+    signingKey = 9B576DE3
 [commit]
     gpgsign = true
 [tag]
