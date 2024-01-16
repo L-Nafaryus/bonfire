@@ -1,5 +1,5 @@
 { config, pkgs, lib, inputs, self, ... }:
-{
+rec {
     system.stateVersion = "23.11";
 
     imports = [ ./hardware.nix ./users.nix ];
@@ -136,17 +136,21 @@
         enable = true;
         authentication = ''
             # Type      Database    DB-User     Auth-Method     Ident-Map(optional)
-            local       gitea       all         ident           map=gitea-users
+            local       git         all         ident           map=gitea-users
         '';
         identMap = ''
             # MapName       System-User     DB-User
-            gitea-users     gitea           gitea
+            gitea-users     git           git
         '';
-        ensureDatabases = [ "gitea" ];
+        ensureDatabases = [ "git" ];
     };
 
     services.gitea = {
         enable = true;
+
+        user = "git";
+        group = "gitea";
+        stateDir = "/var/lib/gitea";
 
         settings = {
             server = {
@@ -160,7 +164,7 @@
 
             mailer = {
                 ENABLED = true;
-                FROM = "gitea@elnafo.ru";
+                FROM = "git@elnafo.ru";
             };
 
             service.DISABLE_REGISTRATION = true;
@@ -174,13 +178,21 @@
         database = {
             type = "postgres";
             passwordFile = "/var/lib/secrets/gitea/gitea-dbpassword";
-            name = "gitea";
-            user = "gitea";
+            name = "git";
+            user = "git";
         };
 
         lfs.enable = true;
 
         appName = "Elnafo VCS";
+    };
+
+    users.users.${services.gitea.user} = {
+        description = "Gitea Service";
+        home = services.gitea.stateDir;
+        useDefaultShell = true;
+        group = services.gitea.group;
+        isSystemUser = true;
     };
 
     services.spoofdpi.enable = true;
