@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, self, ... }:
 {
 # Users
     users.users.nafaryus = {
@@ -69,6 +69,9 @@
             onlyoffice-bin
 
             anydesk
+
+            jdk
+            self.packages.${pkgs.system}.ultimmc
         ];
         
         xdg.enable = true;

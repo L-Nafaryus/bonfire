@@ -18,4 +18,6 @@ in forAllSystems(system: let pkgs = nixpkgsFor.${system}; in {
     spoofdpi = pkgs.callPackage ./spoofdpi {};
 
     lego = pkgs.callPackage ./lego {};
+
+    ultimmc = pkgs.libsForQt5.callPackage ./ultimmc {};
 })
