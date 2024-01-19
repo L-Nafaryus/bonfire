@@ -1,0 +1,7 @@
+keys:
+  - &astora age1u9xr3tmwskfsrxg6gus3hmh9eakjh2h22jklfmcu33kassaraues435vvc
+creation_rules:
+  - path_regex: secrests/[^/]+\.(yaml|env|txt)$
+    key_groups:
+      - age:
+        - *astora

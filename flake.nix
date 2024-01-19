@@ -12,9 +12,12 @@
         cachix = { url = "github:cachix/devenv/v0.6.3"; inputs.nixpkgs.follows = "nixpkgs"; };
         crane = { url = "github:ipetkov/crane"; inputs.nixpkgs.follows = "nixpkgs"; };
         nixgl = { url = "github:guibou/nixGL"; inputs.nixpkgs.follows = "nixpkgs"; };
+        simple-nixos-mailserver = { url = "gitlab:simple-nixos-mailserver/nixos-mailserver"; inputs.nixpkgs.follows = "nixpkgs"; };
+        sops-nix = { url = "github:Mic92/sops-nix"; inputs.nixpkgs.follows = "nixpkgs"; };
     };
 
-    outputs = inputs @ { self, nixpkgs, home-manager, crane, nixgl, ... }: {
+    outputs = inputs @ { self, nixpkgs, home-manager, crane, nixgl, simple-nixos-mailserver, sops-nix, ... }: {
+
 
         lib = import ./lib {};
         
@@ -27,7 +30,7 @@
                     ./nixosModules/bonfire.nix
                     self.nixosModules.spoofdpi
                 ];
-                specialArgs = { inherit inputs; };
+                specialArgs = { inherit inputs self; };
             };
 
             catarina = with nixpkgs; lib.nixosSystem {
@@ -36,6 +39,8 @@
                     ./nixosConfigurations/catarina
                     ./nixosModules/bonfire.nix
                     self.nixosModules.spoofdpi
+                    simple-nixos-mailserver.nixosModules.mailserver
+                    sops-nix.nixosModules.sops
                 ];
                 specialArgs = { inherit inputs self; };
             };

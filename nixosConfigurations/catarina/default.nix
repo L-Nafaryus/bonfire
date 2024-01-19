@@ -73,17 +73,23 @@ rec {
 
     services.fail2ban = {
         enable = true;
-        maxretry = 16;
+        maxretry = 12;
         ignoreIP = [
             "192.168.0.0/16"
         ];
-        bantime = "2h";
+        bantime = "3h";
         bantime-increment = {
             enable = true; 
             multipliers = "1 2 4 8 16 32 64";
             maxtime = "168h"; 
             overalljails = true; 
         };
+    };
+
+    sops = {
+        defaultSopsFile = ../../.secrets/secrets.yaml;
+        age.keyFile = "/var/lib/secrets/sops-nix/catarina.txt";
+        secrets = import ../../.secrets/sops-secrets.nix;
     };
 
     security.acme = {
@@ -96,8 +102,7 @@ rec {
                 domain = "elnafo.ru";
                 extraDomainNames = [ "*.elnafo.ru" ];
                 dnsProvider = "webnames";
-                credentialsFile = "/var/lib/secrets/certs.secret";
-                group = "nginx";
+                credentialsFile = config.sops.secrets."dns".path;
                 webroot = null;
             };
         };
@@ -105,6 +110,8 @@ rec {
 
     services.nginx = {
         enable = true;
+
+        package = pkgs.nginx.override { withMail = true; };
 
         recommendedProxySettings = true;
         recommendedOptimisation = true;
@@ -129,7 +136,16 @@ rec {
                 useACMEHost = "elnafo.ru";
                 locations."/".proxyPass = "http://127.0.0.1:3001";
             };
+
+            "media.elnafo.ru" = {
+                forceSSL = true;
+                useACMEHost = "elnafo.ru";
+                http2 = true;
+                locations."/".proxyPass = "http://127.0.0.1:8096";
+            };
         };
+
+        
     };
 
     services.postgresql = {
@@ -165,6 +181,13 @@ rec {
             mailer = {
                 ENABLED = true;
                 FROM = "git@elnafo.ru";
+                PROTOCOL = "smtps";
+                SMTP_ADDR = "smtp.elnafo.ru";
+                SMTP_PORT = 465;
+                USER = "git";
+                USE_CLIENT_CERT = true;
+                CLIENT_CERT_FILE = "${config.security.acme.certs."elnafo.ru".directory}/cert.pem";
+                CLIENT_KEY_FILE = "${config.security.acme.certs."elnafo.ru".directory}/key.pem";
             };
 
             service.DISABLE_REGISTRATION = true;
@@ -175,9 +198,11 @@ rec {
             };
         };
 
+        mailerPasswordFile = config.sops.secrets."gitea/mail".path;
+
         database = {
             type = "postgres";
-            passwordFile = "/var/lib/secrets/gitea/gitea-dbpassword";
+            passwordFile = config.sops.secrets."database/git".path;
             name = "git";
             user = "git";
         };
@@ -192,7 +217,43 @@ rec {
         home = services.gitea.stateDir;
         useDefaultShell = true;
         group = services.gitea.group;
+        extraGroups = [ "nginx" ];
         isSystemUser = true;
+    };
+
+    mailserver = {
+        enable = true;
+        fqdn = "elnafo.ru";
+        domains = [ "elnafo.ru" ];
+
+        certificateScheme = "acme-nginx";
+        enableImapSsl = true;
+        openFirewall = true;
+        
+        loginAccounts = import ../../.secrets/mail-recipients.nix { inherit config; };
+    };
+
+    services.jellyfin = {
+        enable = true;
+        openFirewall = true;
+    };
+
+    services.minecraft-server = {
+        enable = true;
+        eula = true;
+        declarative = true;
+        openFirewall = true;
+        serverProperties = {
+            server-port = 25565;
+            gamemode = "survival";
+            motd = "NixOS Minecraft Server";
+            max-players = 10;
+            level-seed = "66666666";
+            enable-status = true;
+            enforce-secure-profile = false;
+            difficulty = "normal";
+            online-mode = false;
+        };
     };
 
     services.spoofdpi.enable = true;
