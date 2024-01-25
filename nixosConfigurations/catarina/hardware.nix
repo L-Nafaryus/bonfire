@@ -109,7 +109,7 @@
 
         firewall = {
             enable = true;
-            allowedTCPPorts = [ 80 443 3001 ];
+            allowedTCPPorts = [ 80 443 3001 25600 ];
         };
 
         interfaces.enp9s0.ipv4.addresses = [ {

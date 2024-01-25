@@ -18,7 +18,6 @@
 
     outputs = inputs @ { self, nixpkgs, home-manager, crane, nixgl, simple-nixos-mailserver, sops-nix, ... }: {
 
-
         lib = import ./lib {};
         
         nixosConfigurations = {
@@ -41,6 +40,7 @@
                     self.nixosModules.spoofdpi
                     simple-nixos-mailserver.nixosModules.mailserver
                     sops-nix.nixosModules.sops
+                    self.nixosModules.papermc
                 ];
                 specialArgs = { inherit inputs self; };
             };
@@ -50,6 +50,8 @@
             bonfire = import ./nixosModules/bonfire.nix;
 
             spoofdpi = import ./nixosModules/spoofdpi { inherit self; };
+
+            papermc = import ./nixosModules/papermc { inherit self; };
         };
 
         templates = {
