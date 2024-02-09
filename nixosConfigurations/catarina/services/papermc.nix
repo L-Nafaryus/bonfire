@@ -13,6 +13,11 @@ let
             uuid = "6fa9251d-11a5-33ad-ada3-312f0632eab1";
             level = 3;
         }
+        {
+            name = "DiAlteri";
+            uuid = "0a278f5c-7192-30c8-aa2f-af157c348009";
+            level = 3;
+        }
     ];
 
     operators = lib.filter (player: player.level > 0) playerlist;
@@ -125,8 +130,23 @@ let
         '';
     };
 
+    stargate = stdenv.mkDerivation rec {
+        pname = "Stargate";
+        version = "0.11.5.6";
+        src = fetchurl {
+            url = "https://hangarcdn.papermc.io/plugins/Stargate/Stargate/versions/${version}/PAPER/Stargate-${version}.jar";
+            hash = "sha256-Ilz0z3juQ9c4/pUnHnvJO+PnJF1+vXBxW2pbERuEBo4=";   
+        };
+        meta.homepage = "https://hangar.papermc.io/Stargate/Stargate";
+        phases = [ "installPhase" ];
+        installPhase = ''
+            mkdir -p $out/bin
+            cp $src $out/bin/${pname}.jar
+        '';
+    };
+
     plugins = [
-        passky grimAnticheat viaVersion directionHUD miniMOTD skinRestorer squaremap
+        passky grimAnticheat viaVersion directionHUD miniMOTD skinRestorer squaremap stargate
     ];
 
 in {
@@ -146,14 +166,14 @@ in {
             online-mode = false;
             enable-rcon = true;
             "rcon.port" = 25600;
-            white-list = true;
+            white-list = false;
         };
         rconPasswordFile = config.sops.secrets."papermc/rcon".path;
         whitelist = whitelist;
         ops = operators;
         extraPreStart = ''
             mkdir -p ${builtins.concatStringsSep " " (map (v: "plugins/${v.pname}") plugins)}
-        '' + builtins.concatStringsSep "\n" (map (v: "ln -s ${v.outPath}/bin/${v.pname}.jar plugins/") plugins)
+        '' + builtins.concatStringsSep "\n" (map (v: "ln -sf ${v.outPath}/bin/${v.pname}.jar plugins/") plugins)
         ;
     };   
 
@@ -162,4 +182,5 @@ in {
         useACMEHost = "elnafo.ru";
         locations."/".proxyPass = "http://127.0.0.1:8088";
     };
+
 }
