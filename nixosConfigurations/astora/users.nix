@@ -25,6 +25,8 @@
             git
             nnn
             htop
+            pass 
+            taskwarrior
 
             gparted
 
@@ -53,6 +55,7 @@
             imagemagick
             blender
             ardour
+            olive-editor
 
             calf
             zynaddsubfx

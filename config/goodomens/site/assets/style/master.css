@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Silkscreen";
-    src: url("../fonts/slkscr.ttf");
+    src: url("/assets/fonts/slkscr.ttf");
 }
 
 html {
@@ -41,7 +41,7 @@ header {
     padding-top: 25px;
     margin-bottom: 25px;
 
-    background: url("images/blossom_leaves.png");
+    background: url("/assets/images/blossom_leaves.png");
     background-size: 64px;
     image-rendering: pixelated;
 }
@@ -54,7 +54,7 @@ header {
 }
 
 .sign {
-    background: url("images/acacia_planks.png");
+    background: url("/assets/images/acacia_planks.png");
     background-size: 112px;
     image-rendering: pixelated;
     border-width: 0px;
@@ -125,31 +125,31 @@ h1 {
 
 
 #viewer {
-    margin-bottom: 20px;    
+    margin-bottom: 20px;
 }
 
 .arrow {
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
 }
 
 .right {
-  transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
 }
 
 .left {
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
 }
 
 .mini-sign {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    background: url("images/acacia_planks.png");
+    background: url("/assets/images/acacia_planks.png");
     background-size: 64px;
     image-rendering: pixelated;
     border: none;
