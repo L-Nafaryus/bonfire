@@ -1,0 +1,95 @@
+config-version: 2
+settings:
+    language-file: lang-en.yml
+    debug-mode: false
+    update-checker: true
+    web-address: http://localhost:8088
+    web-directory:
+        path: web
+        auto-update: true
+    image-quality:
+        compress-images:
+            enabled: false
+            value: 0.0
+    internal-webserver:
+        enabled: true
+        bind: 0.0.0.0
+        port: 8088
+    ui:
+        coordinates:
+            enabled: true
+        link:
+            enabled: true
+        sidebar:
+            pinned: pinned
+        page-title: 'Map - GoodOmens'
+    commands:
+        main-command-label: squaremap
+        main-command-aliases:
+        - map
+    render-progress-logging:
+        enabled: true
+        interval-seconds: 1
+world-settings:
+    default:
+        map:
+            enabled: true
+            display-name: '{world}'
+            order: 0
+            icon: ''
+            max-render-threads: -1
+            iterate-up: false
+            max-height: -1
+            biomes:
+                enabled: true
+                blend-biomes: 3
+            glass:
+                clear: true
+            lava:
+                checkerboard: true
+            water:
+                clear-depth: true
+                checkerboard: false
+            zoom:
+                maximum: 3
+                default: 3
+                extra: 2
+            background-render:
+                enabled: true
+                max-chunks-per-interval: 1024
+                interval-seconds: 3
+                max-render-threads: -1
+            markers:
+                update-interval-seconds: 5
+                spawn-icon:
+                    enabled: true
+                    show-controls: true
+                    default-hidden: false
+                    layer-priority: 0
+                    z-index: 0
+                world-border:
+                    enabled: true
+                    show-controls: true
+                    default-hidden: false
+                    layer-priority: 1
+                    z-index: 1
+            visibility-limits:
+            -   type: world-border
+                enabled: 'false'
+        player-tracker:
+            enabled: true
+            update-interval-seconds: 1
+            show-controls: true
+            default-hidden: false
+            layer-priority: 2
+            z-index: 2
+            nameplate:
+                enabled: true
+                show-head: true
+                heads-url: https://mc-heads.net/avatar/{uuid}/16
+                show-armor: true
+                show-health: true
+            hide:
+                invisible: true
+                spectators: true
+            use-display-names: false

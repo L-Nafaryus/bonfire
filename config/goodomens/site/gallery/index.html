@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gallery - GoodOmens</title>
+    
+    <meta name="author" content="L-Nafaryus">
+    <meta name="description" content="Gallery - GoodOmens">
+    <meta name="keywords" content="goodomens,minecraft,gallery,nixos">
+    <meta name="referrer" content="no-referrer">
+
+    <meta property="og:site_name" content="GoodOmens">
+    <meta property="og:title" content="Gallery - GoodOmens">
+    <meta property="og:url" content="https://mc.elnafo.ru/gallery/">
+    <meta property="og:description" content="Map - GoodOmens">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://mc.elnafo.ru/assets/images/goodomens-logo.png">
+
+    <link rel="stylesheet" href="/assets/style/master.css">
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" sizes="64x64" crossOrigin="anonymous"/>
+
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="/assets/js/gallery.js"></script>
+  </head>
+  <body>
+	<header>
+	<center>
+		<a href="/">
+		    <img src="/assets/images/goodomens.png" alt="GoodOmens" style="height:48px;">
+		</a>
+	</center>
+	</header>
+  <section class="main">
+	<h1>Gallery</h1>
+	<img id="viewer">
+	<div class="container">
+        <button class="mini-sign" onclick="changePicture(-1)"><i class="arrow left"></i></button>
+        <div id="info" class="mini-sign">4/8</div>
+        <button class="mini-sign" onclick="changePicture(1)"><i class="arrow right"></i></button>
+	</div>
+	</section>
+    <footer>
+        <center>
+        <p>Made with <img src="/assets/images/acacia_sapling.png" alt="Acacia" style="display: inline; height: 32px;"> in mind.</p>
+        </center>
+    </footer>
+    <script>
+        getFiles();
+    </script>
+</body>
+</html>

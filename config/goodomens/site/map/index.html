@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Map - GoodOmens</title>
+    
+    <meta name="author" content="L-Nafaryus">
+    <meta name="description" content="Map - GoodOmens">
+    <meta name="keywords" content="goodomens,minecraft,map,dynamic,nixos">
+    <meta name="referrer" content="no-referrer">
+
+    <meta property="og:site_name" content="GoodOmens">
+    <meta property="og:title" content="Map - GoodOmens">
+    <meta property="og:url" content="https://mc.elnafo.ru/map/">
+    <meta property="og:description" content="Map - GoodOmens">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://mc.elnafo.ru/assets/images/goodomens-logo.png">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#222222">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossOrigin="anonymous" />
+    <link rel="stylesheet" href="css/styles.css" crossOrigin="anonymous" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossOrigin="anonymous"></script>
+
+    <script src="js/addons/RotateMarker.js" crossOrigin="anonymous"></script>
+    <script src="js/addons/Ellipse.js" crossOrigin="anonymous"></script>
+    <script type="module" src="js/modules/SquaremapTileLayer.js" crossOrigin="anonymous"></script>
+    <script type="module" src="js/modules/PlayerList.js" crossOrigin="anonymous"></script>
+    <script type="module" src="js/modules/Sidebar.js" crossOrigin="anonymous"></script>
+    <script type="module" src="js/modules/UICoordinates.js" crossOrigin="anonymous"></script>
+    <script type="module" src="js/modules/UILink.js" crossOrigin="anonymous"></script>
+    <script type="module" src="js/modules/WorldList.js" crossOrigin="anonymous"></script>
+    <script type="module" src="js/modules/util/Fieldset.js" crossOrigin="anonymous"></script>
+    <script type="module" src="js/modules/util/Markers.js" crossOrigin="anonymous"></script>
+    <script type="module" src="js/modules/util/Pin.js" crossOrigin="anonymous"></script>
+    <script type="module" src="js/modules/util/Player.js" crossOrigin="anonymous"></script>
+    <script type="module" src="js/modules/util/World.js" crossOrigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://mc.elnafo.ru/assets/style/master.css">
+    <link rel="shortcut icon" href="https://mc.elnafo.ru/assets/images/favicon.ico" sizes="64x64" crossOrigin="anonymous"/>
+  </head>
+  <body>
+	<header class="mini-title">
+        <a href="https://mc.elnafo.ru/">
+            <img src="https://mc.elnafo.ru/assets/images/goodomens.png" alt="GoodOmens" style="height:48px;">
+        </a>
+	</header>
+    <div id="map"></div>
+    <script type="module" src="js/modules/Squaremap.js" crossOrigin="anonymous"></script>
+  </body>
+</html>

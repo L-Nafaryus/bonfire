@@ -47,10 +47,10 @@ rec {
         videoDrivers = [ "nvidia" ];
 
         displayManager.gdm = {
-            enable = true;
+            enable = false;
             autoSuspend = false;
         };
-        desktopManager.gnome.enable = true;
+        desktopManager.gnome.enable = false;
     };
 
     services.printing.enable = true;
@@ -67,10 +67,6 @@ rec {
         startWhenNeeded = true;
         settings.PasswordAuthentication = false;
         settings.KbdInteractiveAuthentication = false;
-    };
-
-    services.udev = {
-        packages = with pkgs; [ gnome.gnome-settings-daemon ];
     };
 
     services.blueman.enable = true;
@@ -98,13 +94,12 @@ rec {
 
     security.acme = {
         acceptTerms = true;
-        defaults.email = "l.nafaryus@gmail.com";
+        defaults.email = "l.nafaryus@elnafo.ru";
         defaults.group = "nginx";
 
         certs = {
             "elnafo.ru" = {
-                domain = "elnafo.ru";
-                extraDomainNames = [ "www.elnafo.ru" "vcs.elnafo.ru" "media.elnafo.ru" "mc.elnafo.ru" "map.mc.elnafo.ru"];
+                extraDomainNames = [ "*.elnafo.ru" ];
                 dnsProvider = "webnames";
                 credentialsFile = config.sops.secrets."dns".path;
                 webroot = null;
@@ -152,6 +147,7 @@ rec {
         certificateScheme = "acme-nginx";
         enableImapSsl = true;
         openFirewall = true;
+        localDnsResolver = true;
         
         loginAccounts = import ../../.secrets/mail-recipients.nix { inherit config; };
     };
@@ -163,6 +159,17 @@ rec {
 
     services.spoofdpi.enable = true;
 
+    #services.btrbk = {
+    #    instances."catarina" = {
+    #        onCalendar = "weekly";
+    #        settings = {
+    #            volume."/" = {
+    #                
+    #            };
+    #        };
+    #    };
+    #};
+
 # Packages
     environment.systemPackages = with pkgs; [
         wget
@@ -170,6 +177,7 @@ rec {
         ntfs3g
         sshfs
         exfat
+        btrfs-progs
 
         lm_sensors
 
@@ -217,7 +225,7 @@ rec {
         Host catarina
             HostName 192.168.156.102
             Port 22
-            User nafaryus
+            User l.nafaryus
     '';
 
     programs.direnv.enable = true;

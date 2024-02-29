@@ -9,7 +9,7 @@
         tmp.useTmpfs = lib.mkDefault true;
         tmp.cleanOnBoot = lib.mkDefault (!config.boot.tmp.useTmpfs);
 
-        initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+        initrd.availableKernelModules = [ "nvme" "xhci_pci" "ehci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
         initrd.kernelModules = [ ];
         kernelModules = [ "kvm-intel" "tcp_bbr" "coretemp" "nct6775" ];
         kernelParams = [ "threadirqs" ];
@@ -63,23 +63,40 @@
         rtkit.enable = true;
     };
 
-    users.users.root.initialPassword = "nixos";
-
 # Filesystem
     fileSystems = {
         "/" = { 
-            device = "/dev/disk/by-uuid/1e26a42f-0546-48f1-8e8e-f1e2dfdcc5fb";
-            fsType = "ext4";
+            device = "/dev/disk/by-label/nixos";
+            fsType = "btrfs";
+            options = [ "subvol=root" "compress=zstd" ];
+        };
+
+        "/nix" = { 
+            device = "/dev/disk/by-label/nixos";
+            fsType = "btrfs";
+            options = [ "subvol=nix" "compress=zstd" "noatime" ];
+        };
+
+        "/home" = { 
+            device = "/dev/disk/by-label/nixos";
+            fsType = "btrfs";
+            options = [ "subvol=home" "compress=zstd" ];
         };
 
         "/boot" = { 
-            device = "/dev/disk/by-uuid/786A-F24B";
+            device = "/dev/disk/by-label/boot";
             fsType = "vfat";
+        };
+
+        "/swap" = { 
+            device = "/dev/disk/by-label/nixos";
+            fsType = "btrfs";
+            options = [ "subvol=swap" "noatime" ];
         };
     };
 
     swapDevices = [ 
-        { device = "/dev/disk/by-uuid/ff4c8615-e4c8-429b-822e-55cb1c14e125"; }
+        { device = "/swap/swapfile"; }
     ];
 
     services.fstrim.enable = true;
@@ -87,6 +104,8 @@
 # Hardware etc
     hardware = {
         enableRedistributableFirmware = true;
+
+        cpu.intel.updateMicrocode = true;
 
         nvidia.nvidiaSettings = true;
         nvidia.modesetting.enable = true;
@@ -103,7 +122,8 @@
 
     networking = {
         networkmanager.enable = true;
-        useDHCP = lib.mkDefault true;
+        useDHCP = false;
+#	dhcpcd.enable = false;
         hostName = "catarina";
         extraHosts = '''';
 
@@ -112,13 +132,33 @@
             allowedTCPPorts = [ 80 443 3001 25600 8080 ];
         };
 
-        interfaces.enp9s0.ipv4.addresses = [ {
-            address = "192.168.156.102";
-            prefixLength = 24;
-        } ];
+#        interfaces.enp9s0.ipv4.addresses = [ {
+#            address = "192.168.156.102";
+#            prefixLength = 24;
+#        } ];
+	
+	interfaces.wlp8s0.ipv4.addresses = [ { 
+	    address = "192.168.156.102";
+	    prefixLength = 24;
+	} ];
+	interfaces.wlp8s0.useDHCP = false;
 
-        defaultGateway = "192.168.156.1";
+        defaultGateway = {
+	    address = "192.168.156.1";
+	    interface = null;
+	    metric = null;
+	};
         nameservers = [ "192.168.156.1" "8.8.8.8" ];
+#	networkmanager.insertNameservers = config.networking.nameservers;
+    };
+
+    services.resolved = { 
+        enable = false; 
+    	dnssec = "true";
+	extraConfig = ''
+	    DNSOverTLS=yes
+	'';
+	fallbackDns = [ "8.8.8.8" ];
     };
 
     services.logind.lidSwitchExternalPower = "ignore";

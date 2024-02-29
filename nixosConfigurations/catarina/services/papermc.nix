@@ -100,8 +100,8 @@ let
         '';
     };
 
-    skinRestorer = stdenv.mkDerivation rec {
-        pname = "SkinRestorer";
+    skinsRestorer = stdenv.mkDerivation rec {
+        pname = "SkinsRestorer";
         version = "15.0.2";
         src = fetchurl {
             url = "https://github.com/SkinsRestorer/SkinsRestorerX/releases/download/${version}/SkinsRestorer.jar";
@@ -145,8 +145,38 @@ let
         '';
     };
 
+    chunky = stdenv.mkDerivation rec {
+        pname = "Chunky";
+        version = "1.3.92";
+        src = fetchurl {
+            url = "https://hangarcdn.papermc.io/plugins/pop4959/Chunky/versions/${version}/PAPER/Chunky-${version}.jar";
+            hash = "sha256-ABHfKJK0LQI2ZLt1D83897RAnE9xWu6+34IOlwTh17w=";   
+        };
+        meta.homepage = "https://hangar.papermc.io/pop4959/Chunky";
+        phases = [ "installPhase" ];
+        installPhase = ''
+            mkdir -p $out/bin
+            cp $src $out/bin/${pname}.jar
+        '';
+    };
+
+    xclaim = stdenv.mkDerivation rec {
+        pname = "XClaim";
+        version = "1.11.0";
+        src = fetchurl {
+            url = "https://github.com/WasabiThumb/xclaim/releases/download/${version}/xclaim-${version}.jar";
+            hash = "sha256-49R9cj1NnOx9n0yBtOj+m4V+56P4Ko/Co/LOgdhd2y4=";   
+        };
+        meta.homepage = "https://hangar.papermc.io/WasabiThumbs/XClaim";
+        phases = [ "installPhase" ];
+        installPhase = ''
+            mkdir -p $out/bin
+            cp $src $out/bin/${pname}.jar
+        '';
+    };
+
     plugins = [
-        passky grimAnticheat viaVersion directionHUD miniMOTD skinRestorer squaremap stargate
+        passky grimAnticheat viaVersion directionHUD miniMOTD skinsRestorer squaremap stargate chunky xclaim
     ];
 
 in {
@@ -157,7 +187,7 @@ in {
         serverProperties = {
             server-port = 25565;
             gamemode = "survival";
-            motd = "NixOS Paper Server";
+            motd = "GoodOmens";
             max-players = 10;
             level-seed = "66666666";
             enable-status = true;
@@ -173,14 +203,29 @@ in {
         ops = operators;
         extraPreStart = ''
             mkdir -p ${builtins.concatStringsSep " " (map (v: "plugins/${v.pname}") plugins)}
-        '' + builtins.concatStringsSep "\n" (map (v: "ln -sf ${v.outPath}/bin/${v.pname}.jar plugins/") plugins)
+        '' + builtins.concatStringsSep "\n" (map (v: "ln -sf ${v.outPath}/bin/${v.pname}.jar plugins/") plugins) + ''
+
+            ln -sf ${config.bonfire.configDir}/goodomens/plugins/MiniMOTD/main.conf plugins/MiniMOTD/ 
+            mkdir -p plugins/MiniMOTD/icons 
+            ln -sf ${config.bonfire.configDir}/goodomens/plugins/MiniMOTD/icons/goodomens-logo.png plugins/MiniMOTD/icons/ 
+            ln -sf ${config.bonfire.configDir}/goodomens/plugins/Tablist/config.yml plugins/Tablist/
+            ln -sf ${config.bonfire.configDir}/goodomens/plugins/squaremap/config.yml plugins/squaremap/
+            ln -sf ${config.bonfire.configDir}/goodomens/plugins/squaremap/advanced.yml plugins/squaremap/
+            ln -sf ${config.bonfire.configDir}/goodomens/plugins/squaremap/advanced.yml plugins/squaremap/
+            ln -sf ${config.bonfire.configDir}/goodomens/site/map/index.html plugins/squaremap/web/
+        ''
         ;
     };   
 
-    services.nginx.virtualHosts."map.mc.elnafo.ru" = {
+    services.nginx.virtualHosts."mc.elnafo.ru" = {
         forceSSL = true;
         useACMEHost = "elnafo.ru";
-        locations."/".proxyPass = "http://127.0.0.1:8088";
+	    locations."/".root = "/var/www/goodomens";
+        locations."^~ /map/".proxyPass = "http://127.0.0.1:8088/";
+	    locations."/gallery/".root = "/var/www/goodomens";
+	    locations."/gallery/images/" = { 
+            root = "/var/www/goodomens"; 
+            extraConfig = ''autoindex on;''; 
+        };
     };
-
 }
