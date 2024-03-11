@@ -4,7 +4,7 @@
     users.users.nafaryus = {
         isNormalUser = true;
         description = "L-Nafaryus";
-        extraGroups = [ "networkmanager" "wheel" ];
+        extraGroups = [ "networkmanager" "wheel" "audio" ];
         group = "users";
         uid = 1000;
         initialPassword = "nixos";
@@ -39,9 +39,12 @@
 
             discord
 
+            pipewire.jack                   # pw-jack
             carla
             qpwgraph
             wireplumber
+            yabridge
+            yabridgectl
 
             lutris
             wine
@@ -56,6 +59,9 @@
             blender
             ardour
             olive-editor
+            openshot-qt
+            musescore
+            soundux
 
             calf
             zynaddsubfx

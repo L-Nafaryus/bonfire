@@ -61,6 +61,7 @@
         alsa.enable = true;
         alsa.support32Bit = true;
         pulse.enable = true;
+        jack.enable = true;
     };
 
     services.openssh = {
@@ -91,6 +92,7 @@
         lm_sensors
 
         git
+        git-lfs
         ripgrep
         fd
         lazygit
