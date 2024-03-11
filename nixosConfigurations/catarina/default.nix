@@ -117,6 +117,8 @@ rec {
         recommendedGzipSettings = true;
         recommendedTlsSettings = true; 
 
+        clientMaxBodySize = "5G";
+
         virtualHosts = {
             "elnafo.ru" = {
                 forceSSL = true;
