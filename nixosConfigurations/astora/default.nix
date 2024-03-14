@@ -132,7 +132,7 @@
         Host catarina
             HostName 192.168.156.102
             Port 22
-            User nafaryus
+            User l.nafaryus
     '';
 
     programs.direnv.enable = true;

@@ -62,11 +62,16 @@
             openshot-qt
             musescore
             soundux
+            losslesscut-bin
+            yt-dlp
 
             calf
             zynaddsubfx
             lsp-plugins
             x42-plugins
+            cardinal
+            gxplugins-lv2
+            xtuner
 
             obs-studio
             obs-studio-plugins.obs-vkcapture
