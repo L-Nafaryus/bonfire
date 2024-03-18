@@ -32,21 +32,29 @@
 
             mailer = {
                 ENABLED = true;
-                FROM = "git@elnafo.ru";
+                FROM = "Elnafo VCS <git@elnafo.ru>";
                 PROTOCOL = "smtps";
                 SMTP_ADDR = "smtp.elnafo.ru";
                 SMTP_PORT = 465;
-                USER = "git";
+                USER = "git@elnafo.ru";
                 USE_CLIENT_CERT = true;
                 CLIENT_CERT_FILE = "${config.security.acme.certs."elnafo.ru".directory}/cert.pem";
                 CLIENT_KEY_FILE = "${config.security.acme.certs."elnafo.ru".directory}/key.pem";
             };
 
-            service.DISABLE_REGISTRATION = true;
+            service = {
+                DISABLE_REGISTRATION = true;
+                REGISTER_EMAIL_CONFIRM = true;
+                ENABLE_NOTIFY_MAIL = true;
+            };
 
             other = {
                 SHOW_FOOTER_VERSION = false;
                 SHOW_FOOTER_TEMPLATE_LOAD_TIME = false;
+            };
+
+            indexer = {
+                REPO_INDEXER_ENABLED = true;
             };
         };
 
