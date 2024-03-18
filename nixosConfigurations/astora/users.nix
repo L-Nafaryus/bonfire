@@ -72,6 +72,7 @@
             cardinal
             gxplugins-lv2
             xtuner
+            aether-lv2
 
             obs-studio
             obs-studio-plugins.obs-vkcapture
@@ -86,6 +87,8 @@
 
             jdk
             self.packages.${pkgs.system}.ultimmc
+
+            liberation_ttf
         ];
         
         xdg.enable = true;
