@@ -41,6 +41,7 @@
                     simple-nixos-mailserver.nixosModules.mailserver
                     sops-nix.nixosModules.sops
                     self.nixosModules.papermc
+                    self.nixosModules.qbittorrent-nox
                 ];
                 specialArgs = { inherit inputs self; };
             };
@@ -52,6 +53,8 @@
             spoofdpi = import ./nixosModules/spoofdpi { inherit self; };
 
             papermc = import ./nixosModules/papermc { inherit self; };
+
+            qbittorrent-nox = import ./nixosModules/qbittorrent-nox { inherit self; };
         };
 
         templates = {

@@ -161,6 +161,12 @@ rec {
 
     services.spoofdpi.enable = true;
 
+    services.qbittorrent-nox = {
+        enable = true;
+        webuiPort = 8085;
+        openFirewall = true;
+    };
+
     #services.btrbk = {
     #    instances."catarina" = {
     #        onCalendar = "weekly";

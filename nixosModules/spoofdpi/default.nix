@@ -16,10 +16,16 @@ in {
         };
 
         port = mkOption rec {
-            type = types.str;
-            default = "8080";
+            type = types.port;
+            default = 8080;
             example = default;
             description = "Port";
+        };
+
+        openFirewall = mkOption {
+            type = types.bool;
+            default = false;
+            description = "Open services.spoofdpi.port";
         };
 
         dns = mkOption rec {
@@ -33,11 +39,16 @@ in {
     config = mkIf cfg.enable {
         systemd.services.spoofdpi = {
             wantedBy = [ "multi-user.target" ];
+            after = [ "network.target" ];
             serviceConfig = {
                 Restart = "on-failure";
-                ExecStart = "${pkg}/bin/spoof-dpi -no-banner -addr ${cfg.address} -port ${cfg.port} -dns ${cfg.dns}";
+                ExecStart = "${pkg}/bin/spoof-dpi -no-banner -addr ${cfg.address} -port ${toString cfg.port} -dns ${cfg.dns}";
                 DynamicUser = "yes";
             };
+        };
+
+        networking.firewall = mkIf cfg.openFirewall {
+            allowedTCPPorts = [ cfg.port ];
         };
     };
 }

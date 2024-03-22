@@ -71,6 +71,8 @@
             { domain = "@audio"; item = "rtprio"; type = "-"; value = "99"; }
             { domain = "@audio"; item = "nofile"; type = "soft"; value = "99999"; }
             { domain = "@audio"; item = "nofile"; type = "hard"; value = "99999"; }
+            { domain = "*"; item = "nofile"; type = "-"; value = "524288"; }
+            { domain = "*"; item = "memlock"; type = "-"; value = "524288"; }
         ];
         polkit.enable = true;
     };
