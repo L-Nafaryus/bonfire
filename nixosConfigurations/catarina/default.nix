@@ -155,14 +155,14 @@ rec {
     };
 
     services.jellyfin = {
-        enable = true;
+        enable = false;
         openFirewall = true;
     };
 
     services.spoofdpi.enable = true;
 
     services.qbittorrent-nox = {
-        enable = true;
+        enable = false;
         webuiPort = 8085;
         openFirewall = true;
     };

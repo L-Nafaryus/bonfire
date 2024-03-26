@@ -198,6 +198,7 @@ in {
             "rcon.port" = 25600;
             white-list = false;
         };
+        jvmOpts = "-Xms512M -Xmx2048M";
         rconPasswordFile = config.sops.secrets."papermc/rcon".path;
         whitelist = whitelist;
         ops = operators;
@@ -213,8 +214,7 @@ in {
             ln -sf ${config.bonfire.configDir}/goodomens/plugins/squaremap/advanced.yml plugins/squaremap/
             ln -sf ${config.bonfire.configDir}/goodomens/plugins/squaremap/advanced.yml plugins/squaremap/
             ln -sf ${config.bonfire.configDir}/goodomens/site/map/index.html plugins/squaremap/web/
-        ''
-        ;
+        '';
     };   
 
     services.nginx.virtualHosts."mc.elnafo.ru" = {

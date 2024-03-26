@@ -123,7 +123,6 @@
     networking = {
         networkmanager.enable = true;
         useDHCP = false;
-#	dhcpcd.enable = false;
         hostName = "catarina";
         extraHosts = '''';
 
@@ -131,34 +130,30 @@
             enable = true;
             allowedTCPPorts = [ 80 443 3001 25600 8080 8085 ];
         };
-
-#        interfaces.enp9s0.ipv4.addresses = [ {
-#            address = "192.168.156.102";
-#            prefixLength = 24;
-#        } ];
 	
-	interfaces.wlp8s0.ipv4.addresses = [ { 
-	    address = "192.168.156.102";
-	    prefixLength = 24;
-	} ];
-	interfaces.wlp8s0.useDHCP = false;
+        interfaces.wlp8s0 = {
+            useDHCP = false;
+            ipv4.addresses = [ { 
+                address = "192.168.156.102";
+                prefixLength = 24;
+            } ];
+        };
 
         defaultGateway = {
-	    address = "192.168.156.1";
-	    interface = null;
-	    metric = null;
-	};
+            address = "192.168.156.1";
+            interface = null;
+            metric = null;
+        };
         nameservers = [ "192.168.156.1" "8.8.8.8" ];
-#	networkmanager.insertNameservers = config.networking.nameservers;
     };
 
     services.resolved = { 
         enable = false; 
     	dnssec = "true";
-	extraConfig = ''
-	    DNSOverTLS=yes
-	'';
-	fallbackDns = [ "8.8.8.8" ];
+        extraConfig = ''
+            DNSOverTLS=yes
+        '';
+        fallbackDns = [ "8.8.8.8" ];
     };
 
     services.logind.lidSwitchExternalPower = "ignore";
