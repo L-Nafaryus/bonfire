@@ -93,6 +93,18 @@
             fsType = "btrfs";
             options = [ "subvol=swap" "noatime" ];
         };
+
+        "/media/storage" = {
+            device = "/dev/disk/by-label/storage";
+            fsType = "btrfs";
+            options = [ "subvol=storage" "nofail" "compress=zstd" ];
+        };
+
+        "/media/btrbk-backups" = {
+            device = "/dev/disk/by-label/storage";
+            fsType = "btrfs";
+            options = [ "subvol=btrbk-backups" "nofail" "compress=zstd" ];
+        };
     };
 
     swapDevices = [ 

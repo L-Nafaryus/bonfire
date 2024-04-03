@@ -161,22 +161,46 @@ rec {
 
     services.spoofdpi.enable = true;
 
-    services.qbittorrent-nox = {
-        enable = false;
-        webuiPort = 8085;
-        openFirewall = true;
+    services.btrfs.autoScrub = {
+        enable = true;
+        interval = "monthly";
+        fileSystems = [ "/" ];
     };
 
-    #services.btrbk = {
-    #    instances."catarina" = {
-    #        onCalendar = "weekly";
-    #        settings = {
-    #            volume."/" = {
-    #                
-    #            };
-    #        };
-    #    };
-    #};
+    services.btrbk = {
+        instances."catarina" = {
+            onCalendar = "daily";
+
+            settings = {
+                snapshot_preserve_min = "2d";
+                snapshot_preserve = "14d";
+                snapshot_dir = "/media/btrbk-snapshots";
+                target_preserve_min = "no";
+                target_preserve = "14d 8w *m";
+
+                volume."/" = {
+                    target = "/media/btrbk-backups";
+                    subvolume = {
+                        "var/lib/gitea" = {};
+                        "var/lib/postgresql" = {};
+                        "var/lib/postfix" = {};
+                        "var/vmail" = {};
+                    };
+                };
+            };
+        };
+    };
+
+    services.transmission = {
+        enable = true;
+        openRPCPort = true;
+        settings = {
+            rpc-bind-address = "0.0.0.0";
+            rpc-whitelist = "127.0.0.1,192.168.156.101";
+            download-dir = "/media/storage/downloads";
+            incomplete-dir = "/media/storage/downloads/incomplete";
+        };
+    };
 
 # Packages
     environment.systemPackages = with pkgs; [
@@ -186,6 +210,7 @@ rec {
         sshfs
         exfat
         btrfs-progs
+        btrbk
 
         lm_sensors
 
