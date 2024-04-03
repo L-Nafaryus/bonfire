@@ -27,6 +27,7 @@
             htop
             pass 
             taskwarrior
+            tmux
 
             gparted
 
@@ -64,6 +65,7 @@
             soundux
             losslesscut-bin
             yt-dlp
+            ffmpeg
 
             calf
             zynaddsubfx
@@ -80,6 +82,7 @@
             obs-studio-plugins.obs-pipewire-audio-capture
 
             qbittorrent
+            transmission-qt
 
             onlyoffice-bin
 
