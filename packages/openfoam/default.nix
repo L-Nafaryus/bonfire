@@ -1,7 +1,7 @@
 { 
     stdenv, lib, pkgs,
-    version ? "11.20230907",
-    sha256 ? "sha256-oT9NkQR/KGQYPX5gNuebMZFz+hxG5vp4fownQMkX5r0=", ...
+    version ? "11.20240116",
+    sha256 ? "sha256-bNWlza3cL/lUrwrVEmPECvKbFkwR2rTMaccsn8amGFQ=", ...
 }:
 let 
     version' = lib.strings.splitString "." version;
