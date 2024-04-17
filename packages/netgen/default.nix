@@ -1,7 +1,7 @@
 { 
     stdenv, lib, pkgs,
-    version ? "6.2.2304",
-    sha256 ? "sha256-Rd7G316oIDklVq4uo7pS+v9ZqL+oV+RtZVU6iKYJCjM=", ...
+    version ? "6.2.2402",
+    sha256 ? "sha256-o3cj5k2VtYiGcs9Z9FyfwtOpDlZZlcO3kRgBSer6KAw=", ...
 }:
 stdenv.mkDerivation {
     pname = "netgen";
