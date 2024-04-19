@@ -1,4 +1,11 @@
 { pkgs, ... }:
-pkgs.mkShell {
-    buildInputs = with pkgs; [ go gopls gotools go-tools golangci-lint gnumake ];
+pkgs.mkShellNoCC {
+    packages = with pkgs; [ 
+        go 
+        gopls 
+        gotools 
+        go-tools 
+        golangci-lint 
+        gnumake 
+    ];
 }

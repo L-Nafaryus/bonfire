@@ -1,21 +1,23 @@
-{ pkgs, cranelib, ... }:
-cranelib.devShell {
+{ pkgs, crane-lib, ... }:
+crane-lib.devShell rec {
     packages = with pkgs; [ 
-        libGL 
-        xorg.libXi xorg.libX11 xorg.libXcursor xorg.libXrandr 
         lld 
-        libxkbcommon
+        pkg-config 
+        libGL 
         vulkan-loader
+        vulkan-headers 
+        vulkan-tools 
+        vulkan-validation-layers
+        xorg.libXi 
+        xorg.libX11 
+        xorg.libXcursor 
+        xorg.libXrandr 
+        libxkbcommon
+        libudev-zero 
+        alsa-lib 
     ];
 
     shellHook = ''
-        export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${
-            with pkgs; lib.makeLibraryPath [ 
-                libGL 
-                xorg.libX11 xorg.libXi xorg.libXcursor xorg.libXrandr 
-                libxkbcommon 
-                vulkan-loader 
-            ]
-        }"
+        export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${pkgs.lib.makeLibraryPath packages}"
     '';
 }

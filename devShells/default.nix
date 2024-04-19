@@ -1,23 +1,30 @@
 # self.devShells.${system}
 #
-{ self, nixpkgs, crane, ... }:
+{ self, nixpkgs, ... }:
 let 
     forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" ];
     nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
 
-in forAllSystems(system: let 
+in forAllSystems(system: 
+    let environment = {
         pkgs = nixpkgsFor.${system};
-        bpkgs = self.packages.${system};
-        blib = self.lib;
-        cranelib = crane.lib.${system};
-    in {
+
+        bonfire = self;
+        bonfire-lib = self.lib;
+        bonfire-pkgs = self.packages.${system};
+
+        crane = self.inputs.crane;
+        crane-lib = self.inputs.crane.lib.${system};
+    }; in {
     
-    netgen = import ./netgen.nix { inherit pkgs bpkgs; };
+    default = import ./bonfire.nix environment;
 
-    openfoam = import ./openfoam.nix { inherit pkgs bpkgs; };
+    netgen = import ./netgen.nix environment;
 
-    rust = import ./rust.nix { inherit pkgs cranelib; };
-    rust-x11 = import ./rust-x11.nix { inherit pkgs cranelib; };
+    openfoam = import ./openfoam.nix environment;
 
-    go = import ./go.nix { inherit pkgs; };
+    rust = import ./rust.nix environment;
+    rust-x11 = import ./rust-x11.nix environment;
+
+    go = import ./go.nix environment;
 })

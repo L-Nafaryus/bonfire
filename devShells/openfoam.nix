@@ -1,11 +1,9 @@
-{ pkgs, bpkgs, ... }:
+{ pkgs, bonfire-pkgs, ... }:
 pkgs.mkShellNoCC {
-    packages = with pkgs; [
-        bpkgs.openfoam
-        mpi
+    packages = [
+        bonfire-pkgs.openfoam
+        pkgs.mpi
     ];
 
-    shellHook = ''
-        . ${bpkgs.openfoam}/OpenFOAM-${bpkgs.openfoam.major}/etc/bashrc
-    '';
+    shellHook = bonfire-pkgs.openfoam.passthru.shellHook;
 }

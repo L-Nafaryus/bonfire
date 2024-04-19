@@ -1,4 +1,6 @@
-{ pkgs, cranelib, ... }:
-cranelib.devShell {
-    packages = [];
+{ pkgs, crane-lib, ... }:
+crane-lib.devShell {
+    packages = [
+        pkgs.cargo-watch
+    ];
 }

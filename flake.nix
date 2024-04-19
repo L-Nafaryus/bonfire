@@ -65,6 +65,6 @@
 
         apps = import ./apps { inherit self nixpkgs; };
 
-        devShells = import ./devShells { inherit self nixpkgs crane; };
+        devShells = import ./devShells { inherit self nixpkgs; };
     };
 }
