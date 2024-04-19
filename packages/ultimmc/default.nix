@@ -1,4 +1,5 @@
 { 
+    bonfire,
     lib, stdenv,
     fetchFromGitHub, wrapQtAppsHook, 
     extra-cmake-modules, cmake, 
@@ -40,6 +41,7 @@ stdenv.mkDerivation rec {
 
     cmakeFlags = [ "-DLauncher_LAYOUT=lin-nodeps" ];
     
+# TODO: fix broken data directory location
     postInstall = let 
         libpath = with xorg; lib.makeLibraryPath [
             libX11
@@ -68,6 +70,6 @@ stdenv.mkDerivation rec {
         description = "Cracked Minecraft Launcher";
         license = licenses.asl20;
         platforms = platforms.linux;
-        maintainers = [] ;
+        maintainers = with bonfire.lib.maintainers; [ L-Nafaryus ];
     };
 }

@@ -1,4 +1,5 @@
 { 
+    bonfire,
     stdenv, lib, pkgs,
     version ? "1.10.0",
     sha256 ? "sha256-36GAGfvHZyNZe/Z7o3VrCCwApkZpJ+r2E8+1Hy32G5Q=", ...
@@ -54,7 +55,7 @@ pkgs.python3.pkgs.buildPythonPackage {
         description = "Dear PyGui: A fast and powerful Graphical User Interface Toolkit for Python with minimal dependencies.";
         license = licenses.mit;
         platforms = platforms.linux;
-        maintainers = [];
+        maintainers = with bonfire.lib.maintainers; [ L-Nafaryus ];
         broken = pkgs.stdenv.isDarwin;
     };
 }

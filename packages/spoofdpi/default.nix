@@ -1,4 +1,5 @@
 { 
+    bonfire,
     lib, pkgs,
     version ? "0.8",
     hash ? "sha256-kPCdOZl4m7KBb970TjJokXorKfnCvuV5Uq7lFQIh1z8=", 
@@ -25,7 +26,7 @@ pkgs.buildGoModule {
         homepage = "https://github.com/xvzc/SpoofDPI";
         description = "A simple and fast anti-censorship tool written in Go";
         license = licenses.asl20;
-        maintainers = [];
+        maintainers = with bonfire.lib.maintainers; [ L-Nafaryus ];
         broken = false;
         mainProgram = "spoof-dpi";
     };

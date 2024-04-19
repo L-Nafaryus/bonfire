@@ -1,4 +1,5 @@
 { 
+    bonfire,
     lib, 
     fetchFromGitHub, buildGoModule, nixosTests, 
     version ? "c847ac4a4c55d6a5a457f6ef494cf45a47299e01",
@@ -30,7 +31,7 @@ buildGoModule rec {
         description = "Let's Encrypt client and ACME library written in Go";
         license = licenses.mit;
         homepage = "https://go-acme.github.io/lego/";
-        maintainers = [];
+        maintainers = with bonfire.lib.maintainers; [ L-Nafaryus ];
     };
 
     passthru.tests.lego = nixosTests.acme;

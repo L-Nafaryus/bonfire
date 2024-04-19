@@ -1,5 +1,7 @@
 { ... }:
 {
+    maintainers = import ./maintainers.nix;
+
     mkApp = { drv, name ? drv.pname, binPath ? "/bin/${name}" }:
     {
         type = "app";

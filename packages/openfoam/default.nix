@@ -1,4 +1,5 @@
 { 
+    bonfire,
     stdenv, lib, pkgs,
     version ? "11.20240116",
     sha256 ? "sha256-bNWlza3cL/lUrwrVEmPECvKbFkwR2rTMaccsn8amGFQ=", ...
@@ -8,8 +9,8 @@ let
     major = lib.elemAt version' 0;
     revision = lib.elemAt version' 1;
     realname = "OpenFOAM";
-
-in stdenv.mkDerivation {
+in 
+let pkg = stdenv.mkDerivation {
     pname = "openfoam";
     inherit version major;
 
@@ -65,12 +66,19 @@ in stdenv.mkDerivation {
         cp -Ra $WM_PROJECT_DIR/* $out/${realname}-${major}
     '';
 
+    passthru = {
+        shellHook = ''
+            . ${pkg}/${realname}-${major}/etc/bashrc
+        '';
+    };
+
     meta = with pkgs.lib; {
         homepage = "https://www.openfoam.org/";
         description = "OpenFOAM is a free, open source CFD software released and developed by OpenFOAM Foundation";
         license = licenses.gpl3;
         platforms = platforms.linux;
-        maintainers = [];
+        maintainers = with bonfire.lib.maintainers; [ L-Nafaryus ];
         broken = pkgs.stdenv.isDarwin;
     };
-}
+};
+in pkg

@@ -1,9 +1,10 @@
 { 
+    bonfire,
     stdenv, lib, pkgs,
     version ? "6.2.2402",
     sha256 ? "sha256-o3cj5k2VtYiGcs9Z9FyfwtOpDlZZlcO3kRgBSer6KAw=", ...
 }:
-stdenv.mkDerivation {
+let pkg = stdenv.mkDerivation {
     pname = "netgen";
     inherit version;
 
@@ -52,12 +53,20 @@ stdenv.mkDerivation {
         metis
     ];
 
+    passthru = {
+        shellHook = with pkgs; ''
+            export PYTHONPATH="${python3}/${python3.sitePackages}"
+            export PYTHONPATH="$PYTHONPATH:${pkg}/${python3.sitePackages}"
+        '';
+    };
+
     meta = with pkgs.lib; {
         homepage = "https://github.com/NGSolve/netgen";
         description = "NETGEN is an automatic 3d tetrahedral mesh generator";
         license = licenses.lgpl21Only;
         platforms = platforms.linux;
-        maintainers = [];
+        maintainers = with bonfire.lib.maintainers; [ L-Nafaryus ];
         broken = pkgs.stdenv.isDarwin;
     };
-}
+};
+in pkg
