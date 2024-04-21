@@ -7,8 +7,14 @@ let
 
 in forAllSystems(system:  
     let 
-        bonfire = self;
         pkgs = nixpkgsFor.${system}; 
+
+        bonfire = self;
+        bonfire-lib = self.lib;
+        bonfire-pkgs = self.packages.${system};
+
+        crane = self.inputs.crane;
+        crane-lib = self.inputs.crane.lib.${system};
     in {
     
     example = pkgs.callPackage ./example { inherit bonfire; };
@@ -24,4 +30,6 @@ in forAllSystems(system:
     lego = pkgs.callPackage ./lego { inherit bonfire; };
 
     ultimmc = pkgs.libsForQt5.callPackage ./ultimmc { inherit bonfire; };
+
+    cargo-shuttle = pkgs.callPackage ./cargo-shuttle { inherit bonfire crane-lib; };
 })
