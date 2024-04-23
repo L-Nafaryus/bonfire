@@ -15,10 +15,10 @@ in forAllSystems(system:
 
         crane = self.inputs.crane;
         crane-lib = self.inputs.crane.lib.${system};
+
+        fenix = self.inputs.fenix;
     in {
     
-    example = pkgs.callPackage ./example { inherit bonfire; };
-
     netgen = pkgs.callPackage ./netgen { inherit bonfire; };
    
     dearpygui = pkgs.callPackage ./dearpygui { inherit bonfire; };

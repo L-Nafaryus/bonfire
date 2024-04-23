@@ -3,16 +3,15 @@
     crane-lib,
     lib,
     pkgs,
-    fetchFromGitHub,
-    version ? "v0.43.0",
-    hash ? "sha256-wMtB7oWcbLQ3E0R6b2QbEHSeOYwZgeUuiwJlL8W9wlI=",
+    version ? "v0.44.0",
+    hash ? "sha256-3u2GWgDQpa4sU/66vS6S+JwCEL/fvy8MTsATRs7RGVs=",
     ...
 }:
-crane-lib.buildPackage {
+let pkg = {
     pname = "cargo-shuttle";
     inherit version;
 
-    src = fetchFromGitHub {
+    src = pkgs.fetchFromGitHub {
         owner = "shuttle-hq";
         repo = "shuttle";
         rev = version;
@@ -20,6 +19,7 @@ crane-lib.buildPackage {
     };
 
     strictDeps = true;
+    doCheck = false;
 
     nativeBuildInputs = with pkgs; [
         pkg-config
@@ -35,6 +35,9 @@ crane-lib.buildPackage {
         license = licenses.asl20;
         homepage = "https://shuttle.rs/";
         maintainers = with bonfire.lib.maintainers; [ L-Nafaryus ];
-        broken = true;
     };
-}
+};
+in let artifacts = crane-lib.buildDepsOnly pkg;
+in crane-lib.buildPackage (
+    pkg // { inherit artifacts; }
+)
