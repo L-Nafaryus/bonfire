@@ -8,15 +8,38 @@
 
     inputs = {
         nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-        home-manager = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
-        cachix = { url = "github:cachix/devenv/v0.6.3"; inputs.nixpkgs.follows = "nixpkgs"; };
-        crane = { url = "github:ipetkov/crane"; inputs.nixpkgs.follows = "nixpkgs"; };
-        nixgl = { url = "github:guibou/nixGL"; inputs.nixpkgs.follows = "nixpkgs"; };
-        simple-nixos-mailserver = { url = "gitlab:simple-nixos-mailserver/nixos-mailserver"; inputs.nixpkgs.follows = "nixpkgs"; };
-        sops-nix = { url = "github:Mic92/sops-nix"; inputs.nixpkgs.follows = "nixpkgs"; };
+        home-manager = { 
+            url = "github:nix-community/home-manager"; 
+            inputs.nixpkgs.follows = "nixpkgs"; 
+        };
+        devenv = { 
+            url = "github:cachix/devenv"; 
+            inputs.nixpkgs.follows = "nixpkgs"; 
+        };
+        nixgl = { 
+            url = "github:guibou/nixGL"; 
+            inputs.nixpkgs.follows = "nixpkgs"; 
+        };
+        nixos-mailserver = { 
+            url = "gitlab:simple-nixos-mailserver/nixos-mailserver"; 
+            inputs.nixpkgs.follows = "nixpkgs"; 
+        };
+        sops-nix = { 
+            url = "github:Mic92/sops-nix"; 
+            inputs.nixpkgs.follows = "nixpkgs"; 
+        };
+        crane = { 
+            url = "github:ipetkov/crane"; 
+            inputs.nixpkgs.follows = "nixpkgs"; 
+        };
+        fenix = { 
+            url = "github:nix-community/fenix"; 
+            inputs.nixpkgs.follows = "nixpkgs"; 
+            inputs.rust-analyzer-src.follows = ""; 
+        };
     };
 
-    outputs = inputs @ { self, nixpkgs, home-manager, crane, nixgl, simple-nixos-mailserver, sops-nix, ... }: {
+    outputs = inputs @ { self, nixpkgs, home-manager, devenv, nixgl, nixos-mailserver, sops-nix, crane, fenix, ... }: {
 
         lib = import ./lib {};
         
@@ -35,11 +58,11 @@
             catarina = with nixpkgs; lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
+                    nixos-mailserver.nixosModules.mailserver
+                    sops-nix.nixosModules.sops
                     ./nixosConfigurations/catarina
                     ./nixosModules/bonfire.nix
                     self.nixosModules.spoofdpi
-                    simple-nixos-mailserver.nixosModules.mailserver
-                    sops-nix.nixosModules.sops
                     self.nixosModules.papermc
                     self.nixosModules.qbittorrent-nox
                 ];
@@ -58,7 +81,10 @@
         };
 
         templates = {
-            rust = { path = ./templates/rust; description = "Basic Rust template"; };
+            rust = { 
+                path = ./templates/rust; 
+                description = "Basic Rust template"; 
+            };
         };
 
         packages = import ./packages { inherit self nixpkgs; };

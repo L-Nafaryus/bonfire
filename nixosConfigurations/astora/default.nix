@@ -7,7 +7,7 @@
 # Nix settings
     nix = {
         settings = {
-            experimental-features = [ "nix-command" "flakes" ];
+            experimental-features = [ "nix-command" "flakes" "repl-flake" ];
             trusted-users = [ "nafaryus" ];
             allowed-users = [ "nafaryus" ];
             substituters = [ "https://nix-community.cachix.org" ];
@@ -17,7 +17,7 @@
         gc = {
             automatic = lib.mkDefault true;
             dates = lib.mkDefault "weekly";
-            options = lib.mkDefault "--delete-older-than 14d";
+            options = lib.mkDefault "--delete-older-than 7d";
         };
     };
 
@@ -39,8 +39,10 @@
     services.xserver = {
         enable = true;
  
-        layout = "us";
-        xkbVariant = "";
+        xkb = {
+            layout = "us";
+            variant = "";
+        };
  
         videoDrivers = [ "nvidia" ];
 

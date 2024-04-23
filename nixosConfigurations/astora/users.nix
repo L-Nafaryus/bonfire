@@ -62,7 +62,7 @@
             olive-editor
             openshot-qt
             musescore
-            soundux
+            # soundux       # unmaintained
             losslesscut-bin
             yt-dlp
             ffmpeg
@@ -92,6 +92,8 @@
             self.packages.${pkgs.system}.ultimmc
 
             liberation_ttf
+
+            steamtinkerlaunch
         ];
         
         xdg.enable = true;
@@ -108,7 +110,7 @@
     programs.gnupg.agent = {
         enable = true;
         enableSSHSupport = true;
-        pinentryFlavor = "curses";
+        pinentryPackage = pkgs.pinentry-gnome3;
     };
 
     environment.variables = let 
@@ -124,6 +126,8 @@
         VST3_PATH = makePluginPath "vst3";
     };
 
+    systemd.user.extraConfig = "DefaultLimitNOFILE=524288";
+    
 # Services
     services.spoofdpi.enable = true;
 }
