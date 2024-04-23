@@ -37,7 +37,7 @@ let pkg = {
         maintainers = with bonfire.lib.maintainers; [ L-Nafaryus ];
     };
 };
-in let artifacts = crane-lib.buildDepsOnly pkg;
+in let cargoArtifacts = crane-lib.buildDepsOnly pkg;
 in crane-lib.buildPackage (
-    pkg // { inherit artifacts; }
+    pkg // { inherit cargoArtifacts; }
 )
