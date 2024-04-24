@@ -1,6 +1,7 @@
 # catarina
 
-## Partitions
+## Disk management
+
 ```sh 
 mkfs.fat -F 32 /dev/sda1
 fatlabel /dev/sda1 boot
@@ -25,7 +26,7 @@ mount -o compress=zstd,subvol=home /dev/sda2 /mnt/home
 mount -o compress=zstd,subvol=persist /dev/sda2 /mnt/persist
 mount -o noatime,subvol=swap /dev/sda2 /mnt/swap
 
-btrfs filesystem mkswapfile --size 16g --uuid clear /swap/swapfile
+btrfs filesystem mkswapfile --size 16g --uuid clear /mnt/swap/swapfile
 
 mkdir -p /media/{storage,btrbk-backups,btrbk-snapshots}
 ```

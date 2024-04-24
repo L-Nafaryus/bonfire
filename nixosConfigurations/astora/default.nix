@@ -8,8 +8,8 @@
     nix = {
         settings = {
             experimental-features = [ "nix-command" "flakes" "repl-flake" ];
-            trusted-users = [ "nafaryus" ];
-            allowed-users = [ "nafaryus" ];
+            trusted-users = [ "l-nafaryus" ];
+            allowed-users = [ "l-nafaryus" ];
             substituters = [ "https://nix-community.cachix.org" ];
             trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
             auto-optimise-store = true;
@@ -83,10 +83,17 @@
 
     services.blueman.enable = true;
 
+    services.btrfs.autoScrub = {
+        enable = true;
+        interval = "monthly";
+        fileSystems = [ "/" ];
+    };
+
 # Packages
     environment.systemPackages = with pkgs; [
         wget
 
+        parted
         ntfs3g
         sshfs
         exfat
@@ -129,7 +136,7 @@
         Host astora
             HostName 192.168.156.101
             Port 22
-            User nafaryus 
+            User l-nafaryus 
 
         Host catarina
             HostName 192.168.156.102

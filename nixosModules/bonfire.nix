@@ -4,9 +4,19 @@ let cfg = config.bonfire;
 in {
     options= {
         bonfire = {
-            enable = mkOption { type = types.bool; default = false; };
-            home = mkOption { type = types.path; default = ../.; };
-            configDir = mkOption { type = types.path; default = "${config.bonfire.home}/config"; };
+            enable = mkEnableOption "Enables the Bonfire module";
+
+            home = mkOption { 
+                type = types.path; 
+                default = ../.;
+                description = "Bonfire root flake directory";
+            };
+            
+            configDir = mkOption { 
+                type = types.path; 
+                default = "${config.bonfire.home}/config"; 
+                description = "Path to directory with static configuration files";
+            };
         };
     };
 

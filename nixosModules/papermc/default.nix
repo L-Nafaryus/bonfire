@@ -52,7 +52,7 @@ in {
     options.services.papermc = {
         enable = mkEnableOption "Enables the PaperMC service.";
         
-        openFirewall = mkOption rec {
+        openFirewall = mkOption {
             type = types.bool;
             default = false;
             description = lib.mdDoc ''

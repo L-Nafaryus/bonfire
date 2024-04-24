@@ -1,8 +1,11 @@
 { crane-lib, pkgs, ... }:
 crane-lib.devShell {
     packages = with pkgs; [
-        # nil
+        nil
         jq
         cachix
+        nodejs
+        python3
+        marksman
     ];
 }

@@ -1,7 +1,7 @@
 { config, pkgs, lib, inputs, self, ... }:
 {
 # Users
-    users.users.nafaryus = {
+    users.users.l-nafaryus = {
         isNormalUser = true;
         description = "L-Nafaryus";
         extraGroups = [ "networkmanager" "wheel" "audio" ];
@@ -16,10 +16,10 @@
 
     bonfire.enable = true;
 
-    home-manager.users.nafaryus = { pkgs, ... }: {
+    home-manager.users.l-nafaryus = { pkgs, ... }: {
         home.stateVersion = "23.11";
-        home.username = "nafaryus";
-        home.homeDirectory = "/home/nafaryus";
+        home.username = "l-nafaryus";
+        home.homeDirectory = "/home/l-nafaryus";
         home.packages = with pkgs; [
             gnupg
             git
@@ -62,7 +62,7 @@
             olive-editor
             openshot-qt
             musescore
-            # soundux       # unmaintained
+            # soundux                       # unmaintained
             losslesscut-bin
             yt-dlp
             ffmpeg
@@ -86,8 +86,6 @@
 
             onlyoffice-bin
 
-            anydesk
-
             jdk
             self.packages.${pkgs.system}.ultimmc
 
@@ -96,15 +94,24 @@
             steamtinkerlaunch
         ];
         
-        xdg.enable = true;
-        xdg.mime.enable = true;
+        xdg = {
+            enable = true;
+            mime.enable = true;
+        };
 
-        home.file.".config/gnupg/gpg-agent.conf".text = ''
-            default-cache-ttl 3600
-            pinentry-program ${pkgs.pinentry.gtk2}/bin/pinentry
-        '';
-        home.file.".config/git/config".source = "${config.bonfire.configDir}/git/config";
-        home.file.".config/nvim" = { source = "${config.bonfire.configDir}/nvim"; recursive = true; };
+        home.file = {
+            ".config/gnupg/gpg-agent.conf".text = ''
+                default-cache-ttl 3600
+                pinentry-program ${pkgs.pinentry.gtk2}/bin/pinentry
+            '';
+
+            ".config/git/config".source = "${config.bonfire.configDir}/git/config";
+            
+            ".config/nvim" = { 
+                source = "${config.bonfire.configDir}/nvim"; 
+                recursive = true; 
+            };
+        };
     };
 
     programs.gnupg.agent = {

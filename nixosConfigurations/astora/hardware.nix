@@ -82,27 +82,50 @@
 # Filesystem
     fileSystems = {
         "/" = { 
-            device = "/dev/disk/by-uuid/77e1fc4b-31af-46e8-8b9c-907e4113b31b";
-            fsType = "ext4";
+            device = "/dev/disk/by-label/nixos";
+            fsType = "btrfs";
+            options = [ "subvol=root" "compress=zstd" ];
         };
 
         "/boot" = { 
-            device = "/dev/disk/by-uuid/92C6-2268";
+            device = "/dev/disk/by-label/boot";
             fsType = "vfat";
         };
 
-        "/mnt/ext" = { 
-            device = "/dev/disk/by-uuid/4b47d83c-42da-4e78-b279-7726dfbdfde7";
-            fsType = "ext4";
+        "/nix" = { 
+            device = "/dev/disk/by-label/nixos";
+            fsType = "btrfs";
+            options = [ "subvol=nix" "compress=zstd" "noatime" ];
         };
 
-        "/mnt/ext2" = {
-            device = "/dev/disk/by-uuid/8f8f6576-5608-4474-acb5-409c59dff696";
-            fsType = "ext4";
+        "/home" = { 
+            device = "/dev/disk/by-label/nixos";
+            fsType = "btrfs";
+            options = [ "subvol=home" "compress=zstd" ];
+        };
+
+        "/swap" = { 
+            device = "/dev/disk/by-label/nixos";
+            fsType = "btrfs";
+            options = [ "subvol=swap" "noatime" ];
+        };
+
+        "/media/steam-library" = { 
+            device = "/dev/disk/by-label/siegward";
+            fsType = "btrfs";
+            options = [ "subvol=steam-library" "compress=zstd" ];
+        };
+
+        "/media/lutris" = { 
+            device = "/dev/disk/by-label/siegward";
+            fsType = "btrfs";
+            options = [ "subvol=lutris" "compress=zstd" ];
         };
     };
 
-    swapDevices = [ ];
+    swapDevices = [ 
+        { device = "/swap/swapfile"; }
+    ];
 
     services.fstrim.enable = true;
 
