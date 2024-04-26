@@ -150,6 +150,7 @@
 
     networking = {
         networkmanager.enable = true;
+        networkmanager.unmanaged = [ "interface-name:ve-*" ];
         useDHCP = lib.mkDefault true;
         hostName = "astora";
         extraHosts = '''';
@@ -157,6 +158,19 @@
         firewall = {
             enable = true;
             allowedTCPPorts = [ 80 443 ];
+            trustedInterfaces = [ "ve-+" ];
+            extraCommands = ''
+                iptables -t nat -A POSTROUTING -o wlo1 -j MASQUERADE
+            '';
+            extraStopCommands = ''
+                iptables -t nat -D POSTROUTING -o wlo1 -j MASQUERADE
+            '';
+        };
+
+        nat = {
+            enable = true;
+            externalInterface = "wlo1";
+            internalInterfaces = [ "ve-+" ];
         };
 
         interfaces.wlo1.ipv4.addresses = [ {
