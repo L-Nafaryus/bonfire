@@ -2,18 +2,14 @@
     description = "Derivation lit";
 
     nixConfig = {
-        extra-substituters = ["https://bonfire.cachix.org"];
-        extra-trusted-public-keys = ["bonfire.cachix.org-1:mzAGBy/Crdf8NhKail5ciK7ZrGRbPJJobW6TwFb7WYM="];
+        extra-substituters = [ "https://bonfire.cachix.org" ];
+        extra-trusted-public-keys = [ "bonfire.cachix.org-1:mzAGBy/Crdf8NhKail5ciK7ZrGRbPJJobW6TwFb7WYM=" ];
     };
 
     inputs = {
         nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
         home-manager = { 
             url = "github:nix-community/home-manager"; 
-            inputs.nixpkgs.follows = "nixpkgs"; 
-        };
-        devenv = { 
-            url = "github:cachix/devenv"; 
             inputs.nixpkgs.follows = "nixpkgs"; 
         };
         nixgl = { 
@@ -37,9 +33,13 @@
             inputs.nixpkgs.follows = "nixpkgs"; 
             inputs.rust-analyzer-src.follows = ""; 
         };
+        oscuro = {
+            url = "github:L-Nafaryus/oscuro";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
 
-    outputs = inputs @ { self, nixpkgs, home-manager, devenv, nixgl, nixos-mailserver, sops-nix, crane, fenix, ... }: {
+    outputs = inputs @ { self, nixpkgs, home-manager, nixgl, nixos-mailserver, sops-nix, crane, fenix, oscuro, ... }: {
 
         lib = import ./lib {};
         
@@ -60,6 +60,7 @@
                 modules = [
                     nixos-mailserver.nixosModules.mailserver
                     sops-nix.nixosModules.sops
+                    oscuro.nixosModules.oscuro
                     ./nixosConfigurations/catarina
                     ./nixosModules/bonfire.nix
                     self.nixosModules.spoofdpi

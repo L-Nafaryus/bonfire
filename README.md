@@ -17,6 +17,33 @@
 > it's a more than just a dotfiles in cause of packages, modules, templates and 
 > etc. Discover the current repository on your own risk.
 
+# Hints 
+
+* Update and push inputs:
+```sh 
+nix flake update 
+nix flake archive --json \
+    | jq -r '.path,(.inputs|to_entries[].value.path)' \
+    | cachix push bonfire
+```
+
+* Build and push package:
+```sh 
+nix build --json .#package \
+    | jq -r '.[].outputs | to_entries[].value' \
+    | cachix push bonfire 
+```
+
+* Rebuild system with git submodules:
+```sh 
+nixos-rebuild switch --flake ".?submodules=1#astora"
+```
+
+* Rebuild remote system from local system with git submodules:
+```sh 
+nixos-rebuild switch --flake ".?submodules=1#catarina" --build-host l-nafaryus@astora --target-host l.nafaryus@catarina --use-remote-sudo
+```
+
 # License
 
 
