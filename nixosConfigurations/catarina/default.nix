@@ -1,5 +1,5 @@
 { config, pkgs, lib, inputs, self, ... }:
-rec {
+{
     system.stateVersion = "23.11";
 
     imports = [ 
@@ -12,8 +12,8 @@ rec {
     nix = {
         settings = {
             experimental-features = [ "nix-command" "flakes" ];
-            trusted-users = [ "l.nafaryus" ];
-            allowed-users = [ "l.nafaryus" ];
+            trusted-users = [ "l-nafaryus" ];
+            allowed-users = [ "l-nafaryus" ];
             substituters = [ "https://nix-community.cachix.org" ];
             trusted-public-keys = [ 
                 "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" 
@@ -38,23 +38,6 @@ rec {
     };
 
 # Services
-    services.xserver = {
-        enable = true;
- 
-        xkb = {
-            layout = "us";
-            variant = "";
-        };
- 
-        videoDrivers = [ "nvidia" ];
-
-        displayManager.gdm = {
-            enable = false;
-            autoSuspend = false;
-        };
-        desktopManager.gnome.enable = false;
-    };
-
     services.printing.enable = true;
 
     services.pipewire = {
@@ -204,6 +187,11 @@ rec {
         };
     };
 
+    services.oscuro = {
+        enable = true;
+        discordTokenFile = config.sops.secrets.discordToken.path;
+    };
+
 # Packages
     environment.systemPackages = with pkgs; [
         wget
@@ -255,16 +243,13 @@ rec {
         Host astora
             HostName 192.168.156.101
             Port 22
-            User nafaryus 
+            User l-nafaryus 
 
         Host catarina
             HostName 192.168.156.102
             Port 22
-            User l.nafaryus
+            User l-nafaryus
     '';
 
     programs.direnv.enable = true;
-
-    fonts.packages = with pkgs; [ nerdfonts ];
-
 }

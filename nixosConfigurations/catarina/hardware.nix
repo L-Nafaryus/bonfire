@@ -119,12 +119,6 @@
 
         cpu.intel.updateMicrocode = true;
 
-        nvidia.nvidiaSettings = true;
-        nvidia.modesetting.enable = true;
-        
-        opengl.enable = true;
-        opengl.driSupport32Bit = true;
-
         bluetooth.enable = true;
 
         pulseaudio.enable = false;
