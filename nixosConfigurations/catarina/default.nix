@@ -1,9 +1,11 @@
-{ config, pkgs, lib, inputs, self, ... }:
-{
+{ config, pkgs, lib, self, ... }:
+let bonfire-pkgs = self.packages.${pkgs.system};
+in {
     system.stateVersion = "23.11";
 
     imports = [ 
-        ./hardware.nix ./users.nix 
+        ./hardware.nix 
+        ./users.nix 
         ./services/papermc.nix
         ./services/gitea.nix
     ];
@@ -33,7 +35,7 @@
         config.allowUnfree = true;
         config.cudaSupport = false;
         config.packageOverrides = super: {
-            lego = self.packages.${pkgs.system}.lego; 
+            lego = bonfire-pkgs.lego; 
         };
     };
 
@@ -190,6 +192,15 @@
     services.oscuro = {
         enable = true;
         discordTokenFile = config.sops.secrets.discordToken.path;
+    };
+
+    virtualisation = {
+        containers.enable = true;
+        podman = {
+            enable = true;
+            dockerCompat = true;
+            defaultNetwork.settings.dns_enabled = true;
+        };
     };
 
 # Packages

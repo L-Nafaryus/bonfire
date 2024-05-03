@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, ... }:
 {
     services.postgresql = {
         enable = true;
@@ -86,4 +86,22 @@
         useACMEHost = "elnafo.ru";
         locations."/".proxyPass = "http://127.0.0.1:3001";
     };
+
+    services.gitea-actions-runner = {
+        instances = {
+            master = {
+                enable = true;
+                name = "master";
+                url = config.services.gitea.settings.server.ROOT_URL;
+                tokenFile = config.sops.secrets."gitea-runner/master-token".path;
+                labels = [
+                    "ubuntu-latest:docker://gitea/runner-images:ubuntu-latest"
+                    "nix-minimal:docker://vcs.elnafo.ru/l-nafaryus/nix-minimal:latest"
+                    "nix-runner:docker://vcs.elnafo.ru/l-nafaryus/nix-runner:latest"
+                ];
+                settings.container.network = "host";
+            };
+        };
+    };
+
 }

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ pkgs, lib, ... }:
 {
     system.stateVersion = "23.11";
 
@@ -31,7 +31,6 @@
             (final: prev: {
                 blender = prev.blender.override { cudaSupport = true; };
             })
-            inputs.nixgl.overlay
         ];
     };
 
@@ -150,4 +149,13 @@
 
     programs.steam.enable = true;
     systemd.extraConfig = "DefaultLimitNOFILE=1048576";
+
+    virtualisation = {
+        containers.enable = true;
+        podman = {
+            enable = true;
+            dockerCompat = true;
+            defaultNetwork.settings.dns_enabled = true;
+        };
+    };
 }

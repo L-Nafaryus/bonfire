@@ -12,10 +12,6 @@
             url = "github:nix-community/home-manager"; 
             inputs.nixpkgs.follows = "nixpkgs"; 
         };
-        nixgl = { 
-            url = "github:guibou/nixGL"; 
-            inputs.nixpkgs.follows = "nixpkgs"; 
-        };
         nixos-mailserver = { 
             url = "gitlab:simple-nixos-mailserver/nixos-mailserver"; 
             inputs.nixpkgs.follows = "nixpkgs"; 
@@ -35,16 +31,15 @@
         };
         oscuro = {
             url = "github:L-Nafaryus/oscuro";
-            inputs.nixpkgs.follows = "nixpkgs";
         };
     };
 
-    outputs = inputs @ { self, nixpkgs, home-manager, nixgl, nixos-mailserver, sops-nix, crane, fenix, oscuro, ... }: {
+    outputs = { self, nixpkgs, home-manager, nixos-mailserver, sops-nix, crane, fenix, oscuro, ... }: {
 
         lib = import ./lib {};
         
         nixosConfigurations = {
-            astora = with nixpkgs; lib.nixosSystem {
+            astora = nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
                     home-manager.nixosModules.home-manager
@@ -52,10 +47,10 @@
                     ./nixosModules/bonfire.nix
                     self.nixosModules.spoofdpi
                 ];
-                specialArgs = { inherit inputs self; };
+                specialArgs = { inherit self; };
             };
 
-            catarina = with nixpkgs; lib.nixosSystem {
+            catarina = nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 modules = [
                     nixos-mailserver.nixosModules.mailserver
@@ -67,7 +62,7 @@
                     self.nixosModules.papermc
                     self.nixosModules.qbittorrent-nox
                 ];
-                specialArgs = { inherit inputs self; };
+                specialArgs = { inherit self; };
             };
         };
 
