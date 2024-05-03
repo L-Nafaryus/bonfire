@@ -10,8 +10,8 @@ in forAllSystems(system:
         pkgs = nixpkgsFor.${system}; 
 
         bonfire = self;
-        bonfire-lib = self.lib;
-        bonfire-pkgs = self.packages.${system};
+        bonlib = self.lib;
+        bonpkgs = self.packages.${system};
 
         crane = self.inputs.crane;
         crane-lib = self.inputs.crane.lib.${system};
@@ -32,4 +32,8 @@ in forAllSystems(system:
     ultimmc = pkgs.libsForQt5.callPackage ./ultimmc { inherit bonfire; };
 
     cargo-shuttle = pkgs.callPackage ./cargo-shuttle { inherit bonfire crane-lib; };
+
+    nix-minimal = pkgs.callPackage ./nix-minimal { inherit bonpkgs bonlib; };
+
+    nix-runner = pkgs.callPackage ./nix-runner { inherit bonpkgs bonlib; };
 })
