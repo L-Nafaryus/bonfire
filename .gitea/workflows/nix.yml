@@ -1,0 +1,17 @@
+name: nix-check
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: nix-runner
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: "${{ secrets.REPO_PAT }}"
+      - run: |
+          nix flake check
