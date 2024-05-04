@@ -1,4 +1,4 @@
-name: nix-check
+name: nix
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build:
+  check:
     runs-on: nix-runner
     steps:
       - uses: actions/checkout@v4
@@ -14,4 +14,4 @@ jobs:
           submodules: true
           token: "${{ secrets.REPO_PAT }}"
       - run: |
-          nix flake check
+          nix flake check ".?submodules=1"
