@@ -44,7 +44,7 @@
                 modules = [
                     home-manager.nixosModules.home-manager
                     ./nixosConfigurations/astora
-                    ./nixosModules/bonfire.nix
+                    self.nixosModules.bonfire
                     self.nixosModules.spoofdpi
                 ];
                 specialArgs = { inherit self; };
@@ -57,7 +57,7 @@
                     sops-nix.nixosModules.sops
                     oscuro.nixosModules.oscuro
                     ./nixosConfigurations/catarina
-                    ./nixosModules/bonfire.nix
+                    self.nixosModules.bonfire
                     self.nixosModules.spoofdpi
                     self.nixosModules.papermc
                     self.nixosModules.qbittorrent-nox
@@ -67,7 +67,7 @@
         };
 
         nixosModules = {
-            bonfire = import ./nixosModules/bonfire.nix;
+            bonfire = import ./nixosModules/bonfire { inherit self; };
 
             spoofdpi = import ./nixosModules/spoofdpi { inherit self; };
 

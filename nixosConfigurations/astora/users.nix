@@ -14,8 +14,6 @@
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
 
-    bonfire.enable = true;
-
     home-manager.users.l-nafaryus = { pkgs, ... }: {
         home.stateVersion = "23.11";
         home.username = "l-nafaryus";

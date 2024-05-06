@@ -73,11 +73,8 @@ in {
         };
     };
 
-    sops = {
-        defaultSopsFile = ../../.secrets/secrets.yaml;
-        age.keyFile = "/var/lib/secrets/sops-nix/catarina.txt";
-        secrets = import ../../.secrets/sops-secrets.nix;
-    };
+    bonfire.withSecrets = true;
+    sops = config.bonfire.secrets.catarina.sops;
 
     security.acme = {
         acceptTerms = true;
@@ -138,7 +135,7 @@ in {
         openFirewall = true;
         localDnsResolver = true;
         
-        loginAccounts = import ../../.secrets/mail-recipients.nix { inherit config; };
+        loginAccounts = config.bonfire.secrets.catarina.mailAccounts;
     };
 
     services.jellyfin = {
