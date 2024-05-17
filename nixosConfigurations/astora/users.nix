@@ -4,7 +4,7 @@
     users.users.l-nafaryus = {
         isNormalUser = true;
         description = "L-Nafaryus";
-        extraGroups = [ "networkmanager" "wheel" "audio" ];
+        extraGroups = [ "networkmanager" "wheel" "audio" "libvirtd" ];
         group = "users";
         uid = 1000;
         initialPassword = "nixos";
@@ -90,11 +90,20 @@
             liberation_ttf
 
             steamtinkerlaunch
+
+
         ];
         
         xdg = {
             enable = true;
             mime.enable = true;
+        };
+
+        dconf.settings = {
+            "org/virt-manager/virt-manager/connections" = {
+                autoconnect = [ "qemu:///system" ];
+                uris = [ "qemu:///system" ];
+            };
         };
 
         home.file = {
@@ -132,6 +141,10 @@
     };
 
     systemd.user.extraConfig = "DefaultLimitNOFILE=524288";
+
+    programs.virt-manager.enable = true;
+
+
     
 # Services
     services.spoofdpi.enable = true;
