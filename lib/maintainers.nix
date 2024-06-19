@@ -1,8 +1,8 @@
 {
     L-Nafaryus = { 
-        email = "l.nafaryus@gmail.com"; 
+        email = "l.nafaryus@elnafo.ru"; 
         github = "L-Nafaryus"; 
         githubId = 37117584;
-        name = "George Kusayko"; 
+        name = "L-Nafaryus"; 
     };
 }

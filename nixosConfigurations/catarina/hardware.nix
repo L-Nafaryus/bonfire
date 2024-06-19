@@ -137,7 +137,7 @@
             allowedTCPPorts = [ 80 443 3001 25600 8080 8085 ];
         };
 	
-        interfaces.wlp8s0 = {
+        interfaces.enp9s0 = {
             useDHCP = false;
             ipv4.addresses = [ { 
                 address = "192.168.156.102";
@@ -145,21 +145,8 @@
             } ];
         };
 
-        defaultGateway = {
-            address = "192.168.156.1";
-            interface = null;
-            metric = null;
-        };
+        defaultGateway = "192.168.156.1";
         nameservers = [ "192.168.156.1" "8.8.8.8" ];
-    };
-
-    services.resolved = { 
-        enable = false; 
-    	dnssec = "true";
-        extraConfig = ''
-            DNSOverTLS=yes
-        '';
-        fallbackDns = [ "8.8.8.8" ];
     };
 
     services.logind.lidSwitchExternalPower = "ignore";

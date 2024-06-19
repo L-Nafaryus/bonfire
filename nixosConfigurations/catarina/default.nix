@@ -34,6 +34,7 @@ in {
         hostPlatform = lib.mkDefault "x86_64-linux";
         config.allowUnfree = true;
         config.cudaSupport = false;
+
         config.packageOverrides = super: {
             lego = bonfire-pkgs.lego; 
         };
@@ -138,11 +139,6 @@ in {
         loginAccounts = config.bonfire.secrets.catarina.mailAccounts;
     };
 
-    services.jellyfin = {
-        enable = false;
-        openFirewall = true;
-    };
-
     services.spoofdpi.enable = true;
 
     services.btrfs.autoScrub = {
@@ -193,6 +189,7 @@ in {
 
     virtualisation = {
         containers.enable = true;
+
         podman = {
             enable = true;
             dockerCompat = true;

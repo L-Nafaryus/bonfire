@@ -29,14 +29,19 @@
             inputs.nixpkgs.follows = "nixpkgs"; 
             inputs.rust-analyzer-src.follows = ""; 
         };
+        catppuccin = {
+            url = "github:catppuccin/nix";
+        };
         oscuro = {
             url = "github:L-Nafaryus/oscuro";
         };
     };
 
-    outputs = { self, nixpkgs, home-manager, nixos-mailserver, sops-nix, crane, fenix, oscuro, ... }: {
-
-        lib = import ./lib {};
+    outputs = { self, nixpkgs, home-manager, nixos-mailserver, sops-nix, crane, fenix, catppuccin, oscuro, ... } @ inputs: 
+    let 
+        lib = import ./lib { inherit (nixpkgs) lib; };
+    in {
+        inherit lib;
         
         nixosConfigurations = {
             astora = nixpkgs.lib.nixosSystem {
@@ -46,8 +51,9 @@
                     ./nixosConfigurations/astora
                     self.nixosModules.bonfire
                     self.nixosModules.spoofdpi
+                    (import ./nixosModules { lib = nixpkgs.lib; self = self; }).configModule
                 ];
-                specialArgs = { inherit self; };
+                specialArgs = { inherit self inputs; };
             };
 
             catarina = nixpkgs.lib.nixosSystem {
@@ -61,20 +67,13 @@
                     self.nixosModules.spoofdpi
                     self.nixosModules.papermc
                     self.nixosModules.qbittorrent-nox
+                    (import ./nixosModules { lib = nixpkgs.lib; self = self; }).configModule
                 ];
                 specialArgs = { inherit self; };
             };
         };
 
-        nixosModules = {
-            bonfire = import ./nixosModules/bonfire { inherit self; };
-
-            spoofdpi = import ./nixosModules/spoofdpi { inherit self; };
-
-            papermc = import ./nixosModules/papermc { inherit self; };
-
-            qbittorrent-nox = import ./nixosModules/qbittorrent-nox { inherit self; };
-        };
+        nixosModules = lib.importNamedModules (import ./nixosModules { lib = nixpkgs.lib; self = self; }).modules;
 
         templates = {
             rust = { 

@@ -1,13 +1,12 @@
-{ self, ... }:
 { config, lib, ... }:
 with lib; 
 let cfg = config.bonfire;
 in {
-    options= {
+    options = {
         bonfire = {
             home = mkOption { 
                 type = types.path; 
-                default = ../../.;
+                default = ../../../.;
                 description = "Bonfire root directory";
             };
             
@@ -25,6 +24,7 @@ in {
 
             secrets = mkOption {
                 type = types.attrs;
+                description = "Secrets will be here after evaluation";
                 default = {};
             };
         };

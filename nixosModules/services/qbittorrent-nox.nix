@@ -1,61 +1,61 @@
-{ self, ... }:
 { config, lib, pkgs, ... }:
 with lib;
 let 
     cfg = config.services.qbittorrent-nox;
 in {
     options.services.qbittorrent-nox = {
-        enable = mkEnableOption "Enables the qbittorrent-nox services";
+        enable = mkEnableOption "Enables the qbittorrent-nox services.";
 
         port = mkOption rec {
             type = types.int;
             default = 6969;
             example = default;
-            description = "Torrenting port";
+            description = "Torrenting port.";
         };
 
         webuiPort = mkOption rec {
             type = types.port;
             default = 8080;
             example = default;
-            description = "WebUI port";
+            description = "WebUI port.";
         };
 
         dataDir = mkOption rec {
             type = types.path;
             default = "/var/lib/qbittorrent-nox";
             example = default;
-            description = "Directory to store qbittorrent-nox data files";
+            description = "Directory to store qbittorrent-nox data files.";
         };
 
         user = mkOption {
             type = types.str;
             default = "qbittorrent-nox";
-            description = lib.mdDoc "User account under which qbittorrent-nox runs.";
+            description = "User account under which qbittorrent-nox runs.";
         };
 
         group = mkOption {
             type = types.str;
             default = "qbittorrent-nox";
-            description = lib.mdDoc "Group under which qbittorrent-nox runs.";
+            description = "Group under which qbittorrent-nox runs.";
         };
 
         openFirewall = mkOption {
             type = types.bool;
             default = false;
-            description = "Open services.qbittorrent-nox.port";
+            description = "Open `services.qbittorrent-nox.port`.";
         };
 
         package = mkOption {
             type = types.package;
             default = pkgs.qbittorrent-nox;
-            description = "The qbittorrent package to use";
+            defaultText = literalExpression "pkgs.qbittorrent-nox";
+            description = "The qbittorrent package to use.";
         };
     };
 
     config = mkIf cfg.enable {
         users.users.qbittorrent-nox = {
-            description = "qbittorrent-nox service user";
+            description = "qbittorrent-nox service user.";
             home = cfg.dataDir;
             createHome = true;
             isSystemUser = true;

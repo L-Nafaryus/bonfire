@@ -1,4 +1,3 @@
-{ self, ... }:
 { config, lib, pkgs, ... }:
 with lib; 
 let 
@@ -12,7 +11,7 @@ let
     whitelistFile = pkgs.writeText "whitelist.json"
         (builtins.toJSON cfg.whitelist);
 
-    opsFile = pkgs.writeText "whitelist.json"
+    opsFile = pkgs.writeText "ops.json"
         (builtins.toJSON cfg.ops);
 
     cfgToString = v: if builtins.isBool v then boolToString v else toString v;
@@ -50,12 +49,12 @@ let
 
 in {
     options.services.papermc = {
-        enable = mkEnableOption "Enables the PaperMC service.";
+        enable = mkEnableOption "PaperMC service";
         
         openFirewall = mkOption {
             type = types.bool;
             default = false;
-            description = lib.mdDoc ''
+            description = ''
                 Whether to open ports in the firewall for the server.
             '';
         };
@@ -63,7 +62,7 @@ in {
         eula = mkOption {
             type = types.bool;
             default = false;
-            description = lib.mdDoc ''
+            description = ''
                 Whether you agree to [Mojangs EULA](https://account.mojang.com/documents/minecraft_eula). 
                 This option must be set to `true` to run Minecraft server.
             '';
@@ -72,7 +71,7 @@ in {
         dataDir = mkOption {
             type = types.path;
             default = "/var/lib/papermc";
-            description = lib.mdDoc ''
+            description = ''
                 Directory to store Minecraft database and other state/data files.
             '';
         };
@@ -80,14 +79,15 @@ in {
         whitelist = mkOption {
             type = types.listOf types.attrs;
             default = {};
-            description = lib.mdDoc ''
+            description = ''
                 This is a mapping from Minecraft usernames to UUIDs.
             '';
         };
 
         ops = mkOption {
             type = types.listOf types.attrs;
-            default = {};
+            description = "Whitelist with players / operators.";
+            default = [];
         };
 
         serverProperties = mkOption {
@@ -107,7 +107,7 @@ in {
                     "rcon.password" = "hunter2";
                 }
             '';
-            description = lib.mdDoc ''
+            description = ''
                 Minecraft server properties for the server.properties file. See
                 <https://minecraft.gamepedia.com/Server.properties#Java_Edition_3>
                 for documentation on these values.
@@ -117,12 +117,11 @@ in {
         rconPasswordFile = mkOption {
             type = types.nullOr types.str;
             default = null;
+            description = "Path to file with rcon password.";
             example = "/var/lib/secrets/papermc/rconpw";
         };
 
-        package = mkPackageOption pkgs "papermc" {
-            example = "papermc_6_6_6";
-        };
+        package = mkPackageOption pkgs "papermc" {};
 
         jvmOpts = mkOption {
             type = types.separatedString " ";
@@ -131,18 +130,19 @@ in {
             example = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:+CMSIncrementalPacing "
                 + "-XX:+CMSClassUnloadingEnabled -XX:ParallelGCThreads=2 "
                 + "-XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
-            description = lib.mdDoc "JVM options for the Minecraft server.";
+            description = "JVM options for the Minecraft server.";
         };
 
         extraPreStart = mkOption {
             type = types.lines;
+            description = "Extra shell commands for service pre-start hook.";
             default = '''';
         }; 
     };
 
     config = mkIf cfg.enable {
         users.users.papermc = {
-            description     = "Minecraft server service user";
+            description     = "Minecraft server service user.";
             home            = cfg.dataDir;
             createHome      = true;
             isSystemUser    = true;

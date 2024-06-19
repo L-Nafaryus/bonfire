@@ -1,0 +1,16 @@
+[book]
+title = "bonfire"
+authors = ["L-Nafaryus"]
+description = "Bonfire"
+language = "en"
+multilingual = false
+src = "src"
+
+[output.html]
+default-theme = "macchiato"
+preferred-dark-theme = "macchiato"
+additional-css = ["./theme/catppuccin.css"]
+no-section-label = true
+git-repository-url = "https://github.com/L-Nafaryus/bonfire"
+git-repository-icon = "fa-github"
+cname = "elnafo.ru"

@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 {
     system.stateVersion = "23.11";
 
@@ -45,15 +45,53 @@
  
         videoDrivers = [ "nvidia" ];
 
-        displayManager.gdm = {
-            enable = true;
-            autoSuspend = false;
-        };
-        desktopManager.gnome.enable = true;
-        windowManager.awesome.enable = true;
+        #displayManager.gdm = {
+        #    enable = true;
+        #    autoSuspend = false;
+        #    wayland = true;
+        #};
+        #desktopManager.gnome.enable = true;
+        #windowManager.awesome.enable = true;
 
         wacom.enable = true;
     };
+
+    services.greetd = let 
+        hyprConfig = pkgs.writeText "greetd-hyprland-config" ''
+            exec-once = ${lib.getExe pkgs.greetd.regreet}; hyprctl dispatch exit
+        ''; 
+    in {
+        enable = true;
+        settings = {
+            default_session = {
+                command = "${lib.getExe config.programs.hyprland.package} --config ${hyprConfig}";
+                user = "greeter";
+            };
+        };
+    };
+
+    programs.regreet = {
+        enable = true;
+        settings = {
+            GTK = {
+                application_prefer_dark_theme = true;
+                # TODO: provide gtk themes
+                # theme_name = "Catppuccin-Macchiato-Standard-Green-Dark";
+                # icon_theme_name = "Catppuccin-Macchiato-Green-Cursors";
+                # cursor_theme_name = "Papirus-Dark";
+                # font_name = "";
+            };
+            appearance = {
+                greeting_msg = "Hey, you. You're finally awake.";
+            };
+        };
+    };
+
+    programs.hyprland = {
+        enable = true;
+        xwayland.enable = true;
+    };
+    services.dbus.enable = true;
 
     services.printing.enable = true;
 

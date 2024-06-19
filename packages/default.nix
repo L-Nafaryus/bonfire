@@ -14,11 +14,13 @@ in forAllSystems(system:
         bonpkgs = self.packages.${system};
 
         crane = self.inputs.crane;
-        crane-lib = self.inputs.crane.lib.${system};
+        crane-lib = self.inputs.crane.mkLib pkgs;
 
         fenix = self.inputs.fenix;
     in {
     
+    bonfire-docs = pkgs.callPackage ./bonfire-docs { inherit bonfire; };
+
     netgen = pkgs.callPackage ./netgen { inherit bonfire; };
    
     dearpygui = pkgs.callPackage ./dearpygui { inherit bonfire; };
@@ -37,3 +39,4 @@ in forAllSystems(system:
 
     nix-runner = pkgs.callPackage ./nix-runner { inherit bonpkgs bonlib; };
 })
+# map (ps: (map (p: { name = p; systems = [ ps.${p}.system ]; type = if ps.${p}?imageTag then "image" else "package"; }) (builtins.attrNames ps))) (map (s: bf.packages.${s}) (builtins.attrNames bf.packages))
