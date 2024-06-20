@@ -117,11 +117,10 @@ in {
                 globalRedirect = "elnafo.ru";
             };
 
-            "media.elnafo.ru" = {
+            "bonfire.elnafo.ru" = {
                 forceSSL = true;
                 useACMEHost = "elnafo.ru";
-                http2 = true;
-                locations."/".proxyPass = "http://127.0.0.1:8096";
+                locations."/".root = "${bonfire-pkgs.bonfire-docs}";
             };
         };
     };

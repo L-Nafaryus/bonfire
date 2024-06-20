@@ -12,7 +12,7 @@ let
     links = [
         { 
             hostname = "vcs-elnafo"; 
-            url = "https://vcs.elnafo.ru/L-Nafaryus/bonfire/blob/master";
+            url = "https://vcs.elnafo.ru/L-Nafaryus/bonfire/src/branch/master";
         }
         {
             hostname = "github";
@@ -31,7 +31,7 @@ let
             # skip external declarations 
             lib.singleton declaration;
 
-    nixosModules = (import modulesPath { inherit lib; check = false; });
+    nixosModules = (import modulesPath { inherit lib; self = bonfire; check = false; });
 
     evaluatedModules = lib.evalModules {
         modules = nixosModules.modules ++ [ nixosModules.configModule ];

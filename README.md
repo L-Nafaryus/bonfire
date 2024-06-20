@@ -7,45 +7,21 @@
 <p align="center">
   <img src="https://img.shields.io/badge/nix%20flake-gray.svg?logo=nixos" alt="nix-flake"/>
   <a href="https://bonfire.cachix.org"><img src="https://img.shields.io/badge/cachix-bonfire-orange.svg" alt="bonfire-cachix" /></a>
+  <a href="https://vcs.elnafo.ru/L-Nafaryus/bonfire/actions?workflow=nix.yml"><img src="https://vcs.elnafo.ru/L-Nafaryus/bonfire/actions/workflows/nix.yml/badge.svg?branch=master&event=push" alt="nix-check" /></a>
 </p>
 
 <p align="center">
     <strong><em>Lit another Nix derivation</em></strong>
 </p>
 
-> This is a private configuration and experiment with Nix and NixOS. Formally 
-> it's a more than just a dotfiles in cause of packages, modules, templates and 
-> etc. Discover the current repository on your own risk.
+Bonfire is a slowly snowballing Nix flake with a collection of packages, NixOS modules and other cool things. 
+Of course it contains personal NixOS configurations that use all of these stuff. 
 
-# Hints 
+The main goal of this project is to keep the structure as simple as possible but use the power of Nix language on maximum (a huge field of experiments, huh?). 
 
-* Update and push inputs:
-```sh 
-nix flake update 
-nix flake archive --json \
-    | jq -r '.path,(.inputs|to_entries[].value.path)' \
-    | cachix push bonfire
-```
-
-* Build and push package:
-```sh 
-nix build --json .#package \
-    | jq -r '.[].outputs | to_entries[].value' \
-    | cachix push bonfire 
-```
-
-* Rebuild system with git submodules:
-```sh 
-nixos-rebuild switch --flake ".?submodules=1#astora"
-```
-
-* Rebuild remote system from local system with git submodules:
-```sh 
-nixos-rebuild switch --flake ".?submodules=1#catarina" --build-host l-nafaryus@astora --target-host l.nafaryus@catarina --use-remote-sudo
-```
+In any case, if you are already here, a great solution would be to first check the documentation for the project, where you can find useful information.
 
 # License
-
 
 **bonfire** is licensed under the [MIT License](LICENSE).
 

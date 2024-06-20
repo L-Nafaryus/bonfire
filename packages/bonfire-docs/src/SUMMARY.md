@@ -2,10 +2,6 @@
 
 [Introduction](README.md)
 
-- [Getting started](getting-started/README.md)
-  - [Stable Nix](getting-started/stable-nix.md)
-  - [Flakes](getting-started/flakes.md)
-
 - [Packages](packages/README.md)
   - [packages](packages/packages.md)
 
@@ -14,7 +10,5 @@
 
 - [FAQ](faq.md)
 
-- [Changelog](NEWS.md)
-
-- [Contributing](CONTRIBUTING.md)
+- [Contributing](contributing.md)
 
