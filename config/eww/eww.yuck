@@ -1,0 +1,84 @@
+
+(defpoll time :interval "5s" "date '+%H:%M'")
+(defpoll date :interval "5s" "date '+%b %d, %Y'")
+(defpoll workspace_buttons :interval "1s" "~/.config/eww/eww-helper.py workspace -a buttons")
+(defpoll language :interval "1s" "~/.config/eww/eww-helper.py xkblayout")
+(defpoll volume :interval "1s" "~/.config/eww/eww-helper.py get-volume")
+
+(defwidget workspaces []
+    (literal :valign "center" :content workspace_buttons)
+)
+(defwidget closer [window]
+  (eventbox :onclick "eww close ${window} ${window}-closer"))
+ 
+
+(defwindow powermenu 
+        :monitor "Q27G2G3R3B" 
+        :stacking "fg" 
+        :exclusive false 
+        :focusable false 
+        :geometry (geometry :anchor "top right" :x "5px" :y "5px" :width "120px" :height "100px")
+    (eventbox :onhoverlost "eww close powermenu"
+        (box :orientation "h" :spacing 8
+            (box :orientation "v" :spacing 8 
+                (button :css "button {color: #ff9e64;}" :tooltip "Poweoff" :onclick "systemctl poweroff" "󰐥") 
+                (button :tooltip "Reboot" :onclick "systemctl reboot" "󰑐") 
+            )
+            (box :orientation "v" :spacing 8 
+                (button :tooltip "Suspend" :onclick "systemctl suspend" "󰏧") 
+                (button :tooltip "Logout" "󰍃")
+            )
+        )
+    )
+)
+
+(defwindow calendar
+        :monitor "Q27G2G3R3B" 
+        :stacking "fg" 
+        :exclusive false 
+        :focusable false 
+        :geometry (geometry :anchor "top center" :x "5px" :y "5px" :width "120px" :height "100px")
+    (eventbox :onhoverlost "eww close calendar"
+        (box :orientation "h" :spacing 8
+            (calendar)
+        )
+    )
+)
+
+(defwindow powermenu-closer 
+        :monitor "Q27G2G3R3B"
+        :stacking "fg"
+        :focusable false
+        :geometry (geometry :width "100%" :height "100%")
+    (closer :window "powermenu")
+)
+
+(deflisten player :initial "" "playerctl --follow metadata --format '{{ artist }} - {{ title }}' || true")
+
+(defwindow topbar 
+        :monitor "Q27G2G3R3B" 
+        :stacking "fg" 
+        :exclusive true 
+        :focusable false 
+        :geometry (geometry :anchor "top center" :x "0%" :y "0%" :width "100%" :height "30px")
+    (box :orientation "h" :halign "fill"
+        (box :orientation "h" :halign "start" :space-evenly false :spacing 20
+            (box :space-evenly false (workspaces :orientation "h" :halign "start" :valign "center"))
+            (label :limit-width 50 :text {player != "" ? "${player}" : ""})
+        )
+        (box :orientation "h" :halign "center"
+            (button :width 100 :halign "center" :onclick "eww open --toggle calendar" time)
+        )
+        (box :orientation "h" :halign "end" :spacing 20 :space-evenly false
+            ;;(box (scale :min 100 :max 100 :value 50 :orientation "h"))
+            ;;(box :style "power-button" :width "100px" (circular-progress :value 50))
+
+            (label :width 20 :text language)
+            (label :width 20 :text volume)
+            (systray :prepend-new true :spacing 20)
+            (label :text date :halign "center")
+            (button :width 50 :onclick "eww open --toggle powermenu" "󰐥")
+        )
+    )
+)
+

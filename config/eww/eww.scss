@@ -1,0 +1,50 @@
+* {
+    all: unset;
+
+}
+
+.topbar {
+    background-color: #1f2335;
+    color: #c0caf5;
+}
+
+/*button {
+    background-color: #24283b;
+    color: #c0caf5;
+    border-radius: 5px;
+    padding: 4px 20px;
+    border: 2px solid #3b4261;
+}*/
+
+button:hover {
+    background-color: #3b4261;
+    transition: 0.5s;
+}
+
+.power-button {
+    background-color: #ff9e64;
+    border-style: solid;
+    border-left: 2px;
+    border-color: #3b4261;
+}
+
+.powermenu-block {
+    background-color: #689d6a;
+    color: #ebdbb2;
+    margin: 100px;
+    color: #c0caf5;
+}
+
+.powermenu {
+    background-color: #1f2335;
+    border: 2px solid #3b4261;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.systray-block {
+    background-color: #ffffff;
+    color: #aaaaaa;
+    border: 2px solid #3b4261;
+    border-radius: 5px;
+}
