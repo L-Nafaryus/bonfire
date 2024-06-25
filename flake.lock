@@ -55,7 +55,7 @@
         "home-manager": "home-manager_2",
         "nixgl": "nixgl",
         "nixos-mailserver": "nixos-mailserver_2",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs_3",
         "oscuro": "oscuro_2",
         "sops-nix": "sops-nix_2"
       },
@@ -81,7 +81,7 @@
         "home-manager": "home-manager_3",
         "nixgl": "nixgl_2",
         "nixos-mailserver": "nixos-mailserver_3",
-        "nixpkgs": "nixpkgs_4",
+        "nixpkgs": "nixpkgs_5",
         "sops-nix": "sops-nix"
       },
       "locked": {
@@ -261,7 +261,7 @@
           "flake-compat"
         ],
         "nix": "nix",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_4",
         "poetry2nix": "poetry2nix",
         "pre-commit-hooks": [
           "oscuro",
@@ -948,6 +948,22 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1719223410,
+        "narHash": "sha256-jtIo8xR0Zp4SalIwmD+OdCwHF4l7OU6PD63UUK4ckt4=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "efb39c6052f3ce51587cf19733f5f4e5d515aa13",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1713714899,
         "narHash": "sha256-+z/XjO3QJs5rLE5UOf015gdVauVRQd2vZtsFkaXBq2Y=",
         "owner": "nixos",
@@ -962,7 +978,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1692808169,
         "narHash": "sha256-x9Opq06rIiwdwGeK2Ykj69dNc2IvUH1fY55Wm7atwrE=",
@@ -978,7 +994,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_4": {
+    "nixpkgs_5": {
       "locked": {
         "lastModified": 1713714899,
         "narHash": "sha256-+z/XjO3QJs5rLE5UOf015gdVauVRQd2vZtsFkaXBq2Y=",
@@ -991,6 +1007,24 @@
         "owner": "nixos",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "obs-image-reaction": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1719314544,
+        "narHash": "sha256-GZa3+2OELKp/9b2+EwwzaIMNvR9niCy/YZ5OERhG9Hg=",
+        "owner": "L-Nafaryus",
+        "repo": "obs-image-reaction",
+        "rev": "0dcb3c27de5782dfdf95cb047ccceb3e65360e6b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "L-Nafaryus",
+        "repo": "obs-image-reaction",
         "type": "github"
       }
     },
@@ -1108,6 +1142,7 @@
         "home-manager": "home-manager",
         "nixos-mailserver": "nixos-mailserver",
         "nixpkgs": "nixpkgs",
+        "obs-image-reaction": "obs-image-reaction",
         "oscuro": "oscuro",
         "sops-nix": "sops-nix_3"
       }

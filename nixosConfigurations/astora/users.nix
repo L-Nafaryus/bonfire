@@ -209,6 +209,7 @@
                     input-overlay
                     obs-pipewire-audio-capture
                     wlrobs
+                    inputs.obs-image-reaction.packages.${pkgs.system}.default
                 ];
             };
         };

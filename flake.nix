@@ -35,6 +35,9 @@
         oscuro = {
             url = "github:L-Nafaryus/oscuro";
         };
+        obs-image-reaction = {
+            url = "github:L-Nafaryus/obs-image-reaction";
+        };
     };
 
     outputs = { self, nixpkgs, home-manager, nixos-mailserver, sops-nix, crane, fenix, catppuccin, oscuro, ... } @ inputs: 
