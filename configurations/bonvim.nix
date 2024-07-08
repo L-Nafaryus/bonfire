@@ -483,7 +483,10 @@
         };
         mapping = {
           "<c-space>" = "cmp.mapping.complete()";
-          "<cr>" = "cmp.mapping.confirm({ select = true; })";
+          "<cr>" = "cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })";
+          "<tab>" = "cmp.mapping(cmp.mapping.confirm({ select = true }), { 'i', 's', 'c' })";
+          "<c-p>" = "cmp.mapping.select_prev_item()";
+          "<c-n>" = "cmp.mapping.select_next_item()";
         };
       };
     };

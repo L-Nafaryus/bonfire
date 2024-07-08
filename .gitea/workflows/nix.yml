@@ -14,4 +14,4 @@ jobs:
           submodules: true
           token: "${{ secrets.REPO_PAT }}"
       - run: |
-          nix flake check ".?submodules=1"
+          nix flake check --allow-import-from-derivation ".?submodules=1"

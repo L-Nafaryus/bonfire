@@ -21,9 +21,13 @@ in {
     settings = {
       experimental-features = ["nix-command" "flakes"];
       trusted-users = ["l-nafaryus"];
-      allowed-users = ["l-nafaryus" "hydra"];
-      substituters = ["https://nix-community.cachix.org"];
+      allowed-users = ["l-nafaryus" "hydra" "hydra-www"];
+      substituters = [
+        "https://bonfire.cachix.org"
+        "https://nix-community.cachix.org"
+      ];
       trusted-public-keys = [
+        "bonfire.cachix.org-1:mzAGBy/Crdf8NhKail5ciK7ZrGRbPJJobW6TwFb7WYM="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
       auto-optimise-store = true;
@@ -38,7 +42,7 @@ in {
     gc = {
       automatic = lib.mkDefault true;
       dates = lib.mkDefault "weekly";
-      options = lib.mkDefault "--delete-older-than 14d";
+      options = lib.mkDefault "--delete-older-than 28d";
     };
   };
 
