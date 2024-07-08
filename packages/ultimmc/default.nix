@@ -1,75 +1,83 @@
-{ 
-    bonfire,
-    lib, stdenv,
-    fetchFromGitHub, wrapQtAppsHook, 
-    extra-cmake-modules, cmake, 
-    file, jdk17, 
-    copyDesktopItems, makeDesktopItem, 
-    xorg, libpulseaudio, libGL
+{
+  bonfire,
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  wrapQtAppsHook,
+  extra-cmake-modules,
+  cmake,
+  file,
+  jdk17,
+  copyDesktopItems,
+  makeDesktopItem,
+  xorg,
+  libpulseaudio,
+  libGL,
 }:
 stdenv.mkDerivation rec {
-    version = "faf3c966c43465d6f6c245ed78556222240398ee";
-    pname = "ultimmc";
+  version = "faf3c966c43465d6f6c245ed78556222240398ee";
+  pname = "ultimmc";
 
-    src = fetchFromGitHub {
-        fetchSubmodules = true;
-        owner = "UltimMC";
-        repo = "Launcher";
-        rev = "faf3c966c43465d6f6c245ed78556222240398ee";
-        sha256 = "sha256-/+cYbAzf84PrgzJHUsc3tVU9E+mDMtx5eGEJK9ZBM2w=";
-    };
+  src = fetchFromGitHub {
+    fetchSubmodules = true;
+    owner = "UltimMC";
+    repo = "Launcher";
+    rev = "faf3c966c43465d6f6c245ed78556222240398ee";
+    sha256 = "sha256-/+cYbAzf84PrgzJHUsc3tVU9E+mDMtx5eGEJK9ZBM2w=";
+  };
 
-    nativeBuildInputs = [
-        wrapQtAppsHook
-        extra-cmake-modules
-        cmake
-        file
-        jdk17
-        copyDesktopItems
-    ];
+  nativeBuildInputs = [
+    wrapQtAppsHook
+    extra-cmake-modules
+    cmake
+    file
+    jdk17
+    copyDesktopItems
+  ];
 
-    desktopItems = [
-        (makeDesktopItem {
-            name = "ultimmc";
-            desktopName = "UltimMC";
-            icon = "ultimmc";
-            comment = "Cracked Minecraft launcher";
-            exec = "UltimMC %u";
-            categories = [ "Game" ];
-        })
-    ];
+  desktopItems = [
+    (makeDesktopItem {
+      name = "ultimmc";
+      desktopName = "UltimMC";
+      icon = "ultimmc";
+      comment = "Cracked Minecraft launcher";
+      exec = "UltimMC %u";
+      categories = ["Game"];
+    })
+  ];
 
-    cmakeFlags = [ "-DLauncher_LAYOUT=lin-nodeps" ];
-    
-# TODO: fix broken data directory location
-    postInstall = let 
-        libpath = with xorg; lib.makeLibraryPath [
-            libX11
-            libXext
-            libXcursor
-            libXrandr
-            libXxf86vm
-            libpulseaudio
-            libGL
-        ];
-    in ''
-        install -Dm0644 ${src}/notsecrets/logo.svg $out/share/icons/hicolor/scalable/apps/ultimmc.svg
+  cmakeFlags = ["-DLauncher_LAYOUT=lin-nodeps"];
 
-        chmod -x $out/bin/*.so
-        wrapProgram $out/bin/UltimMC \
-            "''${qtWrapperArgs[@]}" \
-            --set GAME_LIBRARY_PATH /run/opengl-driver/lib:${libpath} \
-            --prefix PATH : ${lib.makeBinPath [xorg.xrandr]} \
-            --add-flags '-d ~/.local/share/ultimmc'
+  # TODO: fix broken data directory location
+  postInstall = let
+    libpath = with xorg;
+      lib.makeLibraryPath [
+        libX11
+        libXext
+        libXcursor
+        libXrandr
+        libXxf86vm
+        libpulseaudio
+        libGL
+      ];
+  in ''
+    install -Dm0644 ${src}/notsecrets/logo.svg $out/share/icons/hicolor/scalable/apps/ultimmc.svg
 
-        rm $out/UltimMC
-    '';
+    chmod -x $out/bin/*.so
+    wrapProgram $out/bin/UltimMC \
+        "''${qtWrapperArgs[@]}" \
+        --set GAME_LIBRARY_PATH /run/opengl-driver/lib:${libpath} \
+        --prefix PATH : ${lib.makeBinPath [xorg.xrandr]} \
+        --add-flags '-d ~/.local/share/ultimmc'
 
-    meta = with lib; {
-        homepage = "https://github.com/UltimMC/Launcher";
-        description = "Cracked Minecraft Launcher";
-        license = licenses.asl20;
-        platforms = platforms.linux;
-        maintainers = with bonfire.lib.maintainers; [ L-Nafaryus ];
-    };
+    rm $out/UltimMC
+  '';
+
+  meta = with lib; {
+    homepage = "https://github.com/UltimMC/Launcher";
+    description = "Cracked Minecraft Launcher";
+    license = licenses.asl20;
+    platforms = platforms.linux;
+    maintainers = with bonfire.lib.maintainers; [L-Nafaryus];
+  };
 }

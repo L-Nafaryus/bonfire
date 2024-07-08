@@ -1,42 +1,48 @@
 # self.packages.${system}
 #
-{ self, nixpkgs, ... }:
-let 
-    forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" ];
-    nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
+{
+  self,
+  inputs,
+  ...
+}: let
+  forAllSystems = inputs.nixpkgs.lib.genAttrs ["x86_64-linux"];
+  nixpkgsFor = forAllSystems (system: import inputs.nixpkgs {inherit system;});
+in
+  forAllSystems (system: let
+    pkgs = nixpkgsFor.${system};
 
-in forAllSystems(system:  
-    let 
-        pkgs = nixpkgsFor.${system}; 
+    bonfire = self;
+    bonlib = self.lib;
+    bonpkgs = self.packages.${system};
+    bonconfigs = self.configurations;
 
-        bonfire = self;
-        bonlib = self.lib;
-        bonpkgs = self.packages.${system};
+    crane = self.inputs.crane;
+    crane-lib = self.inputs.crane.mkLib pkgs;
 
-        crane = self.inputs.crane;
-        crane-lib = self.inputs.crane.mkLib pkgs;
+    fenix = self.inputs.fenix;
+    fenix-pkgs = self.inputs.fenix.packages.${system};
 
-        fenix = self.inputs.fenix;
-    in {
-    
-    bonfire-docs = pkgs.callPackage ./bonfire-docs { inherit bonfire; };
+    nixvim-pkgs = self.inputs.nixvim.legacyPackages.${system};
+  in {
+    bonfire-docs = pkgs.callPackage ./bonfire-docs {inherit bonfire;};
 
-    netgen = pkgs.callPackage ./netgen { inherit bonfire; };
-   
-    dearpygui = pkgs.callPackage ./dearpygui { inherit bonfire; };
+    netgen = pkgs.callPackage ./netgen {inherit bonfire;};
 
-    openfoam = pkgs.callPackage ./openfoam { inherit bonfire; };
+    dearpygui = pkgs.callPackage ./dearpygui {inherit bonfire;};
 
-    spoofdpi = pkgs.callPackage ./spoofdpi { inherit bonfire; };
+    openfoam = pkgs.callPackage ./openfoam {inherit bonfire;};
 
-    lego = pkgs.callPackage ./lego { inherit bonfire; };
+    spoofdpi = pkgs.callPackage ./spoofdpi {inherit bonfire;};
 
-    ultimmc = pkgs.libsForQt5.callPackage ./ultimmc { inherit bonfire; };
+    lego = pkgs.callPackage ./lego {inherit bonfire;};
 
-    cargo-shuttle = pkgs.callPackage ./cargo-shuttle { inherit bonfire crane-lib; };
+    ultimmc = pkgs.libsForQt5.callPackage ./ultimmc {inherit bonfire;};
 
-    nix-minimal = pkgs.callPackage ./nix-minimal { inherit bonpkgs bonlib; };
+    cargo-shuttle = pkgs.callPackage ./cargo-shuttle {inherit bonfire crane-lib;};
 
-    nix-runner = pkgs.callPackage ./nix-runner { inherit bonpkgs bonlib; };
-})
-# map (ps: (map (p: { name = p; systems = [ ps.${p}.system ]; type = if ps.${p}?imageTag then "image" else "package"; }) (builtins.attrNames ps))) (map (s: bf.packages.${s}) (builtins.attrNames bf.packages))
+    nix-minimal = pkgs.callPackage ./nix-minimal {inherit bonpkgs bonlib;};
+
+    nix-runner = pkgs.callPackage ./nix-runner {inherit bonpkgs bonlib;};
+
+    bonvim = import ./bonvim {inherit nixvim-pkgs pkgs bonconfigs fenix-pkgs;};
+  })

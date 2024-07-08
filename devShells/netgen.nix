@@ -1,9 +1,13 @@
-{ pkgs, bonfire-pkgs, ... }:
+{
+  pkgs,
+  bonfire-pkgs,
+  ...
+}:
 pkgs.mkShellNoCC {
-    packages = [
-        bonfire-pkgs.netgen
-        pkgs.python3
-    ];
+  packages = [
+    bonfire-pkgs.netgen
+    pkgs.python3
+  ];
 
-    shellHook = bonfire-pkgs.netgen.passthru.shellHook;
+  shellHook = bonfire-pkgs.netgen.passthru.shellHook;
 }

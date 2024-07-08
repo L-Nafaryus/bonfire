@@ -1,6 +1,10 @@
-{ pkgs, crane-lib, ... }:
+{
+  pkgs,
+  crane-lib,
+  ...
+}:
 crane-lib.devShell {
-    packages = [
-        pkgs.cargo-watch
-    ];
+  packages = [
+    pkgs.cargo-watch
+  ];
 }
