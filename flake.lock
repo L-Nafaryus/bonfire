@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "ags": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1718921313,
+        "narHash": "sha256-TFJah1RW5qnYW7kajjAFPAS5j/0q0R3vz9zPjrRA0Mc=",
+        "owner": "Aylur",
+        "repo": "ags",
+        "rev": "646d5ad073ff7f8b1d50cfbd40f5b8a250fcd59d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Aylur",
+        "repo": "ags",
+        "type": "github"
+      }
+    },
     "blobs": {
       "flake": false,
       "locked": {
@@ -1345,6 +1365,7 @@
     },
     "root": {
       "inputs": {
+        "ags": "ags",
         "catppuccin": "catppuccin",
         "crane": "crane",
         "fenix": "fenix",

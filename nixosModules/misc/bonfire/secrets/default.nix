@@ -36,6 +36,12 @@
           owner = "oscuro";
           group = "oscuro";
         };
+
+        "nix-store/cache-key" = lib.mkIf config.services.nix-serve.enable {
+          owner = "nix-serve";
+          group = "nix-serve";
+          mode = "0600";
+        };
       };
     };
 

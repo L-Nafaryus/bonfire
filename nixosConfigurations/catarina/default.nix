@@ -124,6 +124,12 @@ in {
         root = "/var/www";
       };
 
+      "*.elnafo.ru" = {
+        forceSSL = true;
+        useACMEHost = "elnafo.ru";
+        globalRedirect = "elnafo.ru";
+      };
+
       "www.elnafo.ru" = {
         forceSSL = true;
         useACMEHost = "elnafo.ru";
@@ -140,6 +146,12 @@ in {
         forceSSL = true;
         useACMEHost = "elnafo.ru";
         locations."/".proxyPass = "http://127.0.0.1:3000";
+      };
+
+      "cache.elnafo.ru" = {
+        forceSSL = true;
+        useACMEHost = "elnafo.ru";
+        locations."/".proxyPass = "http://${config.services.nix-serve.bindAddress}:${toString config.services.nix-serve.port}";
       };
     };
   };
@@ -225,6 +237,19 @@ in {
     notificationSender = "hydra@elnafo.ru";
     buildMachinesFiles = [];
   };
+
+  services.nix-serve = {
+    enable = true;
+    secretKeyFile = config.sops.secrets."nix-store/cache-key".path;
+  };
+
+  users.users."nix-serve" = {
+    description = "Nix-Serve Service";
+    createHome = false;
+    group = "nix-serve";
+    isSystemUser = true;
+  };
+  users.groups."nix-serve" = {};
 
   # Packages
   environment.systemPackages = with pkgs; [

@@ -29,6 +29,7 @@
     home.homeDirectory = "/home/l-nafaryus";
     imports = [
       inputs.catppuccin.homeManagerModules.catppuccin
+      inputs.ags.homeManagerModules.default
     ];
     home.packages = with pkgs; [
       #gnupg
@@ -143,9 +144,16 @@
 
     gtk = {
       enable = true;
-      cursorTheme = {
-        name = "Papirus-Dark";
-        size = 16;
+      catppuccin = {
+        enable = true;
+        accent = "green";
+        flavor = "macchiato";
+        gnomeShellTheme = true;
+        icon = {
+          enable = true;
+          accent = "green";
+          flavor = "macchiato";
+        };
       };
     };
 
@@ -253,6 +261,12 @@
             border-radius = mkLiteral "5px";
           };
         };
+      };
+      ags = {
+        enable = true;
+        extraPackages = with pkgs; [
+          libdbusmenu-gtk3 # for system tray
+        ];
       };
 
       obs-studio = {
@@ -548,4 +562,6 @@
 
   # Services
   services.spoofdpi.enable = true;
+
+  services.gvfs.enable = true;
 }
