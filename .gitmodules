@@ -1,3 +1,0 @@
-[submodule "nixosModules/misc/bonfire/secrets"]
-	path = nixosModules/misc/bonfire/secrets
-	url = git@vcs.elnafo.ru:L-Nafaryus/bonfire-secrets.git
