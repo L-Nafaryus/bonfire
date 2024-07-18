@@ -1,4 +1,4 @@
-# Frequently asked questions and hints
+# Side Notes
 
 * How to update and push flake inputs:
 

@@ -1,150 +1,39 @@
 {
-  bonfire,
+  bonLib,
+  bonModules,
+  self,
   lib,
   pkgs,
   ...
 }: let
-  version = bonfire.shortRev or bonfire.dirtyShortRev or "unknown";
-  projectPath = ../../.;
-  modulesPath = ../../nixosModules;
+  version = "unknown";
 
-  links = [
-    {
-      hostname = "vcs-elnafo";
-      url = "https://vcs.elnafo.ru/L-Nafaryus/bonfire/src/branch/master";
-    }
-    {
-      hostname = "github";
-      url = "https://github.com/L-Nafaryus/bonfire/blob/master";
-    }
-  ];
+  nixosModulesDoc = import ./nixosModulesDoc.nix {
+    inherit lib pkgs version;
 
-  formatDeclaration = declaration:
-    if lib.hasPrefix (toString modulesPath) (toString declaration)
-    then let
-      subpath = lib.removePrefix (toString projectPath + "/") (toString declaration);
-    in
-      map ({
-        hostname,
-        url,
-      }: {
-        url = "${url}/${subpath}";
-        name = "<${hostname}:bonfire/${subpath}>";
-      })
-      links
-    else
-      # skip external declarations
-      lib.singleton declaration;
-
-  nixosModules = import modulesPath {
-    inherit lib;
-    self = bonfire;
-    check = false;
-  };
-
-  evaluatedModules = lib.evalModules {
-    modules = nixosModules.modules ++ [nixosModules.configModule];
-  };
-
-  optionsDoc = pkgs.nixosOptionsDoc {
-    options = builtins.removeAttrs evaluatedModules.options [
-      "_module"
-      "system"
+    modules = bonModules;
+    root = ../../.;
+    declarations = [
+      {
+        name = "elnafo-vcs";
+        url = "https://vcs.elnafo.ru/L-Nafaryus/bonfire/src/branch/master";
+      }
+      {
+        name = "github";
+        url = "https://github.com/L-Nafaryus/bonfire/blob/master";
+      }
     ];
-
-    transformOptions = option:
-      option
-      // {
-        declarations = lib.unique (
-          lib.flatten (map (declaration: formatDeclaration declaration) option.declarations)
-          ++ option.declarations
-        );
-      };
-    documentType = "none";
-    revision = version;
+    projectName = "bonfire";
+    modulesPrefix = ../../nixosModules;
   };
 
-  systems = builtins.attrNames bonfire.packages;
-  derivations = lib.flatten (
-    map (packages: (
-      map (name: packages.${name}) (builtins.attrNames packages)
-    )) (map (system: bonfire.packages.${system}) systems)
-  );
+  packagesDoc = import ./packagesDoc.nix {
+    inherit lib pkgs;
 
-  renderMaintainers = maintainers:
-    lib.concatStringsSep ", " (
-      let
-        maintainer = mt:
-          if mt ? github
-          then "[${mt.name}](https://github.com/${mt.github})"
-          else mt.name;
-        email = mt:
-          if mt ? email
-          then "<[${mt.email}](mailto:${mt.email})>"
-          else "";
-      in
-        map (mt: maintainer mt + email mt) maintainers
-    );
-
-  renderPlatforms = platforms:
-    if platforms != lib.platforms.none
-    then
-      if platforms == lib.platforms.all
-      then "all"
-      else lib.concatStringsSep ", " (map (platform: "__${platform}__") platforms)
-    else "";
-
-  renderPackage = drv: ''
-    ## ${drv.pname}
-
-    ${lib.optionalString (drv.meta ? description) drv.meta.description}
-
-    ${lib.optionalString (drv.meta ? homepage) "[Homepage](${drv.meta.homepage})"}
-
-    Version: __${drv.version}__
-
-    ${lib.optionalString (drv.meta ? license) "License: [${drv.meta.license.fullName}](${drv.meta.license.url})"}
-
-    Outputs: ${lib.concatStringsSep ", " (map (o: "__${o}__") drv.outputs)}
-
-    ${lib.optionalString (drv.meta ? mainProgram) "Provided programs: __${drv.meta.mainProgram}__"}
-
-    ${lib.optionalString (drv.meta ? maintainers) "Maintainers: ${renderMaintainers drv.meta.maintainers}"}
-
-    ${lib.optionalString (drv.meta ? platforms) "Platforms: ${renderPlatforms drv.meta.platforms}"}
-  '';
-
-  renderImage = drv: ''
-    ## ${drv.imageName}
-
-    ${lib.optionalString (drv.meta ? description) drv.meta.description}
-
-    ${lib.optionalString (drv.meta ? homepage) "[Homepage](${drv.meta.homepage})"}
-
-    Tag: __${drv.imageTag}__
-
-    ${lib.optionalString (drv.fromImage != null) "From: __${drv.fromImage.imageName}__"}
-
-    ${lib.optionalString (drv.meta ? license) "License: ${
-      if lib.isList drv.meta.license
-      then (map (license: "[${drv.meta.license.fullName}](${drv.meta.license.url})") drv.meta.license)
-      else "[${drv.meta.license.fullName}](${drv.meta.license.url})"
-    }"}
-
-    ${lib.optionalString (drv.meta ? maintainers) "Maintainers: ${renderMaintainers drv.meta.maintainers}"}
-
-    ${lib.optionalString (drv.meta ? platforms) "Platforms: ${renderPlatforms drv.meta.platforms}"}
-  '';
-
-  packagesDoc =
-    pkgs.writeText "packages.md"
-    (lib.concatStringsSep "\n" (map (drv:
-      if drv ? imageTag
-      then renderImage drv
-      else if drv ? pname
-      then renderPackage drv
-      else "")
-    derivations));
+    packages = self.packages;
+    repoUrl = "https://vcs.elnafo.ru/L-Nafaryus/bonfire/src/branch/master";
+    hydraUrl = "https://hydra.elnafo.ru/job/bonfire/master";
+  };
 in
   pkgs.stdenvNoCC.mkDerivation {
     pname = "bonfire-docs";
@@ -166,9 +55,15 @@ in
 
     buildPhase = ''
       runHook preBuild
+
       ln -s ${../../README.md} src/README.md
-      ln -s ${optionsDoc.optionsCommonMark} src/options/modules.md
-      ln -s ${packagesDoc} src/packages/packages.md
+
+      ${lib.concatStringsSep "\n" (map (module_: "ln -s ${module_.commonMarkdown} src/nixosModules/${module_.name}.md") nixosModulesDoc.documentation)}
+      substituteInPlace src/SUMMARY.md --replace '{{nixosModulesSummary}}' '${lib.concatStringsSep "\n" nixosModulesDoc.summary}'
+
+      ${lib.concatStringsSep "\n" (map (package_: "ln -s ${package_.commonMarkdown} src/packages/${package_.name}.md") packagesDoc.documentation)}
+      substituteInPlace src/SUMMARY.md --replace '{{packagesSummary}}' '${lib.concatStringsSep "\n" packagesDoc.summary}'
+
       mdbook build
       runHook postBuild
     '';
@@ -188,9 +83,9 @@ in
     };
 
     meta = with lib; {
-      description = "Bonfire HTML documentation.";
+      description = "Bonfire documentation.";
       license = licenses.mit;
-      maintainers = with bonfire.lib.maintainers; [L-Nafaryus];
+      maintainers = with bonLib.maintainers; [L-Nafaryus];
       platforms = lib.platforms.all;
     };
   }

@@ -1,5 +1,5 @@
 {
-  bonfire,
+  bonLib,
   lib,
   stdenv,
   fetchFromGitHub,
@@ -13,6 +13,7 @@
   xorg,
   libpulseaudio,
   libGL,
+  ...
 }:
 stdenv.mkDerivation rec {
   version = "faf3c966c43465d6f6c245ed78556222240398ee";
@@ -78,6 +79,6 @@ stdenv.mkDerivation rec {
     description = "Cracked Minecraft Launcher";
     license = licenses.asl20;
     platforms = platforms.linux;
-    maintainers = with bonfire.lib.maintainers; [L-Nafaryus];
+    maintainers = with bonLib.maintainers; [L-Nafaryus];
   };
 }

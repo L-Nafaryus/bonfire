@@ -2,7 +2,7 @@
   config,
   pkgs,
   lib,
-  self,
+  bonPkgs,
   inputs,
   ...
 }: {
@@ -83,6 +83,8 @@
       gxplugins-lv2
       xtuner
       aether-lv2
+      aeolus
+      grandorgue
 
       qbittorrent
       transmission_3-qt
@@ -91,7 +93,7 @@
       onlyoffice-bin
 
       jdk
-      self.packages.${pkgs.system}.ultimmc
+      bonPkgs.ultimmc
 
       liberation_ttf
 
@@ -120,7 +122,7 @@
       wl-clipboard
       cliphist
       tree
-      self.packages.${pkgs.system}.bonvim
+      bonPkgs.bonvim
     ];
 
     xdg.portal = {

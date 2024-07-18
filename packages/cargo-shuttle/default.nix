@@ -1,6 +1,6 @@
 {
-  bonfire,
-  crane-lib,
+  bonLib,
+  craneLib,
   lib,
   pkgs,
   version ? "v0.44.0",
@@ -34,12 +34,13 @@
       description = "A cargo command for the shuttle platform";
       license = licenses.asl20;
       homepage = "https://shuttle.rs/";
-      maintainers = with bonfire.lib.maintainers; [L-Nafaryus];
+      maintainers = with bonLib.maintainers; [L-Nafaryus];
+      platforms = platforms.x86_64;
     };
   };
 in let
-  cargoArtifacts = crane-lib.buildDepsOnly pkg;
+  cargoArtifacts = craneLib.buildDepsOnly pkg;
 in
-  crane-lib.buildPackage (
+  craneLib.buildPackage (
     pkg // {inherit cargoArtifacts;}
   )

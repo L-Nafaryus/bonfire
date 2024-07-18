@@ -1,48 +1,98 @@
 # self.packages.${system}
 #
 {
+  lib,
+  bonLib,
   self,
   inputs,
   ...
 }: let
-  forAllSystems = inputs.nixpkgs.lib.genAttrs ["x86_64-linux"];
-  nixpkgsFor = forAllSystems (system: import inputs.nixpkgs {inherit system;});
+  platformInputs = system: rec {
+    pkgs = inputs.nixpkgs.legacyPackages.${system};
+    lib = pkgs.lib;
+
+    inherit bonLib;
+    bonModules = self.nixosModules;
+    bonPkgs = self.packages.${system};
+
+    craneLib = inputs.crane.mkLib pkgs;
+    fenixPkgs = inputs.fenix.packages.${system};
+    nixvimPkgs = inputs.nixvim.legacyPackages.${system};
+  };
 in
-  forAllSystems (system: let
-    pkgs = nixpkgsFor.${system};
+  bonLib.collectPackages platformInputs {
+    bonfire-docs = {
+      source = ./bonfire-docs;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+      extraArgs = {inherit self;};
+    };
 
-    bonfire = self;
-    bonlib = self.lib;
-    bonpkgs = self.packages.${system};
-    bonconfigs = self.configurations;
+    netgen = {
+      source = ./netgen;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+    };
 
-    crane = self.inputs.crane;
-    crane-lib = self.inputs.crane.mkLib pkgs;
+    dearpygui = {
+      source = ./dearpygui;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+    };
 
-    fenix = self.inputs.fenix;
-    fenix-pkgs = self.inputs.fenix.packages.${system};
+    openfoam = {
+      source = ./openfoam;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+    };
 
-    nixvim-pkgs = self.inputs.nixvim.legacyPackages.${system};
-  in {
-    bonfire-docs = pkgs.callPackage ./bonfire-docs {inherit bonfire;};
+    spoofdpi = {
+      source = ./spoofdpi;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+    };
 
-    netgen = pkgs.callPackage ./netgen {inherit bonfire;};
+    ultimmc = {
+      source = ./ultimmc;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.libsForQt5.callPackage;
+    };
 
-    dearpygui = pkgs.callPackage ./dearpygui {inherit bonfire;};
+    cargo-shuttle = {
+      source = ./cargo-shuttle;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+    };
 
-    openfoam = pkgs.callPackage ./openfoam {inherit bonfire;};
+    bonvim = {
+      source = ./bonvim;
+      platforms = ["x86_64-linux"];
+      builder = {...}: import;
+    };
 
-    spoofdpi = pkgs.callPackage ./spoofdpi {inherit bonfire;};
+    # Container images
 
-    lego = pkgs.callPackage ./lego {inherit bonfire;};
+    nix-minimal = {
+      source = ./nix-minimal;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+    };
 
-    ultimmc = pkgs.libsForQt5.callPackage ./ultimmc {inherit bonfire;};
+    nix-runner = {
+      source = ./nix-runner;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+    };
 
-    cargo-shuttle = pkgs.callPackage ./cargo-shuttle {inherit bonfire crane-lib;};
+    postgresql = {
+      source = ./postgresql;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+    };
 
-    nix-minimal = pkgs.callPackage ./nix-minimal {inherit bonpkgs bonlib;};
-
-    nix-runner = pkgs.callPackage ./nix-runner {inherit bonpkgs bonlib;};
-
-    bonvim = import ./bonvim {inherit nixvim-pkgs pkgs bonconfigs fenix-pkgs;};
-  })
+    redis = {
+      source = ./redis;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+    };
+  }

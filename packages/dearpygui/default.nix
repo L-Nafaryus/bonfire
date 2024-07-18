@@ -1,5 +1,5 @@
 {
-  bonfire,
+  bonLib,
   stdenv,
   lib,
   pkgs,
@@ -58,7 +58,7 @@ pkgs.python3.pkgs.buildPythonPackage {
     description = "Dear PyGui: A fast and powerful Graphical User Interface Toolkit for Python with minimal dependencies.";
     license = licenses.mit;
     platforms = platforms.linux;
-    maintainers = with bonfire.lib.maintainers; [L-Nafaryus];
+    maintainers = with bonLib.maintainers; [L-Nafaryus];
     broken = pkgs.stdenv.isDarwin;
   };
 }

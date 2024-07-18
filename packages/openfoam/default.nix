@@ -1,5 +1,5 @@
 {
-  bonfire,
+  bonLib,
   stdenv,
   lib,
   pkgs,
@@ -79,7 +79,7 @@ in let
       description = "OpenFOAM is a free, open source CFD software released and developed by OpenFOAM Foundation";
       license = licenses.gpl3;
       platforms = platforms.linux;
-      maintainers = with bonfire.lib.maintainers; [L-Nafaryus];
+      maintainers = with bonLib.maintainers; [L-Nafaryus];
       broken = pkgs.stdenv.isDarwin;
     };
   };

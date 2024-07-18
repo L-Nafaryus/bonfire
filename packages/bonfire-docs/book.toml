@@ -14,3 +14,4 @@ no-section-label = true
 git-repository-url = "https://vcs.elnafo.ru/L-Nafaryus/bonfire"
 git-repository-icon = "fa-git"
 cname = "elnafo.ru"
+fold.enable = true

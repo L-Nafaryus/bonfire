@@ -14,8 +14,16 @@
       experimental-features = ["nix-command" "flakes" "repl-flake"];
       trusted-users = ["l-nafaryus"];
       allowed-users = ["l-nafaryus"];
-      substituters = ["https://nix-community.cachix.org"];
-      trusted-public-keys = ["nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="];
+      substituters = [
+        "https://cache.elnafo.ru"
+        "https://bonfire.cachix.org"
+        "https://nix-community.cachix.org"
+      ];
+      trusted-public-keys = [
+        "cache.elnafo.ru:j3VD+Hn+is2Qk3lPXDSdPwHJQSatizk7V82iJ2RP1yo="
+        "bonfire.cachix.org-1:mzAGBy/Crdf8NhKail5ciK7ZrGRbPJJobW6TwFb7WYM="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
       auto-optimise-store = true;
     };
     gc = {

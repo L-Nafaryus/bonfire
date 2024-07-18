@@ -2,8 +2,14 @@
   description = "Derivation lit";
 
   nixConfig = {
-    extra-substituters = ["https://bonfire.cachix.org"];
-    extra-trusted-public-keys = ["bonfire.cachix.org-1:mzAGBy/Crdf8NhKail5ciK7ZrGRbPJJobW6TwFb7WYM="];
+    extra-substituters = [
+      "https://cache.elnafo.ru"
+      "https://bonfire.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "cache.elnafo.ru:j3VD+Hn+is2Qk3lPXDSdPwHJQSatizk7V82iJ2RP1yo="
+      "bonfire.cachix.org-1:mzAGBy/Crdf8NhKail5ciK7ZrGRbPJJobW6TwFb7WYM="
+    ];
   };
 
   inputs = {
@@ -48,67 +54,28 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    nixos-mailserver,
-    sops-nix,
-    crane,
-    fenix,
-    catppuccin,
-    oscuro,
-    ...
-  } @ inputs: let
-    lib = import ./lib {inherit (nixpkgs) lib;};
+  outputs = {self, ...} @ inputs: let
+    lib = inputs.nixpkgs.lib;
+
+    bonLib = import ./lib {inherit lib;};
+    bonModules = self.nixosModules;
+    # no bonPkgs, it must be defined by appropriate system + skip a possible infinite recursion
   in {
-    inherit lib;
+    lib = bonLib;
 
-    nixosConfigurations = {
-      astora = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          home-manager.nixosModules.home-manager
-          ./nixosConfigurations/astora
-          self.nixosModules.bonfire
-          self.nixosModules.spoofdpi
-          (import ./nixosModules {
-            lib = nixpkgs.lib;
-            self = self;
-          })
-          .configModule
-        ];
-        specialArgs = {inherit self inputs;};
-      };
+    packages = import ./packages {inherit lib bonLib self inputs;};
 
-      catarina = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          nixos-mailserver.nixosModules.mailserver
-          sops-nix.nixosModules.sops
-          oscuro.nixosModules.oscuro
-          ./nixosConfigurations/catarina
-          self.nixosModules.bonfire
-          self.nixosModules.spoofdpi
-          self.nixosModules.papermc
-          self.nixosModules.qbittorrent-nox
-          (import ./nixosModules {
-            lib = nixpkgs.lib;
-            self = self;
-          })
-          .configModule
-        ];
-        specialArgs = {inherit self;};
-      };
+    nixosModules = import ./nixosModules {
+      inherit lib bonLib self;
+      check = false;
     };
 
-    nixosModules =
-      lib.importNamedModules
-      (import ./nixosModules {
-        lib = nixpkgs.lib;
-        self = self;
-      })
-      .modules;
+    nixosConfigurations = import ./nixosConfigurations {inherit lib inputs bonModules bonLib self;};
+
+    hydraJobs = {
+      # filter broken packages ?
+      packages = lib.filterAttrsRecursive (name: value: !bonLib.isBroken value) self.packages;
+    };
 
     templates = {
       rust = {
@@ -117,16 +84,14 @@
       };
     };
 
-    packages = import ./packages {inherit self inputs;};
+    apps = import ./apps {
+      inherit self;
+      inherit (inputs) nixpkgs;
+    };
 
-    apps = import ./apps {inherit self nixpkgs;};
-
-    devShells = import ./devShells {inherit self nixpkgs;};
-
-    configurations = import ./configurations {inherit self inputs;};
-
-    hydraJobs = {
-      inherit (self) packages;
+    devShells = import ./devShells {
+      inherit self;
+      inherit (inputs) nixpkgs;
     };
   };
 }

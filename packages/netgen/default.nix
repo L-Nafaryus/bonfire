@@ -1,5 +1,5 @@
 {
-  bonfire,
+  bonLib,
   stdenv,
   lib,
   pkgs,
@@ -69,8 +69,8 @@
       description = "NETGEN is an automatic 3d tetrahedral mesh generator";
       license = licenses.lgpl21Only;
       platforms = platforms.linux;
-      maintainers = with bonfire.lib.maintainers; [L-Nafaryus];
-      broken = pkgs.stdenv.isDarwin;
+      maintainers = with bonLib.maintainers; [L-Nafaryus];
+      broken = true;
     };
   };
 in

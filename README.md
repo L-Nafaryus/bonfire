@@ -1,6 +1,6 @@
 <p align="center">
-    <a href="https://github.com/L-Nafaryus/bonfire">
-        <img src="https://raw.githubusercontent.com/L-Nafaryus/bonfire/master/etc/bonfire-logo.png" width="500px" alt="bonfire-logo"/>
+    <a href="https://vcs.elnafo.ru/L-Nafaryus/bonfire">
+        <img src="https://vcs.elnafo.ru/L-Nafaryus/bonfire/raw/branch/master/packages/bonfire-docs/bonfire-logo.png" width="500px" alt="bonfire-logo"/>
     </a>
 </p>
 

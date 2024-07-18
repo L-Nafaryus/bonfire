@@ -1,4 +1,4 @@
-# Module options
+# NixOS modules
 
 First, you need to add this project to your flake inputs:
 
@@ -21,6 +21,10 @@ After, you can use in a NixOS configuration like so
         system = "x86_64-linux";
         modules = [
             bonfire.nixosModules.bonfire
+            # or default because bonfire is default module
+            bonfire.nixosModules.default
+            # or just standalone module 
+            bonfire.nixosModules.bar
             ...
         ];
     };

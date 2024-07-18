@@ -2,13 +2,17 @@
 
 [Introduction](README.md)
 
+# Outputs
+
 - [Packages](packages/README.md)
-  - [packages](packages/packages.md)
+{{packagesSummary}}
 
-- [Module options](options/README.md)
-  - [nixosModules](options/modules.md)
+- [NixOS Modules](nixosModules/README.md)
+{{nixosModulesSummary}}
 
-- [FAQ](faq.md)
+# Trivia
+
+- [Side Notes](notes.md)
 
 - [Contributing](contributing.md)
 

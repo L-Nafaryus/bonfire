@@ -1,7 +1,7 @@
 {
   pkgs,
   lib,
-  bonlib,
+  bonLib,
   extraPaths ? [],
   ...
 }: let
@@ -145,6 +145,6 @@ in
       '';
       platforms = platforms.linux;
       license = licenses.lgpl21Plus;
-      maintainers = with bonlib.maintainers; [L-Nafaryus];
+      maintainers = with bonLib.maintainers; [L-Nafaryus];
     };
   }

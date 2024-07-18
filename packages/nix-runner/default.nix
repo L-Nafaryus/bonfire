@@ -1,15 +1,14 @@
 {
   pkgs,
   lib,
-  bonpkgs,
-  bonlib,
+  bonPkgs,
   extraPaths ? [],
   ...
 }:
 pkgs.dockerTools.buildImage {
   name = "nix-runner";
   tag = "latest";
-  fromImage = bonpkgs.nix-minimal;
+  fromImage = bonPkgs.nix-minimal;
 
   copyToRoot = pkgs.buildEnv {
     name = "image-root";
@@ -27,7 +26,7 @@ pkgs.dockerTools.buildImage {
 }
 // {
   meta =
-    bonpkgs.nix-minimal.meta
+    bonPkgs.nix-minimal.meta
     // {
       description = "Image for action runners with a Nix package manager";
       longDescription = ''

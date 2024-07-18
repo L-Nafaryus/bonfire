@@ -1,10 +1,11 @@
 {
   lib,
-  check ? true,
+  bonLib,
   self,
+  check ? true,
   ...
-}: rec {
-  modules = [
+}: let
+  moduleList = [
     ./misc/bonfire/default.nix
     ./services/papermc.nix
     ./services/qbittorrent-nox.nix
@@ -17,11 +18,38 @@
     ...
   }: {
     config = {
-      # Module type checking
+      # module type checking
       _module.check = check;
-      #_module.args.baseModules = modules;
-      #_module.args.pkgs = lib.mkDefault pkgs;
-      _module.args.bonpkgs = self.packages.${pkgs.system};
+      # extra arguments
+      _module.args = {
+        bonPkgs = self.packages.${pkgs.system};
+      };
     };
   };
-}
+
+  importedModules =
+    map (path: {...}: {
+      # imports provide path for each module needed for documentation
+      # inject module configuration
+      imports = [path configModule];
+    })
+    moduleList;
+
+  importedModuleNames = map (path: bonLib.nameFromPath path) moduleList;
+
+  bonfireModule = {
+    config,
+    pkgs,
+    ...
+  }: {
+    # collect all modules
+    imports = importedModules;
+  };
+in
+  lib.listToAttrs (
+    lib.zipListsWith (name: value: {inherit name value;}) importedModuleNames importedModules
+  )
+  // {
+    bonfire = bonfireModule;
+    default = bonfireModule;
+  }
