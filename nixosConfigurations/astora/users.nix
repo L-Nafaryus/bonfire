@@ -3,6 +3,7 @@
   pkgs,
   lib,
   bonPkgs,
+  bonLib,
   inputs,
   ...
 }: {
@@ -30,6 +31,7 @@
     imports = [
       inputs.catppuccin.homeManagerModules.catppuccin
       inputs.ags.homeManagerModules.default
+      bonLib.preconfiguredModules.homeManager.ags
     ];
     home.packages = with pkgs; [
       #gnupg
@@ -99,7 +101,6 @@
 
       steamtinkerlaunch
 
-      eww
       tor
       networkmanagerapplet
       #rofi-wayland
@@ -264,12 +265,6 @@
           };
         };
       };
-      ags = {
-        enable = true;
-        extraPackages = with pkgs; [
-          libdbusmenu-gtk3 # for system tray
-        ];
-      };
 
       obs-studio = {
         enable = true;
@@ -335,7 +330,7 @@
         ];
 
         exec-once = [
-          "eww daemon"
+          "ags &"
           "nm-applet --indicator &"
           "blueman-applet &"
           "wl-gammarelay-rs run &"
@@ -449,7 +444,11 @@
           "SUPER, Q, exec, $terminal"
           "SUPER, N, exec, $fileManager"
           "SUPER, R, exec, $menu"
-          "SUPER, P, exec, eww open --toggle basemenu"
+          "SUPER, X, exec, ags -t clock"
+          "SUPER, X, exec, ags -t control"
+          "SUPER, X, exec, ags -t systray"
+          "SUPER, X, exec, ags -t workspaces"
+          "SUPER, X, exec, ags -t window-title"
 
           "SUPER, C, killactive,"
           "SUPER, M, exit,"

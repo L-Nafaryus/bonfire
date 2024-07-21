@@ -12,6 +12,7 @@
     })
     [
       ./preconfiguredModules/bonvim.nix
+      ./preconfiguredModules/homeManager
     ]);
 
   isBroken = derivation: derivation ? meta && derivation.meta ? broken && derivation.meta.broken;

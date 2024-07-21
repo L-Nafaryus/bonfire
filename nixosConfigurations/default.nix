@@ -14,7 +14,7 @@
       ./astora
     ];
     specialArgs = {
-      inherit inputs;
+      inherit inputs bonLib;
       bonPkgs = self.packages.x86_64-linux;
     };
   };

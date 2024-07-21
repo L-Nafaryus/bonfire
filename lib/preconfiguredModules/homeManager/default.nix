@@ -1,0 +1,3 @@
+{
+  ags = import ./ags;
+}
