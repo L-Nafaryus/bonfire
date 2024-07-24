@@ -3,8 +3,8 @@
   craneLib,
   lib,
   pkgs,
-  version ? "v0.44.0",
-  hash ? "sha256-3u2GWgDQpa4sU/66vS6S+JwCEL/fvy8MTsATRs7RGVs=",
+  version ? "v0.47.0",
+  hash ? "sha256-AJ+7IUxi5SRRWw0EHh9JmQHkdQU3Mhd1Nmo1peEG2zg=",
   ...
 }: let
   pkg = {
