@@ -127,8 +127,6 @@
     pulseaudio.enable = false;
   };
 
-  sound.enable = true;
-
   networking = {
     networkmanager.enable = true;
     useDHCP = false;

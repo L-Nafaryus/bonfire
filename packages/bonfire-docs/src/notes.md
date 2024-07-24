@@ -35,3 +35,8 @@ nixos-rebuild switch --flake ".?submodules=1#catarina" --build-host l-nafaryus@a
 nix-store --verify --check-contents --repair
 ```
 
+* How to get hash for package sources:
+
+```sh 
+nix flake prefetch --json github:OpenFOAM/OpenFOAM-11/20240704
+```
