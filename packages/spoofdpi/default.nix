@@ -2,9 +2,9 @@
   bonLib,
   lib,
   pkgs,
-  version ? "0.8",
-  hash ? "sha256-kPCdOZl4m7KBb970TjJokXorKfnCvuV5Uq7lFQIh1z8=",
-  vendorHash ? "sha256-ib9xRklkLfrDCuLf7zDkJE8lJiNiUMPZ01MDxvqho6o=",
+  version ? "v0.10.0",
+  hash ? "sha256-e6TPklWp5rvNypnI0VHqOjzZhkYsZcp+jkXUlYxMBlU=",
+  vendorHash ? "sha256-kmp+8MMV1AHaSvLnvYL17USuv7xa3NnsCyCbqq9TvYE=",
   ...
 }:
 pkgs.buildGoModule {
