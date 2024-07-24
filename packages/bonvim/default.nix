@@ -10,9 +10,9 @@
     pkgs = pkgs;
     module = bonLib.preconfiguredModules.bonvim;
     extraSpecialArgs = {
-      rustc = fenixPkgs.complete.rustc;
-      cargo = fenixPkgs.complete.cargo;
-      rust-analyzer = fenixPkgs.complete.rust-analyzer;
+      rustc = fenixPkgs.complete.toolchain;
+      cargo = fenixPkgs.complete.toolchain;
+      rust-analyzer = fenixPkgs.complete.toolchain;
     };
   };
 in

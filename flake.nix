@@ -40,13 +40,23 @@
     };
     oscuro = {
       url = "github:L-Nafaryus/oscuro";
+      inputs.bonfire.follows = "";
     };
     obs-image-reaction = {
       url = "github:L-Nafaryus/obs-image-reaction";
     };
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+
+        devshell.follows = "";
+        flake-compat.follows = "";
+        git-hooks.follows = "";
+        home-manager.follows = "";
+        nix-darwin.follows = "";
+        treefmt-nix.follows = "";
+      };
     };
     ags = {
       url = "github:Aylur/ags";

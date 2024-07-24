@@ -179,8 +179,6 @@
     pulseaudio.enable = false;
   };
 
-  sound.enable = true;
-
   networking = {
     networkmanager.enable = true;
     networkmanager.unmanaged = ["interface-name:ve-*"];

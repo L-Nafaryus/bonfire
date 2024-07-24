@@ -48,6 +48,9 @@
     smoothscroll = true;
 
     autowrite = true;
+
+    pumblend = 10;
+    pumheight = 10;
   };
 
   globals = {
@@ -65,10 +68,29 @@
   # Copy/paste
   plugins.yanky = {
     enable = true;
-    systemClipboard.syncWithRing = true;
+    settings.system_clipboard.sync_with_ring = true;
   };
 
   extraPlugins = with pkgs.vimPlugins; [nvim-web-devicons];
+
+  diagnostics = {
+    underline = true;
+    update_in_insert = false;
+    # lsp diagnostics grouped in the end of file
+    virtual_text = {
+      spacing = 4;
+      source = "if_many";
+      prefix = "●";
+    };
+    # lsp diagnostic lines disabled by default, toggle it for pretty lines
+    virtual_lines = false;
+    # sort diagnostic messages
+    severity_sort = true;
+    # hightlight word under cursor
+    document_highlight = {
+      enabled = true;
+    };
+  };
 
   # Theme
   colorschemes.catppuccin = {
@@ -97,10 +119,10 @@
             background = true;
           };
           underlines = {
-            errors = ["underline"];
-            hints = ["underline"];
-            information = ["underline"];
-            warnings = ["underline"];
+            errors = ["undercurl"];
+            hints = ["undercurl"];
+            information = ["undercurl"];
+            warnings = ["undercurl"];
           };
         };
       };
@@ -354,7 +376,7 @@
         nil-ls.enable = true;
         # pylyzer.enable = true;    # not working with virtual environments currently :(
         pylsp = {
-          enable = true;
+          enable = true; # https://github.com/nix-community/nixvim/pull/1893
           settings.plugins = {
             pyflakes.enabled = true;
             black.enabled = true;
@@ -367,6 +389,15 @@
           rustcPackage = rustc;
           installCargo = true;
           installRustc = true;
+          settings = {
+            checkOnSave = true;
+            check.command = "clippy";
+            inlayHints = {
+              enable = true;
+              showParameterNames = true;
+            };
+            procMacro.enable = true;
+          };
         };
         volar.enable = true;
         tailwindcss.enable = true;
@@ -485,9 +516,71 @@
           "<c-space>" = "cmp.mapping.complete()";
           "<cr>" = "cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true })";
           "<tab>" = "cmp.mapping(cmp.mapping.confirm({ select = true }), { 'i', 's', 'c' })";
-          "<c-p>" = "cmp.mapping.select_prev_item()";
-          "<c-n>" = "cmp.mapping.select_next_item()";
+          "<up>" = "cmp.mapping.select_prev_item()";
+          "<down>" = "cmp.mapping.select_next_item()";
         };
+        formatting.format = ''
+          function(entry, item)
+              local icons = {
+                Array         = " ",
+                Boolean       = "󰨙 ",
+                Class         = " ",
+                Codeium       = "󰘦 ",
+                Color         = " ",
+                Control       = " ",
+                Collapsed     = " ",
+                Constant      = "󰏿 ",
+                Constructor   = " ",
+                Copilot       = " ",
+                Enum          = " ",
+                EnumMember    = " ",
+                Event         = " ",
+                Field         = " ",
+                File          = " ",
+                Folder        = " ",
+                Function      = "󰊕 ",
+                Interface     = " ",
+                Key           = " ",
+                Keyword       = " ",
+                Method        = "󰊕 ",
+                Module        = " ",
+                Namespace     = "󰦮 ",
+                Null          = " ",
+                Number        = "󰎠 ",
+                Object        = " ",
+                Operator      = " ",
+                Package       = " ",
+                Property      = " ",
+                Reference     = " ",
+                Snippet       = " ",
+                String        = " ",
+                Struct        = "󰆼 ",
+                TabNine       = "󰏚 ",
+                Text          = " ",
+                TypeParameter = " ",
+                Unit          = " ",
+                Value         = " ",
+                Variable      = "󰀫 ",
+              }
+
+              if icons[item.kind] then
+                item.kind = icons[item.kind] .. item.kind
+              end
+
+              local widths = {
+                abbr = vim.g.cmp_widths and vim.g.cmp_widths.abbr or 40,
+                menu = vim.g.cmp_widths and vim.g.cmp_widths.menu or 30,
+              }
+
+              for key, width in pairs(widths) do
+                if item[key] and vim.fn.strdisplaywidth(item[key]) > width then
+                  item[key] = vim.fn.strcharpart(item[key], 0, width - 1) .. "…"
+                end
+              end
+
+              return item
+            end
+        '';
       };
     };
     cmp-nvim-lsp.enable = true;

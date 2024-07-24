@@ -29,4 +29,9 @@ sudo nixos-rebuild switch --flake ".?submodules=1#astora"
 nixos-rebuild switch --flake ".?submodules=1#catarina" --build-host l-nafaryus@astora --target-host l.nafaryus@catarina --use-remote-sudo
 ```
 
+* How to repair corrupted links in nix-store:
+
+```sh
+nix-store --verify --check-contents --repair
+```
 

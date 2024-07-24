@@ -105,7 +105,16 @@
   };
   services.dbus.enable = true;
 
-  services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = [pkgs.hplip];
+  };
+
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
 
   services.pipewire = {
     enable = true;
