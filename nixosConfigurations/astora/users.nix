@@ -11,7 +11,7 @@
   users.users.l-nafaryus = {
     isNormalUser = true;
     description = "L-Nafaryus";
-    extraGroups = ["networkmanager" "wheel" "audio" "libvirtd" "input"];
+    extraGroups = ["networkmanager" "wheel" "audio" "libvirtd" "input" "video"];
     group = "users";
     uid = 1000;
     initialPassword = "nixos";
@@ -124,6 +124,8 @@
       cliphist
       tree
       bonPkgs.bonvim
+
+      freenect
     ];
 
     xdg.portal = {
