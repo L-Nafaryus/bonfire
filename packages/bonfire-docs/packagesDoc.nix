@@ -46,7 +46,19 @@
 
     license = lib.optionalString (drv.meta ? license) "License: ${
       if lib.isList drv.meta.license
-      then (map (license: "[${drv.meta.license.fullName}](${drv.meta.license.url})") drv.meta.license)
+      then
+        lib.concatStringsSep ", " (map (license: let
+          licenseName =
+            if license.free
+            then license.fullName
+            else if license ? shortName
+            then license.shortName
+            else license.fullName;
+        in
+          if license ? url
+          then "[${licenseName}](${license.url})"
+          else licenseName)
+        drv.meta.license)
       else "[${drv.meta.license.fullName}](${drv.meta.license.url})"
     }";
 

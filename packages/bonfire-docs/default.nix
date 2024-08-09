@@ -53,15 +53,18 @@ in
     dontConfigure = true;
     doCheck = false;
 
-    buildPhase = ''
+    buildPhase = let
+      nixosModulesDocsList = map (module_: "ln -s ${module_.commonMarkdown} src/nixosModules/${module_.name}.md") nixosModulesDoc.documentation;
+      packageDocsList = map (package_: "ln -s ${package_.commonMarkdown} src/packages/${package_.name}.md") packagesDoc.documentation;
+    in ''
       runHook preBuild
 
       ln -s ${../../README.md} src/README.md
 
-      ${lib.concatStringsSep "\n" (map (module_: "ln -s ${module_.commonMarkdown} src/nixosModules/${module_.name}.md") nixosModulesDoc.documentation)}
+      ${lib.concatStringsSep "\n" nixosModulesDocsList}
       substituteInPlace src/SUMMARY.md --replace '{{nixosModulesSummary}}' '${lib.concatStringsSep "\n" nixosModulesDoc.summary}'
 
-      ${lib.concatStringsSep "\n" (map (package_: "ln -s ${package_.commonMarkdown} src/packages/${package_.name}.md") packagesDoc.documentation)}
+      ${lib.concatStringsSep "\n" packageDocsList}
       substituteInPlace src/SUMMARY.md --replace '{{packagesSummary}}' '${lib.concatStringsSep "\n" packagesDoc.summary}'
 
       mdbook build
