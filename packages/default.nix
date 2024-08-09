@@ -70,6 +70,12 @@ in
       builder = {...}: import;
     };
 
+    zapret = {
+      source = ./zapret;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+    };
+
     # Container images
 
     nix-minimal = {
