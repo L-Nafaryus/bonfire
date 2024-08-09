@@ -11,7 +11,7 @@
   users.users.l-nafaryus = {
     isNormalUser = true;
     description = "L-Nafaryus";
-    extraGroups = ["networkmanager" "wheel" "audio" "libvirtd" "input" "video"];
+    extraGroups = ["networkmanager" "wheel" "audio" "libvirtd" "input" "video" "disk" "wireshark"];
     group = "users";
     uid = 1000;
     initialPassword = "nixos";
@@ -36,19 +36,15 @@
     home.packages = with pkgs; [
       #gnupg
       git
-      nnn
+      #nnn
       pass
       taskwarrior
       #tmux
 
       gparted
 
-      xclip
-
-      (firefox.override {nativeMessagingHosts = [passff-host];})
+      firefox
       thunderbird
-
-      discord
 
       pipewire.jack # pw-jack
       carla
@@ -101,6 +97,10 @@
 
       steamtinkerlaunch
 
+      discord
+      webcord
+      vesktop
+
       tor
       networkmanagerapplet
       #rofi-wayland
@@ -115,17 +115,17 @@
       musikcube
       swww
       hyprshot
-      (python3.withPackages (p: [p.click]))
       mangohud
       gamescope
       libstrangle
-      webcord
       wl-clipboard
       cliphist
       tree
       bonPkgs.bonvim
 
       freenect
+
+      mpc-cli
     ];
 
     xdg.portal = {
@@ -149,6 +149,7 @@
 
     gtk = {
       enable = true;
+      # TODO: fix catppuccin deprecation. Provide Paper icons to gtk and gnomeShell manually. (+ regreet)
       catppuccin = {
         enable = true;
         accent = "green";
@@ -194,6 +195,7 @@
           '';
         };
       };
+
       git = {
         enable = true;
         lfs.enable = true;
@@ -219,7 +221,10 @@
           plog = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
         };
       };
+
+      # TODO: bat cannot determine catppuccin theme
       bat.enable = true;
+
       btop = {
         enable = true;
         settings = {
@@ -227,30 +232,71 @@
           proc_tree = true;
         };
       };
+
       fzf.enable = true;
+
       tmux.enable = true;
+
       lazygit.enable = true;
+
       gpg = {
         enable = true;
         homedir = "${hmConfig.xdg.configHome}/gnupg";
         mutableKeys = true;
         mutableTrust = true;
+        # TODO: replace existing ssh key with gpg provided
       };
 
-      # Graphical
-
-      alacritty = {
+      nnn = {
         enable = true;
-        settings = {
-          font = {
-            size = 10;
+        package = pkgs.nnn.override {withNerdIcons = true;};
+        bookmarks = {
+          d = "~/Downloads";
+          p = "~/projects";
+          i = "~/Pictures";
+          m = "~/Music";
+          v = "~/Videos";
+        };
+        plugins = {
+          src = "${hmConfig.programs.nnn.finalPackage}/share/plugins";
+          mappings = {
+            # TODO: add used programs for previews with FIFO support
+            p = "preview-tui";
           };
         };
       };
+
+      ncmpcpp.enable = true;
+
+      # Graphical
+
+      wezterm = {
+        enable = true;
+        package = inputs.wezterm.packages.x86_64-linux.default;
+        extraConfig = ''
+          return {
+              color_scheme = "Catppuccin Macchiato",
+              default_prog = { "fish" },
+              font_size = 10.0,
+              enable_tab_bar = true,
+              hide_tab_bar_if_only_one_tab = true,
+              term = "wezterm",
+              window_padding = {
+                  left = 0,
+                  right = 0,
+                  top = 0,
+                  bottom = 0
+              },
+              # ISSUE: the terminal does not update after some time of use. It only updates with mouse movements. [Wayland, Hyprland]
+              enable_wayland = false
+          }
+        '';
+      };
+
       rofi = {
         enable = true;
         package = pkgs.rofi-wayland;
-        terminal = "${lib.getExe hmConfig.programs.alacritty.package}";
+        terminal = "${lib.getExe hmConfig.programs.wezterm.package}";
         cycle = true;
         extraConfig = {
           show-icons = true;
@@ -265,6 +311,7 @@
           window = {
             border-radius = mkLiteral "5px";
           };
+          # TODO: make window bigger, for 2k monitor, yeah
         };
       };
 
@@ -277,6 +324,11 @@
           wlrobs
           inputs.obs-image-reaction.packages.${pkgs.system}.default
         ];
+      };
+
+      mpv = {
+        enable = true;
+        # TODO: check ImPlay for packaging, it's may be better alternative to pure mpv
       };
     };
 
@@ -291,6 +343,15 @@
         enableFishIntegration = true;
         enableBashIntegration = true;
       };
+
+      #mpd = {
+      #  enable = true;
+      #};
+
+      # TODO: meet mpdris2 with system mpd
+      #mpdris2 = {
+      #  enable = true;
+      #};
 
       # Graphical
       hypridle = {
@@ -321,9 +382,9 @@
         "$mouse" = "logitech-g102-lightsync-gaming-mouse";
 
         # Main programs
-        "$terminal" = "${lib.getExe hmConfig.programs.alacritty.package}";
+        "$terminal" = "${lib.getExe hmConfig.programs.wezterm.package}";
         "$menu" = "${lib.getExe hmConfig.programs.rofi.package} -show drun";
-        "$fileManager" = "$terminal -e ${lib.getExe pkgs.nnn}";
+        "$fileManager" = "$terminal -e ${lib.getExe hmConfig.programs.nnn.package}";
 
         monitor = [
           "desc:$monitor2, 2560x1440@75, 0x0, auto"
@@ -339,7 +400,7 @@
           "systemctl --user start hypridle"
           "wl-paste --type text --watch cliphist store" #Stores only text data
           "wl-paste --type image --watch cliphist store" #Stores only image data
-          "swww-daemon & swww img ~/Pictures/wallpapers/emily-in-the-cyberpunk-city.3840x2160.png & swww img ~/Pictures/wallpapers/emily-in-the-cyberpunk-city.3840x2160a.gif"
+          "swww-daemon & swww img ~/Pictures/wallpapers/current" # wallpaper symlinked
         ];
 
         env = [
@@ -441,6 +502,8 @@
           "float, class:^(steam_app.*)$"
           "immediate, class:^(steam_app.*)$"
           "float, class:^(steam_proton.*)$"
+          "float,class:^(org.wezfurlong.wezterm)$"
+          "tile,class:^(org.wezfurlong.wezterm)$"
         ];
         bind = [
           "SUPER, Q, exec, $terminal"
@@ -563,8 +626,50 @@
 
   programs.virt-manager.enable = true;
 
-  # Services
-  services.spoofdpi.enable = true;
+  programs.wireshark = {
+    enable = true;
+    package = pkgs.wireshark;
+  };
 
+  # Services
+  services.spoofdpi.enable = false;
+
+  services.zapret = {
+    enable = true;
+    mode = "tpws";
+    firewallType = "iptables";
+    disableIpv6 = true;
+    settings = ''
+      MODE_HTTP=1
+      MODE_HTTP_KEEPALIVE=0
+      MODE_HTTPS=1
+      MODE_QUIC=0
+      MODE_FILTER=ipset
+      TPWS_OPT="--hostspell=HOST --split-http-req=method --split-pos=3 --oob"
+      INIT_APPLY_FW=1
+    '';
+  };
+
+  # TODO: remember who use gvfs
   services.gvfs.enable = true;
+
+  services.mpd = {
+    enable = true;
+    musicDirectory = "/media/vault/audio/music";
+    network.listenAddress = "any";
+    network.startWhenNeeded = true;
+    user = "l-nafaryus";
+    extraConfig = ''
+      audio_output {
+        type "pipewire"
+        name "PipeWire"
+      }
+    '';
+  };
+
+  systemd.services.mpd.environment = {
+    # https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/609
+    # User-id must match above user. MPD will look inside this directory for the PipeWire socket.
+    XDG_RUNTIME_DIR = "/run/user/${toString config.users.users.l-nafaryus.uid}";
+  };
 }
