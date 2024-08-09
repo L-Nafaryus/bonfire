@@ -18,6 +18,7 @@
     craneLib = inputs.crane.mkLib pkgs;
     fenixPkgs = inputs.fenix.packages.${system};
     nixvimPkgs = inputs.nixvim.legacyPackages.${system};
+    weztermPkgs = inputs.wezterm.packages.${system};
   };
 in
   bonLib.collectPackages platformInputs {
@@ -74,6 +75,20 @@ in
       source = ./zapret;
       platforms = ["x86_64-linux"];
       builder = {pkgs, ...}: pkgs.callPackage;
+    };
+
+    # Pass for cache
+
+    blender = {
+      source = ./blender;
+      platforms = ["x86_64-linux"];
+      builder = {...}: import;
+    };
+
+    wezterm = {
+      source = ./wezterm;
+      platforms = ["x86_64-linux"];
+      builder = {...}: import;
     };
 
     # Container images
