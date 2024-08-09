@@ -12,6 +12,7 @@
     ./users.nix
     # ./services/papermc.nix # disabled
     ./services/gitea.nix
+    ./services/radio.nix
   ];
 
   # Nix settings
