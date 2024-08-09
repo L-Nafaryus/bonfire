@@ -10,6 +10,7 @@
     ./services/papermc.nix
     ./services/qbittorrent-nox.nix
     ./services/spoofdpi.nix
+    ./services/zapret.nix
   ];
 
   configModule = {
