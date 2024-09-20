@@ -23,6 +23,29 @@
     fenixPkgs = inputs.fenix.packages.${system};
     nixvimPkgs = inputs.nixvim.legacyPackages.${system};
     weztermPkgs = inputs.wezterm.packages.${system};
+
+    dreamModules = inputs.dream2nix.modules.dream2nix;
+
+    dreamBuildPackage = {
+      module,
+      meta ? {},
+      extraModules ? [],
+      extraArgs ? {},
+    }:
+      (
+        pkgs.lib.evalModules {
+          modules = [module] ++ extraModules;
+          specialArgs =
+            {
+              inherit (inputs) dream2nix;
+              packageSets.nixpkgs = pkgs;
+            }
+            // extraArgs;
+        }
+      )
+      .config
+      .public
+      // {inherit meta;};
   };
 in
   bonLib.collectPackages platformInputs {
@@ -77,6 +100,12 @@ in
 
     zapret = {
       source = ./zapret;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+    };
+
+    onetagger = {
+      source = ./onetagger;
       platforms = ["x86_64-linux"];
       builder = {pkgs, ...}: pkgs.callPackage;
     };
