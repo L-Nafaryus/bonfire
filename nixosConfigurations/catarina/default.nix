@@ -281,8 +281,6 @@
     fzf
     grc
 
-    gcc
-
     cachix
 
     gnupg

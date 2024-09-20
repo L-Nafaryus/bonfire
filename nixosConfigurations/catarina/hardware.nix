@@ -150,6 +150,12 @@
 
     defaultGateway = "192.168.156.1";
     nameservers = ["192.168.156.1" "8.8.8.8"];
+
+    nat = {
+      enable = true;
+      externalInterface = "enp9s0";
+      internalInterfaces = ["ve-+"];
+    };
   };
 
   services.logind.lidSwitchExternalPower = "ignore";
