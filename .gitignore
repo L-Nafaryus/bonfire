@@ -2,3 +2,4 @@ templates/*/result*
 templates/*/flake.lock
 /result*
 /repl*
+/temp

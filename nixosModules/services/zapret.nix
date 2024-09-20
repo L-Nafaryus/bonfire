@@ -9,9 +9,12 @@ with lib; let
   cfg = config.services.zapret;
 
   createFilterList = name: str: (
-    lib.concatStringsSep "\n"
-    (map (ip: "add ${name} ${ip}")
-      (lib.splitString "\n" (lib.removeSuffix "\n" str)))
+    if str == null
+    then ""
+    else
+      (lib.concatStringsSep "\n"
+        (map (ip: "add ${name} ${ip}")
+          (lib.splitString "\n" (lib.removeSuffix "\n" str))))
   );
 in {
   options.services.zapret = {
@@ -79,6 +82,23 @@ in {
       description = ''
         Which mode zapret should use.
       '';
+    };
+
+    filterAddresses = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "List of addresses to filter";
+    };
+
+    ignoreAddresses = mkOption {
+      type = types.nullOr types.str;
+      default = ''
+        10.0.0.0/8
+        169.254.0.0/16
+        172.16.0.0/12
+        192.168.0.0/16
+      '';
+      description = "List of addresses to ignore";
     };
 
     # TODO: add filter and anti filter options with optional file paths
@@ -157,13 +177,9 @@ in {
       };
 
       preStart = let
-        zapretListFile = pkgs.writeText "zapretList" (createFilterList "zapret" (lib.readFile cfg.package.passthru.antifilter.ipsmart));
-        nozapretListFile = pkgs.writeText "nozapretList" (createFilterList "nozapret" ''
-          10.0.0.0/8
-          169.254.0.0/16
-          172.16.0.0/12
-          192.168.0.0/16
-        '');
+        # zapretListFile = pkgs.writeText "zapretList" (createFilterList "zapret" (lib.readFile cfg.package.passthru.antifilter.ipsmart));
+        zapretListFile = pkgs.writeText "zapretList" (createFilterList "zapret" cfg.filterAddresses);
+        nozapretListFile = pkgs.writeText "nozapretList" (createFilterList "nozapret" cfg.ignoreAddresses);
       in ''
         ipset create zapret hash:net family inet hashsize 262144 maxelem 522288 -!
         ipset flush zapret

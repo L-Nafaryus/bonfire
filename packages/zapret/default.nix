@@ -61,15 +61,6 @@ pkgs.stdenv.mkDerivation {
     ln -s ../usr/share/zapret/init.d/sysv/init.d $out/bin/zapret
   '';
 
-  passthru = {
-    antifilter = {
-      ipsmart = pkgs.fetchurl {
-        url = "https://antifilter.network/download/ipsmart.lst";
-        hash = "sha256-mg2OFZ3x2q/31wNMZl6R6bTK0TKenSFePRo+B1GJdwo=";
-      };
-    };
-  };
-
   meta = with lib; {
     description = "DPI bypass multi platform";
     homepage = "https://github.com/bol-van/zapret";

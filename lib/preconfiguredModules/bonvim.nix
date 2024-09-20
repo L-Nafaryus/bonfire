@@ -169,42 +169,46 @@
   # Status line
   plugins.bufferline = {
     enable = true;
-    diagnostics = "nvim_lsp";
-    mode = "buffers";
+    settings.options = {
+      diagnostics = "nvim_lsp";
+      mode = "buffers";
 
-    offsets = [
-      {
-        filetype = "neo-tree";
-        text = "Neo-tree";
-        highlight = "Directory";
-        text_align = "left";
-      }
-    ];
+      offsets = [
+        {
+          filetype = "neo-tree";
+          text = "Neo-tree";
+          highlight = "Directory";
+          text_align = "left";
+        }
+      ];
+    };
   };
 
   plugins.lualine = {
     enable = true;
-    globalstatus = true;
-    extensions = ["neo-tree"];
-    sections = {
-      lualine_a = [
-        {
-          name = "mode";
-          separator.right = "";
-        }
-      ];
-      lualine_b = [
-        {
-          name = "branch";
-          icon = "";
-          separator.right = "";
-        }
-      ];
-      lualine_c = [
-        {
-          name = "diagnostics";
-          separator.right = ">";
-          extraConfig = {
+    settings = {
+      options = {
+        globalstatus = true;
+        extensions = ["neo-tree"];
+      };
+      sections = {
+        lualine_a = [
+          "mode"
+          {
+            separator.right = "";
+          }
+        ];
+        lualine_b = [
+          "branch"
+          {
+            icon = "";
+            separator.right = "";
+          }
+        ];
+        lualine_c = [
+          "diagnostics"
+          {
+            separator.right = ">";
             sources = ["nvim_lsp"];
             symbols = {
               error = " ";
@@ -212,77 +216,47 @@
               info = " ";
               hint = "󰝶 ";
             };
-          };
-        }
-        {
-          name = "filetype";
-          extraConfig = {
+          }
+
+          "filetype"
+          {
             icon_only = true;
             separator = "";
             padding = {
               left = 1;
               right = 0;
             };
-          };
-        }
-        {
-          name = "filename";
-          extraConfig = {
+          }
+          "filename"
+          {
             path = 1;
-          };
-        }
-      ];
-      lualine_x = [
-        {
-          name = "diff";
-          extraConfig = {
-            symbols = {
-              added = " ";
-              modified = " ";
-              removed = " ";
-            };
-            source.__raw = ''
-              function()
-                  local gitsings = vim.b.gitsigns_status_dict
-                  if gitsigns then
-                      return {
-                          added = gitigns.added,
-                          modified = gitigns.changed,
-                          removed = gitigns.removed
-                      }
-                  end
+          }
+        ];
+        lualine_x = [
+          "diff"
+        ];
+        lualine_y = [
+          "progress"
+          {
+            separator.left = "";
+          }
+          "location"
+          {
+            separator.right = "";
+          }
+        ];
+        lualine_z = [
+          {
+            separator.left = "";
+            icon = " ";
+            __unkeyed-1.__raw = ''
+              function(text)
+                  return os.date("%R")
               end
             '';
-          };
-        }
-      ];
-      lualine_y = [
-        {
-          separator.left = "";
-          name = "progress";
-          padding = {
-            left = 1;
-            right = 0;
-          };
-        }
-        {
-          name = "location";
-          padding = {
-            left = 0;
-            right = 1;
-          };
-        }
-      ];
-      lualine_z = [
-        {
-          separator.left = "";
-          fmt = ''
-            function(text)
-                return " " .. os.date("%R")
-            end
-          '';
-        }
-      ];
+          }
+        ];
+      };
     };
   };
 
@@ -291,7 +265,7 @@
   plugins.project-nvim = {
     enable = true;
     enableTelescope = true;
-    showHidden = true;
+    settings.show_hidden = true;
   };
 
   # Syntax highlight
@@ -315,13 +289,30 @@
 
   plugins.which-key = {
     enable = true;
-    icons.group = "+";
-    registrations = {
-      "<leader>g" = "+ Git";
-      "<leader>c" = "+ Code";
-      "<leader>s" = "+ Search";
-      "<leader>w" = "+ Window";
-      "<leader>q" = "+ Quit";
+    settings = {
+      icons.group = "+";
+      spec = [
+        {
+          __unkeyed = "<leader>g";
+          group = "Git";
+        }
+        {
+          __unkeyed = "<leader>c";
+          group = "Code";
+        }
+        {
+          __unkeyed = "<leader>s";
+          group = "Search";
+        }
+        {
+          __unkeyed = "<leader>w";
+          group = "Window";
+        }
+        {
+          __unkeyed = "<leader>q";
+          group = "Quit";
+        }
+      ];
     };
   };
 

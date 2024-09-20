@@ -9,6 +9,10 @@
 }: let
   platformInputs = system: rec {
     pkgs = inputs.nixpkgs.legacyPackages.${system};
+    #pkgs = import inputs.nixpkgs {
+    #  inherit system;
+    #  config.allowUnfree = true;
+    #};
     lib = pkgs.lib;
 
     inherit bonLib;

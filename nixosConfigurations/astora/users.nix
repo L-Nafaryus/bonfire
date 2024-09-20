@@ -38,7 +38,7 @@
       git
       #nnn
       pass
-      taskwarrior
+      taskwarrior3
       #tmux
 
       gparted
@@ -269,6 +269,9 @@
       ncmpcpp.enable = true;
 
       # Graphical
+      hyprlock = {
+        enable = true;
+      };
 
       wezterm = {
         enable = true;
@@ -287,7 +290,7 @@
                   top = 0,
                   bottom = 0
               },
-              # ISSUE: the terminal does not update after some time of use. It only updates with mouse movements. [Wayland, Hyprland]
+              -- ISSUE: the terminal does not update after some time of use. It only updates with mouse movements. [Wayland, Hyprland]
               enable_wayland = false
           }
         '';
@@ -407,6 +410,7 @@
           "XCURSOR_SIZE,16"
           "HYPRCURSOR_SIZE,16"
           "WLR_DRM_NO_ATOMIC,1"
+          "HYPRSHOT_DIR,${hmConfig.xdg.userDirs.pictures}/screenshots"
         ];
 
         general = {
@@ -556,7 +560,8 @@
           "SUPER SHIFT, S, movetoworkspace, special:magic"
 
           "SUPER, SPACE, exec, hyprctl switchxkblayout keychron-keychron-k3-pro next"
-          ", PRINT, exec, hyprshot -m region"
+          ", PRINT, exec, hyprshot --freeze --mode region"
+          "CTRL, PRINT, exec, hyprshot --freeze --mode output"
           "SUPER, H, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy"
         ];
         # Move/resize windows with mainMod + LMB/RMB and dragging
@@ -632,7 +637,7 @@
   };
 
   # Services
-  services.spoofdpi.enable = false;
+  services.spoofdpi.enable = true;
 
   services.zapret = {
     enable = true;
@@ -648,6 +653,10 @@
       TPWS_OPT="--hostspell=HOST --split-http-req=method --split-pos=3 --oob"
       INIT_APPLY_FW=1
     '';
+    filterAddresses = lib.readFile (pkgs.fetchurl {
+      url = "https://antifilter.network/download/ipsmart.lst";
+      hash = "sha256-zLq3rgci/rye1oQp2zbJelPaoN9+jqPebIbxfJ44Qlg=";
+    });
   };
 
   # TODO: remember who use gvfs
