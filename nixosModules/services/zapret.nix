@@ -101,14 +101,30 @@ in {
       description = "List of addresses to ignore";
     };
 
-    # TODO: add filter and anti filter options with optional file paths
-    # TODO ipset hashsize and maxelem
+    dataDir = mkOption {
+      type = types.path;
+      default = "/var/lib/zapret";
+      description = ''
+        Directory to store zapret files and antifilter lists.
+      '';
+    };
+
+    filterAddressesSource = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      example = ''https://antifilter.network/download/ipsmart.lst'';
+      description = "Link to external list of addresses to download and use.";
+    };
+
+    # TODO: ipset hashsize and maxelem
   };
 
   config = mkIf cfg.enable {
     users.users.tpws = {
       isSystemUser = true;
       group = "tpws";
+      home = cfg.dataDir;
+      createHome = true;
     };
 
     users.groups.tpws = {};
@@ -126,6 +142,8 @@ in {
         )
         gawk
         ipset
+        wget
+        curl
       ];
 
       serviceConfig = {
@@ -133,10 +151,11 @@ in {
         Restart = "no";
         TimeoutSec = "30sec";
         IgnoreSIGPIPE = "no";
-        KillMode = "none";
+        #KillMode = "none";
         GuessMainPID = "no";
         RemainAfterExit = "no";
 
+        WorkingDirectory = cfg.dataDir;
         ExecStart = "${cfg.package}/bin/zapret start";
         ExecStop = let
           stop_script = pkgs.writeShellScriptBin "zapret-stop" ''
@@ -157,37 +176,25 @@ in {
             DISABLE_IPV6=${toString cfg.disableIPV6}
           ''
         ]);
-
-        # hardening
-        DevicePolicy = "closed";
-        KeyringMode = "private";
-        PrivateTmp = true;
-        PrivateMounts = true;
-        ProtectHome = true;
-        ProtectHostname = true;
-        ProtectKernelModules = true;
-        ProtectKernelTunables = true;
-        ProtectSystem = "strict";
-        ProtectProc = "invisible";
-        RemoveIPC = true;
-        RestrictNamespaces = true;
-        RestrictRealtime = true;
-        RestrictSUIDSGID = true;
-        SystemCallArchitectures = "native";
       };
 
       preStart = let
-        # zapretListFile = pkgs.writeText "zapretList" (createFilterList "zapret" (lib.readFile cfg.package.passthru.antifilter.ipsmart));
-        zapretListFile = pkgs.writeText "zapretList" (createFilterList "zapret" cfg.filterAddresses);
-        nozapretListFile = pkgs.writeText "nozapretList" (createFilterList "nozapret" cfg.ignoreAddresses);
+        zapretListFile = src: pkgs.writeText "zapretList" (createFilterList "zapret" src);
+        nozapretListFile = src: pkgs.writeText "nozapretList" (createFilterList "nozapret" src);
       in ''
+        ${lib.optionalString (cfg.filterAddressesSource != null) "curl -L '${cfg.filterAddressesSource}' -o ${cfg.dataDir}/zapretList && sed -i -e 's/^/add zapret /' '${cfg.dataDir}/zapretList'"}
+
         ipset create zapret hash:net family inet hashsize 262144 maxelem 522288 -!
         ipset flush zapret
-        ipset restore -! < ${zapretListFile}
+        ipset restore -! < ${
+          if (cfg.filterAddressesSource != null)
+          then "${cfg.dataDir}/zapretList"
+          else (zapretListFile cfg.filterAddresses)
+        }
 
         ipset create nozapret hash:net family inet hashsize 262144 maxelem 522288 -!
         ipset flush nozapret
-        ipset restore -! < ${nozapretListFile}
+        ipset restore -! < ${nozapretListFile cfg.ignoreAddresses}
       '';
     };
   };

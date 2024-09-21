@@ -641,22 +641,23 @@
 
   services.zapret = {
     enable = true;
-    mode = "tpws";
+    mode = "nfqws";
     firewallType = "iptables";
     disableIpv6 = true;
     settings = ''
       MODE_HTTP=1
       MODE_HTTP_KEEPALIVE=0
       MODE_HTTPS=1
-      MODE_QUIC=0
+      MODE_QUIC=1
       MODE_FILTER=ipset
-      TPWS_OPT="--hostspell=HOST --split-http-req=method --split-pos=3 --oob"
+      TPWS_OPT="--split-http-req=method --split-pos=1 --oob"
+      NFQWS_OPT_DESYNC="--dpi-desync=fake --dpi-desync-ttl=7 --dpi-desync-fake-http=0x00000000"
+      NFQWS_OPT_DESYNC_HTTP="--dpi-desync=fake,split2 --dpi-desync-ttl=4"
+      NFQWS_OPT_DESYNC_HTTPS="--dpi-desync=split2 --dpi-desync-split-pos=1"
+      NFQWS_OPT_DESYNC_QUIC="--dpi-desync=split2 --dpi-desync-repeats=6"
       INIT_APPLY_FW=1
     '';
-    filterAddresses = lib.readFile (pkgs.fetchurl {
-      url = "https://antifilter.network/download/ipsmart.lst";
-      hash = "sha256-zLq3rgci/rye1oQp2zbJelPaoN9+jqPebIbxfJ44Qlg=";
-    });
+    filterAddressesSource = "https://antifilter.network/download/ipsmart.lst";
   };
 
   # TODO: remember who use gvfs
