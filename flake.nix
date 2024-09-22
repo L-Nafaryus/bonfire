@@ -70,7 +70,7 @@
   outputs = {self, ...} @ inputs: let
     lib = inputs.nixpkgs.lib;
 
-    bonLib = import ./lib {inherit lib;};
+    bonLib = import ./lib {inherit lib inputs;};
     bonModules = self.nixosModules;
     # no bonPkgs, it must be defined by appropriate system + skip a possible infinite recursion
   in {

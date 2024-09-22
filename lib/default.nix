@@ -1,4 +1,8 @@
-{lib, ...}: rec {
+{
+  lib,
+  inputs,
+  ...
+}: rec {
   maintainers = import ./maintainers.nix;
 
   nameFromPath = path:
@@ -13,7 +17,20 @@
     [
       ./preconfiguredModules/bonvim.nix
       ./preconfiguredModules/homeManager
+      #(import ./preconfiguredModules/bonvim.nix)
+      #(import ./preconfiguredModules/homeManager {inherit lib inputs;})
     ]);
+
+  injectArgs = moduleArgs: ({
+    config,
+    pkgs,
+    ...
+  }: {
+    config = {
+      # extra arguments
+      _module.args = moduleArgs;
+    };
+  });
 
   isBroken = derivation: derivation ? meta && derivation.meta ? broken && derivation.meta.broken;
 
