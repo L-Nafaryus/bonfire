@@ -22,6 +22,7 @@
   catarina = lib.nixosSystem {
     system = "x86_64-linux";
     modules = with inputs; [
+      elnafo-radio.nixosModules.elnafo-radio
       nixos-mailserver.nixosModules.mailserver
       sops-nix.nixosModules.sops
       oscuro.nixosModules.oscuro

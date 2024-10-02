@@ -51,7 +51,7 @@
       };
     };
 
-    radio-non-stop = {
+    radio-non-stop-pop = {
       autoStart = true;
       privateNetwork = true;
       hostAddress = "10.231.136.1";
@@ -84,7 +84,7 @@
               port "6661"
               encoder "lame"
               max_clients "0"
-              website "https://radio.elnafo.ru/non-stop"
+              website "https://radio.elnafo.ru/non-stop-pop"
               always_on "yes"
               tags "yes"
               bitrate "128"
@@ -103,10 +103,44 @@
     };
   };
 
+  services.elnafo-radio = {
+    enable = true;
+    base = {
+      title = "// Elnafo Radio //";
+      meta = [
+        ["author" "L-Nafaryus"]
+        ["discord" "https://discord.gg/ZWUChw5wzm"]
+        ["git" "https://vcs.elnafo.ru/L-Nafaryus/elnafo-radio"]
+      ];
+    };
+    stations = [
+      {
+        id = "synthwave";
+        name = "Synthwave";
+        host = "10.231.136.2";
+        port = 6600;
+        url = "https://radio.elnafo.ru/synthwave";
+        status = "Receive";
+        genre = "synthwave, dark synthwave";
+      }
+      {
+        id = "non-stop-pop";
+        name = "Non-Stop-Pop";
+        host = "10.231.136.3";
+        port = 6601;
+        url = "https://radio.elnafo.ru/non-stop-pop";
+        status = "Online";
+        location = "Los Santos";
+        genre = "pop, r&b, dance music";
+      }
+    ];
+  };
+
   services.nginx.virtualHosts."radio.elnafo.ru" = {
     forceSSL = true;
     useACMEHost = "elnafo.ru";
+    locations."/".proxyPass = "http://127.0.0.1:54605";
     locations."/synthwave".proxyPass = "http://10.231.136.2:6660";
-    locations."/non-stop".proxyPass = "http://10.231.136.3:6661";
+    locations."/non-stop-pop".proxyPass = "http://10.231.136.3:6661";
   };
 }

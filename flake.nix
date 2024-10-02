@@ -65,6 +65,10 @@
       url = "github:wez/wezterm?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    elnafo-radio = {
+      url = "git+https://vcs.elnafo.ru/L-Nafaryus/elnafo-radio";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {self, ...} @ inputs: let
