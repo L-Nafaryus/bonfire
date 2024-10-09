@@ -69,6 +69,7 @@
       url = "git+https://vcs.elnafo.ru/L-Nafaryus/elnafo-radio";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-std.url = "github:chessai/nix-std";
   };
 
   outputs = {self, ...} @ inputs: let

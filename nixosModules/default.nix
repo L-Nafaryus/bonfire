@@ -11,6 +11,7 @@
     ./services/qbittorrent-nox.nix
     ./services/spoofdpi.nix
     ./services/zapret.nix
+    ./services/conduit.nix
   ];
 
   configModule = {
@@ -24,6 +25,7 @@
       # extra arguments
       _module.args = {
         bonPkgs = self.packages.${pkgs.system};
+        bonLib = lib.mkDefault bonLib;
       };
     };
   };
@@ -44,7 +46,7 @@
     ...
   }: {
     # collect all modules
-    imports = importedModules;
+    imports = moduleList ++ [configModule];
   };
 in
   lib.listToAttrs (

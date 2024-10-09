@@ -112,4 +112,7 @@
     packagesList;
   in
     lib.mapAttrs (name: value: lib.mergeAttrsList value) (lib.zipAttrs evaluatedPackages);
+
+  # external
+  inherit (inputs.nix-std.lib.serde) toTOML;
 }
