@@ -42,6 +42,18 @@
           group = "nix-serve";
           mode = "0600";
         };
+
+        coturn-secret = lib.mkIf config.services.coturn.enable {
+          owner = "turnserver";
+          group = "turnserver";
+          key = "matrix/coturn-secret";
+        };
+
+        turn-secret = lib.mkIf config.services.conduit.enable {
+          owner = "conduit";
+          group = "conduit";
+          key = "matrix/coturn-secret";
+        };
       };
     };
 

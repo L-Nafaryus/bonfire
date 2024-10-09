@@ -13,6 +13,7 @@
     # ./services/papermc.nix # disabled
     ./services/gitea.nix
     ./services/radio.nix
+    ./services/matrix.nix
   ];
 
   # Nix settings
