@@ -14,6 +14,7 @@
     ./services/gitea.nix
     ./services/radio.nix
     ./services/matrix.nix
+    ./services/metrics.nix
   ];
 
   # Nix settings

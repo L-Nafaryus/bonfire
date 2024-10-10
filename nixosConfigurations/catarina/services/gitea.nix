@@ -55,6 +55,10 @@
       indexer = {
         REPO_INDEXER_ENABLED = true;
       };
+
+      metrics = {
+        ENABLED = true;
+      };
     };
 
     mailerPasswordFile = config.sops.secrets."gitea/mail".path;
