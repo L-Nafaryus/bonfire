@@ -83,12 +83,6 @@ in
 
     # Pass for cache
 
-    blender = {
-      source = ./blender;
-      platforms = ["x86_64-linux"];
-      builder = {...}: import;
-    };
-
     wezterm = {
       source = ./wezterm;
       platforms = ["x86_64-linux"];
