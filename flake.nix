@@ -91,8 +91,7 @@
     nixosConfigurations = import ./nixosConfigurations {inherit lib inputs bonModules bonLib self;};
 
     hydraJobs = {
-      # filter broken packages ?
-      packages = lib.filterAttrsRecursive (name: value: !bonLib.isBroken value) self.packages;
+      packages = lib.filterAttrsRecursive (name: value: !bonLib.isBroken value && !bonLib.isInsecure value && !bonLib.isUnfree value) self.packages;
     };
 
     templates = {

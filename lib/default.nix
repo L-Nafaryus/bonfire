@@ -33,6 +33,8 @@
   });
 
   isBroken = derivation: derivation ? meta && derivation.meta ? broken && derivation.meta.broken;
+  isInsecure = derivation: derivation ? meta && derivation.meta ? insecure && derivation.meta.insecure;
+  isUnfree = derivation: derivation ? meta && derivation.meta ? unfree && derivation.meta.unfree;
 
   functionType = lib.types.mkOptionType {
     name = "function";

@@ -111,6 +111,7 @@
         ["author" "L-Nafaryus"]
         ["discord" "https://discord.gg/ZWUChw5wzm"]
         ["git" "https://vcs.elnafo.ru/L-Nafaryus/elnafo-radio"]
+        ["matrix" "https://matrix.to/#/#elnafo:elnafo.ru"]
       ];
     };
     stations = [
