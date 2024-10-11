@@ -71,7 +71,7 @@
     settings.system_clipboard.sync_with_ring = true;
   };
 
-  extraPlugins = with pkgs.vimPlugins; [nvim-web-devicons];
+  plugins.web-devicons.enable = true;
 
   diagnostics = {
     underline = true;
@@ -364,7 +364,7 @@
           ];
         };
         cmake.enable = true;
-        nil-ls.enable = true;
+        nil_ls.enable = true;
         # pylyzer.enable = true;    # not working with virtual environments currently :(
         pylsp = {
           enable = true; # https://github.com/nix-community/nixvim/pull/1893
@@ -373,13 +373,13 @@
             black.enabled = true;
           };
         };
-        rust-analyzer = {
+        rust_analyzer = {
           enable = true;
           package = rust-analyzer;
           cargoPackage = cargo;
           rustcPackage = rustc;
-          installCargo = true;
-          installRustc = true;
+          installCargo = false;
+          installRustc = false;
           settings = {
             checkOnSave = true;
             check.command = "clippy";
