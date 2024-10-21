@@ -2,35 +2,21 @@
   pkgs,
   lib,
   config,
+  bonLib,
   ...
 }: {
   system.stateVersion = "23.11";
 
-  imports = [./hardware.nix ./users.nix];
+  imports = [
+    bonLib.preconfiguredModules.nixos.common
+    ./hardware.nix
+    ./users.nix
+  ];
 
   # Nix settings
-  nix = {
-    settings = {
-      experimental-features = ["nix-command" "flakes" "repl-flake"];
-      trusted-users = ["l-nafaryus"];
-      allowed-users = ["l-nafaryus"];
-      substituters = [
-        "https://cache.elnafo.ru"
-        "https://bonfire.cachix.org"
-        "https://nix-community.cachix.org"
-      ];
-      trusted-public-keys = [
-        "cache.elnafo.ru:j3VD+Hn+is2Qk3lPXDSdPwHJQSatizk7V82iJ2RP1yo="
-        "bonfire.cachix.org-1:mzAGBy/Crdf8NhKail5ciK7ZrGRbPJJobW6TwFb7WYM="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
-      auto-optimise-store = true;
-    };
-    gc = {
-      automatic = lib.mkDefault true;
-      dates = lib.mkDefault "weekly";
-      options = lib.mkDefault "--delete-older-than 7d";
-    };
+  nix.settings = {
+    trusted-users = ["l-nafaryus"];
+    allowed-users = ["l-nafaryus"];
   };
 
   # Nix packages
@@ -57,52 +43,16 @@
 
     videoDrivers = ["nvidia"];
 
-    #displayManager.gdm = {
-    #    enable = true;
-    #    autoSuspend = false;
-    #    wayland = true;
-    #};
-    #desktopManager.gnome.enable = true;
-    #windowManager.awesome.enable = true;
-
     wacom.enable = true;
   };
 
-  services.greetd = let
-    hyprConfig = pkgs.writeText "greetd-hyprland-config" ''
-      exec-once = ${lib.getExe pkgs.greetd.regreet}; hyprctl dispatch exit
-    '';
-  in {
+  services.desktopManager.plasma6.enable = true;
+
+  services.displayManager.sddm = {
     enable = true;
-    settings = {
-      default_session = {
-        command = "${lib.getExe config.programs.hyprland.package} --config ${hyprConfig}";
-        user = "greeter";
-      };
-    };
+    wayland.enable = true;
   };
 
-  programs.regreet = {
-    enable = true;
-    settings = {
-      GTK = {
-        application_prefer_dark_theme = true;
-        # TODO: provide gtk themes
-        # theme_name = "Catppuccin-Macchiato-Standard-Green-Dark";
-        # icon_theme_name = "Catppuccin-Macchiato-Green-Cursors";
-        # cursor_theme_name = "Papirus-Dark";
-        # font_name = "";
-      };
-      appearance = {
-        greeting_msg = "Hey, you. You're finally awake.";
-      };
-    };
-  };
-
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
   services.dbus.enable = true;
 
   services.printing = {
@@ -132,7 +82,6 @@
   };
 
   services.udev = {
-    packages = with pkgs; [gnome.gnome-settings-daemon];
     extraRules = ''
       KERNEL=="rtc0", GROUP="audio"
       KERNEL=="hpet", GROUP="audio"
@@ -147,49 +96,6 @@
     fileSystems = ["/"];
   };
 
-  # Packages
-  environment.systemPackages = with pkgs; [
-    wget
-
-    parted
-    ntfs3g
-    sshfs
-    exfat
-
-    lm_sensors
-
-    git
-    git-lfs
-    ripgrep
-    fd
-    lazygit
-    unzip
-
-    gnumake
-
-    fishPlugins.fzf-fish
-    fishPlugins.tide
-    fishPlugins.grc
-    fishPlugins.hydro
-
-    nnn
-    fzf
-    grc
-
-    gcc
-
-    cachix
-  ];
-
-  programs = {
-    fish.enable = true;
-
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-    };
-  };
-
   programs.ssh.extraConfig = ''
     Host astora
         HostName 192.168.156.101
@@ -201,13 +107,6 @@
         Port 22
         User l-nafaryus
   '';
-
-  programs.direnv.enable = true;
-
-  fonts.packages = with pkgs; [nerdfonts];
-
-  programs.steam.enable = true;
-  systemd.extraConfig = "DefaultLimitNOFILE=1048576";
 
   virtualisation = {
     containers.enable = true;

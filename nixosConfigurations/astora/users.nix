@@ -40,12 +40,7 @@ in {
     ];
 
     home.packages = with pkgs; [
-      #gnupg
-      git
-      #nnn
-      pass
       taskwarrior3
-      #tmux
 
       gparted
 
@@ -99,22 +94,13 @@ in {
       jdk
       bonPkgs.ultimmc
 
-      liberation_ttf
-
       steamtinkerlaunch
 
-      discord
-      webcord
-
-      tor
-      #rofi-wayland
-      kgx
       dunst
       libnotify
       # btop
       lua
       # bat
-      musikcube
       mangohud
       gamescope
       libstrangle
@@ -124,6 +110,11 @@ in {
       freenect
 
       mpc-cli
+
+      kdePackages.kmail
+
+      flacon
+      picard
     ];
 
     # Theme
@@ -406,10 +397,10 @@ in {
       MODE_QUIC=1
       MODE_FILTER=ipset
       TPWS_OPT="--split-http-req=method --split-pos=1 --oob"
-      NFQWS_OPT_DESYNC="--dpi-desync=fake --dpi-desync-ttl=7 --dpi-desync-fake-http=0x00000000"
-      NFQWS_OPT_DESYNC_HTTP="--dpi-desync=fake,split2 --dpi-desync-ttl=4"
-      NFQWS_OPT_DESYNC_HTTPS="--dpi-desync=split2 --dpi-desync-split-pos=1"
-      NFQWS_OPT_DESYNC_QUIC="--dpi-desync=split2 --dpi-desync-repeats=6"
+      NFQWS_OPT_DESYNC="--dpi-desync=fake --dpi-desync-ttl=5"
+      NFQWS_OPT_DESYNC_HTTP="--dpi-desync=fake --dpi-desync-ttl=5"
+      NFQWS_OPT_DESYNC_HTTPS="--dpi-desync=fake --dpi-desync-ttl=5"
+      NFQWS_OPT_DESYNC_QUIC="--dpi-desync=fake --dpi-desync-ttl=5"
       INIT_APPLY_FW=1
     '';
     filterAddressesSource = "https://antifilter.network/download/ipsmart.lst";
@@ -437,4 +428,16 @@ in {
     # User-id must match above user. MPD will look inside this directory for the PipeWire socket.
     XDG_RUNTIME_DIR = "/run/user/${toString config.users.users.l-nafaryus.uid}";
   };
+
+  programs.kdeconnect = {
+    enable = true;
+    package = lib.mkForce pkgs.kdePackages.kdeconnect-kde;
+  };
+
+  programs.direnv.enable = true;
+
+  fonts.packages = with pkgs; [nerdfonts liberation_ttf];
+
+  programs.steam.enable = true;
+  systemd.extraConfig = "DefaultLimitNOFILE=1048576";
 }

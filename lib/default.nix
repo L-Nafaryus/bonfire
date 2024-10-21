@@ -17,6 +17,7 @@
     [
       ./preconfiguredModules/bonvim.nix
       ./preconfiguredModules/homeManager
+      ./preconfiguredModules/nixos
       #(import ./preconfiguredModules/bonvim.nix)
       #(import ./preconfiguredModules/homeManager {inherit lib inputs;})
     ]);

@@ -1,9 +1,69 @@
 {
-  config,
   lib,
+  config,
+  pkgs,
   ...
 }: {
-  # Boot
+  # Nix settings
+  nix = {
+    settings = {
+      experimental-features = ["nix-command" "flakes" "repl-flake"];
+      substituters = [
+        "https://cache.elnafo.ru"
+        "https://bonfire.cachix.org"
+        "https://nix-community.cachix.org"
+      ];
+      trusted-public-keys = [
+        "cache.elnafo.ru:j3VD+Hn+is2Qk3lPXDSdPwHJQSatizk7V82iJ2RP1yo="
+        "bonfire.cachix.org-1:mzAGBy/Crdf8NhKail5ciK7ZrGRbPJJobW6TwFb7WYM="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+      auto-optimise-store = true;
+    };
+    gc = {
+      automatic = lib.mkDefault true;
+      dates = lib.mkDefault "weekly";
+      options = lib.mkDefault "--delete-older-than 7d";
+    };
+  };
+
+  # Filesystem
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = ["subvol=root" "compress=zstd"];
+    };
+
+    "/boot" = {
+      device = "/dev/disk/by-label/boot";
+      fsType = "vfat";
+    };
+
+    "/nix" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = ["subvol=nix" "compress=zstd" "noatime"];
+    };
+
+    "/home" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = ["subvol=home" "compress=zstd"];
+    };
+
+    "/swap" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = ["subvol=swap" "noatime"];
+    };
+  };
+
+  swapDevices = [
+    {device = "/swap/swapfile";}
+  ];
+
+  # Boot and kernel options
   boot = {
     loader.systemd-boot.enable = true;
     loader.systemd-boot.configurationLimit = 5;
@@ -14,11 +74,7 @@
 
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
     initrd.kernelModules = [];
-    kernelModules = ["kvm-amd" "tcp_bbr" "coretemp" "nct6775"];
-    extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
-    #extraModprobeConfig = ''
-    #  options v4l2loopback devices=1 video_nr=1 card_label="OBS Camera" exclusive_caps=1
-    #'';
+    kernelModules = ["tcp_bbr" "coretemp" "nct6775"];
     kernelParams = ["threadirqs"];
 
     kernel.sysctl = {
@@ -66,9 +122,9 @@
   # Security
   security = {
     protectKernelImage = true;
-    acme.acceptTerms = true;
     sudo.extraConfig = ''Defaults timestamp_timeout=30'';
     rtkit.enable = true;
+    polkit.enable = true;
     pam.loginLimits = [
       {
         domain = "@audio";
@@ -107,116 +163,14 @@
         value = "524288";
       }
     ];
-    polkit.enable = true;
   };
 
-  users.users.root.initialPassword = "nixos";
-
-  # Filesystem
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "btrfs";
-      options = ["subvol=root" "compress=zstd"];
-    };
-
-    "/boot" = {
-      device = "/dev/disk/by-label/boot";
-      fsType = "vfat";
-    };
-
-    "/nix" = {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "btrfs";
-      options = ["subvol=nix" "compress=zstd" "noatime"];
-    };
-
-    "/home" = {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "btrfs";
-      options = ["subvol=home" "compress=zstd"];
-    };
-
-    "/swap" = {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "btrfs";
-      options = ["subvol=swap" "noatime"];
-    };
-
-    "/media/steam-library" = {
-      device = "/dev/disk/by-label/siegward";
-      fsType = "btrfs";
-      options = ["subvol=steam-library" "compress=zstd"];
-    };
-
-    "/media/lutris" = {
-      device = "/dev/disk/by-label/siegward";
-      fsType = "btrfs";
-      options = ["subvol=lutris" "compress=zstd"];
-    };
-  };
-
-  swapDevices = [
-    {device = "/swap/swapfile";}
-  ];
-
-  services.fstrim.enable = true;
-
-  # Hardware etc
+  # Hardware
   hardware = {
     enableRedistributableFirmware = true;
-
-    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-    nvidia.nvidiaSettings = true;
-    nvidia.modesetting.enable = true;
-    nvidia.open = false;
-
-    graphics.enable = true;
-    graphics.enable32Bit = true;
-
-    bluetooth.enable = true;
-
-    pulseaudio.enable = false;
   };
 
-  networking = {
-    networkmanager.enable = true;
-    networkmanager.unmanaged = ["interface-name:ve-*"];
-    useDHCP = lib.mkDefault true;
-    hostName = "astora";
-    extraHosts = '''';
-
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [80 443];
-      trustedInterfaces = ["ve-+"];
-      extraCommands = ''
-        iptables -t nat -A POSTROUTING -o wlo1 -j MASQUERADE
-      '';
-      extraStopCommands = ''
-        iptables -t nat -D POSTROUTING -o wlo1 -j MASQUERADE
-      '';
-    };
-
-    nat = {
-      enable = true;
-      externalInterface = "wlo1";
-      internalInterfaces = ["ve-+"];
-    };
-
-    interfaces.wlo1.ipv4.addresses = [
-      {
-        address = "192.168.156.101";
-        prefixLength = 24;
-      }
-    ];
-
-    defaultGateway = "192.168.156.1";
-    nameservers = ["192.168.156.1" "8.8.8.8"];
-  };
-
-  # Common
+  # Timezone and locale
   time.timeZone = "Asia/Yekaterinburg";
 
   i18n = {
@@ -231,6 +185,52 @@
       LC_PAPER = "en_US.UTF-8";
       LC_TELEPHONE = "en_US.UTF-8";
       LC_TIME = "en_US.UTF-8";
+    };
+  };
+
+  # Base packages
+  environment.systemPackages = with pkgs; [
+    wget
+
+    parted
+    ntfs3g
+    sshfs
+    exfat
+    btrfs-progs
+    btrbk
+
+    lm_sensors
+    btop
+
+    git
+    git-lfs
+    lazygit
+
+    nnn
+    fzf
+    ripgrep
+    fd
+
+    unzip
+
+    fishPlugins.fzf-fish
+    fishPlugins.tide
+    fishPlugins.grc
+    fishPlugins.hydro
+    grc
+
+    gnupg
+    pass
+
+    bat
+  ];
+
+  programs = {
+    fish.enable = true;
+
+    neovim = {
+      enable = true;
+      defaultEditor = true;
     };
   };
 }

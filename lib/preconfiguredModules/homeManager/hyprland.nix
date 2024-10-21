@@ -24,7 +24,6 @@
   xdg.portal = {
     enable = true;
     configPackages = with pkgs; [
-      #xdg-desktop-portal-wlr
       xdg-desktop-portal-hyprland
     ];
     extraPortals = with pkgs; [
