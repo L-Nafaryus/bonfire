@@ -7,7 +7,7 @@
   # Nix settings
   nix = {
     settings = {
-      experimental-features = ["nix-command" "flakes" "repl-flake"];
+      experimental-features = ["nix-command" "flakes"];
       substituters = [
         "https://cache.elnafo.ru"
         "https://bonfire.cachix.org"
@@ -91,8 +91,9 @@
       "net.ipv4.conf.default.rp_filter" = 1;
       "net.ipv4.conf.all.rp_filter" = 1;
       # Do not accept IP source route packets
-      "net.ipv4.conf.all.accept_source_route" = 0;
-      "net.ipv6.conf.all.accept_source_route" = 0;
+      "net.ipv4.conf.all.accept_source_route" = 1;
+      "net.ipv4.conf.wlo1.accept_source_route" = 1;
+      "net.ipv6.conf.all.accept_source_route" = 1;
       # Don't send ICMP redirects
       "net.ipv4.conf.all.send_redirects" = 0;
       "net.ipv4.conf.default.send_redirects" = 0;

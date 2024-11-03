@@ -152,13 +152,15 @@
   # UI
   plugins.noice = {
     enable = true;
-    lsp.override = {
-      "cmp.entry.get_documentation" = true;
-      "vim.lsp.util.convert_input_to_markdown_lines" = true;
-      "vim.lsp.util.stylize_markdown" = true;
-    };
-    presets = {
-      long_message_to_split = true;
+    settings = {
+      lsp.override = {
+        "cmp.entry.get_documentation" = true;
+        "vim.lsp.util.convert_input_to_markdown_lines" = true;
+        "vim.lsp.util.stylize_markdown" = true;
+      };
+      presets = {
+        long_message_to_split = true;
+      };
     };
   };
 
@@ -365,14 +367,16 @@
         };
         cmake.enable = true;
         nil_ls.enable = true;
+        pyright.enable = true;
+        ruff.enable = true;
         # pylyzer.enable = true;    # not working with virtual environments currently :(
-        pylsp = {
-          enable = true; # https://github.com/nix-community/nixvim/pull/1893
-          settings.plugins = {
-            pyflakes.enabled = true;
-            black.enabled = true;
-          };
-        };
+        #pylsp = {
+        #  enable = true; # https://github.com/nix-community/nixvim/pull/1893
+        #  settings.plugins = {
+        #    pyflakes.enabled = true;
+        #    black.enabled = true;
+        #  };
+        #};
         rust_analyzer = {
           enable = true;
           package = rust-analyzer;

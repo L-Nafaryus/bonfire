@@ -10,7 +10,8 @@
     ./services/papermc.nix
     ./services/qbittorrent-nox.nix
     ./services/spoofdpi.nix
-    ./services/zapret.nix
+    # ISSUE: collision with nixos module zapret
+    #./services/zapret.nix
     ./services/conduit.nix
   ];
 

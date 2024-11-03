@@ -36,7 +36,7 @@ in {
       })
       inputs.catppuccin.homeManagerModules.catppuccin
       inputs.ags.homeManagerModules.default
-      bonLib.preconfiguredModules.homeManager.hyprland
+      #bonLib.preconfiguredModules.homeManager.hyprland
     ];
 
     home.packages = with pkgs; [
@@ -96,8 +96,8 @@ in {
 
       steamtinkerlaunch
 
-      dunst
-      libnotify
+      #dunst
+      #libnotify
       # btop
       lua
       # bat
@@ -112,10 +112,24 @@ in {
       mpc-cli
 
       kdePackages.kmail
+      kdePackages.kmail-account-wizard
 
       flacon
       picard
+
+      podman-desktop
+      virtiofsd
     ];
+
+    xdg.portal = {
+      enable = true;
+      configPackages = with pkgs; [
+        kdePackages.xdg-desktop-portal-kde
+      ];
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+      ];
+    };
 
     # Theme
     catppuccin = {
@@ -123,22 +137,6 @@ in {
       enable = true;
       flavor = "macchiato";
       accent = "green";
-    };
-
-    gtk = {
-      enable = true;
-      # TODO: fix catppuccin deprecation. Provide Paper icons to gtk and gnomeShell manually. (+ regreet)
-      catppuccin = {
-        enable = true;
-        accent = "green";
-        flavor = "macchiato";
-        gnomeShellTheme = true;
-        icon = {
-          enable = true;
-          accent = "green";
-          flavor = "macchiato";
-        };
-      };
     };
 
     programs = {
@@ -222,6 +220,9 @@ in {
         homedir = "${hmConfig.xdg.configHome}/gnupg";
         mutableKeys = true;
         mutableTrust = true;
+        settings = {
+          default-key = "B0B3 DFDB B842 BE9C 7468  B511 86F1 EA98 B48F FB19";
+        };
         # TODO: replace existing ssh key with gpg provided
       };
 
@@ -249,7 +250,7 @@ in {
       # Graphical
 
       wezterm = {
-        enable = true;
+        enable = false;
         package = inputs.wezterm.packages.x86_64-linux.default;
         extraConfig = ''
           return {
@@ -272,7 +273,7 @@ in {
       };
 
       rofi = {
-        enable = true;
+        enable = false;
         package = pkgs.rofi-wayland;
         terminal = "${lib.getExe hmConfig.programs.wezterm.package}";
         cycle = true;
@@ -317,7 +318,7 @@ in {
         defaultCacheTtl = 3600;
         defaultCacheTtlSsh = 3600;
         enableSshSupport = true;
-        pinentryPackage = pkgs.pinentry-gtk2;
+        pinentryPackage = pkgs.pinentry-qt;
         enableFishIntegration = true;
         enableBashIntegration = true;
       };
@@ -383,28 +384,28 @@ in {
   };
 
   # Services
-  services.spoofdpi.enable = true;
+  #services.spoofdpi.enable = true;
 
-  services.zapret = {
-    enable = true;
-    mode = "nfqws";
-    firewallType = "iptables";
-    disableIpv6 = true;
-    settings = ''
-      MODE_HTTP=1
-      MODE_HTTP_KEEPALIVE=0
-      MODE_HTTPS=1
-      MODE_QUIC=1
-      MODE_FILTER=ipset
-      TPWS_OPT="--split-http-req=method --split-pos=1 --oob"
-      NFQWS_OPT_DESYNC="--dpi-desync=fake --dpi-desync-ttl=5"
-      NFQWS_OPT_DESYNC_HTTP="--dpi-desync=fake --dpi-desync-ttl=5"
-      NFQWS_OPT_DESYNC_HTTPS="--dpi-desync=fake --dpi-desync-ttl=5"
-      NFQWS_OPT_DESYNC_QUIC="--dpi-desync=fake --dpi-desync-ttl=5"
-      INIT_APPLY_FW=1
-    '';
-    filterAddressesSource = "https://antifilter.network/download/ipsmart.lst";
-  };
+  #services.zapret = {
+  #  enable = true;
+  #  mode = "nfqws";
+  #  firewallType = "iptables";
+  #  disableIpv6 = true;
+  #  settings = ''
+  #    MODE_HTTP=1
+  #    MODE_HTTP_KEEPALIVE=0
+  #    MODE_HTTPS=1
+  #    MODE_QUIC=1
+  #    MODE_FILTER=ipset
+  #    TPWS_OPT="--split-http-req=method --split-pos=1 --oob"
+  #    NFQWS_OPT_DESYNC="--dpi-desync=fake --dpi-desync-ttl=5"
+  #    NFQWS_OPT_DESYNC_HTTP="--dpi-desync=fake --dpi-desync-ttl=5"
+  #    NFQWS_OPT_DESYNC_HTTPS="--dpi-desync=fake --dpi-desync-ttl=5"
+  #    NFQWS_OPT_DESYNC_QUIC="--dpi-desync=fake --dpi-desync-ttl=5"
+  #    INIT_APPLY_FW=1
+  #  '';
+  #  filterAddressesSource = "https://antifilter.network/download/ipsmart.lst";
+  #};
 
   # TODO: remember who use gvfs
   services.gvfs.enable = true;

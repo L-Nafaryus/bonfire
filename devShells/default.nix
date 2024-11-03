@@ -30,4 +30,6 @@ in
     rust-x11 = import ./rust-x11.nix environment;
 
     go = import ./go.nix environment;
+
+    python-uv = import ./python-uv.nix environment;
   })

@@ -53,7 +53,10 @@
     wayland.enable = true;
   };
 
-  services.dbus.enable = true;
+  services.dbus = {
+    enable = true;
+    packages = with pkgs; [networkmanager];
+  };
 
   services.printing = {
     enable = true;
@@ -88,7 +91,7 @@
     '';
   };
 
-  services.blueman.enable = true;
+  #services.blueman.enable = true;
 
   services.btrfs.autoScrub = {
     enable = true;
@@ -116,5 +119,9 @@
       defaultNetwork.settings.dns_enabled = true;
     };
     libvirtd.enable = true;
+    test-share = {
+      source = "/home/l-nafaryus/vms/shared";
+      target = "/mnt/shared";
+    };
   };
 }
