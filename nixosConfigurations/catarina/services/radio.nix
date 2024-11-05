@@ -195,5 +195,6 @@
     locations."/".proxyPass = "http://${config.services.elnafo-radio.host}:${config.services.elnafo-radio.port}";
     locations."/synthwave".proxyPass = "http://${config.containers.radio-synthwave.localAddress}:6660";
     locations."/non-stop-pop".proxyPass = "http://${config.containers.radio-non-stop-pop.localAddress}:6661";
+    locations."/hell-gates".proxyPass = "http://${config.containers.radio-non-stop-pop.localAddress}:6662";
   };
 }
