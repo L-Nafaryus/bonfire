@@ -180,7 +180,7 @@
       {
         id = "hell-gates";
         name = "Hell Gates";
-        host = config.containers.radio-non-stop-pop.localAddress;
+        host = config.containers.radio-hell-gates.localAddress;
         port = 6602;
         url = "https://radio.elnafo.ru/hell-gates";
         status = "Receive";
@@ -192,9 +192,9 @@
   services.nginx.virtualHosts."radio.elnafo.ru" = {
     forceSSL = true;
     useACMEHost = "elnafo.ru";
-    locations."/".proxyPass = "http://${config.services.elnafo-radio.host}:${config.services.elnafo-radio.port}";
+    locations."/".proxyPass = "http://${config.services.elnafo-radio.server.address}:${toString config.services.elnafo-radio.server.port}";
     locations."/synthwave".proxyPass = "http://${config.containers.radio-synthwave.localAddress}:6660";
     locations."/non-stop-pop".proxyPass = "http://${config.containers.radio-non-stop-pop.localAddress}:6661";
-    locations."/hell-gates".proxyPass = "http://${config.containers.radio-non-stop-pop.localAddress}:6662";
+    locations."/hell-gates".proxyPass = "http://${config.containers.radio-hell-gates.localAddress}:6662";
   };
 }
