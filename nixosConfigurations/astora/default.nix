@@ -91,6 +91,8 @@
     '';
   };
 
+  services.cockpit.enable = true;
+
   #services.blueman.enable = true;
 
   services.btrfs.autoScrub = {
@@ -118,7 +120,10 @@
       dockerCompat = true;
       defaultNetwork.settings.dns_enabled = true;
     };
-    libvirtd.enable = true;
+    libvirtd = {
+      enable = true;
+      qemu.vhostUserPackages = with pkgs; [virtiofsd];
+    };
     test-share = {
       source = "/home/l-nafaryus/vms/shared";
       target = "/mnt/shared";

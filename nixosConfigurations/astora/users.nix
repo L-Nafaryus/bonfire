@@ -118,7 +118,7 @@ in {
       picard
 
       podman-desktop
-      virtiofsd
+      # virtiofsd
     ];
 
     xdg.portal = {

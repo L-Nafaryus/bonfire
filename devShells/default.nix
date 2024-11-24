@@ -18,6 +18,8 @@ in
 
       crane = self.inputs.crane;
       crane-lib = self.inputs.crane.mkLib pkgs;
+
+      drift = self.inputs.drift.packages.${system}.drift;
     };
   in {
     default = import ./bonfire.nix environment;

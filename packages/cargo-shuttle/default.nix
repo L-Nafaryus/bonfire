@@ -30,6 +30,16 @@
       zlib
     ];
 
+    passthru = {
+      update = pkgs.writeShellScriptBin "update-spoofdpi" ''
+        set -euo pipefail
+
+        latest="$(${pkgs.curl}/bin/curl -s "https://api.github.com/repos/shuttle-hq/shuttle/tags?per_page=1" | ${pkgs.jq}/bin/jq -r ".[0].name" | ${pkgs.gnused}/bin/sed 's/^v//')"
+
+        drift rewrite --auto-hash --new-version "$latest"
+      '';
+    };
+
     meta = with lib; {
       description = "A cargo command for the shuttle platform";
       license = licenses.asl20;

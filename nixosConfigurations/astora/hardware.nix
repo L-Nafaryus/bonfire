@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: {
   # Boot
@@ -48,6 +49,7 @@
     networkmanager = {
       enable = true;
       enableStrongSwan = true;
+      plugins = with pkgs; [networkmanager-l2tp];
     };
   };
 }
