@@ -18,6 +18,9 @@ in {
     uid = 1000;
     initialPassword = "nixos";
     shell = pkgs.fish;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG1YGp8AI48hJUSQBZpuKLpbj2+3Q09vq64NxFr0N1MS"
+    ];
   };
 
   home-manager.useGlobalPkgs = true;
@@ -117,7 +120,13 @@ in {
       flacon
       picard
 
-      podman-desktop
+      docker-compose
+      podman-compose
+      dive
+      lazydocker
+
+      ksshaskpass
+
       # virtiofsd
     ];
 
@@ -372,6 +381,7 @@ in {
   environment.sessionVariables = {
     # hint electron applications to use wayland
     NIXOS_OZONE_WL = "1";
+    DOCKER_HOST = "unix:///run/user/${toString config.users.users.l-nafaryus.uid}/podman/podman.sock";
   };
 
   systemd.user.extraConfig = "DefaultLimitNOFILE=524288";
@@ -441,4 +451,11 @@ in {
 
   programs.steam.enable = true;
   systemd.extraConfig = "DefaultLimitNOFILE=1048576";
+
+  programs.ssh = {
+    enableAskPassword = true;
+    askPassword = "${lib.getExe' pkgs.ksshaskpass "ksshaskpass"}";
+    hostKeyAlgorithms = ["ssh-ed25519" "ssh-rsa"];
+    startAgent = true;
+  };
 }

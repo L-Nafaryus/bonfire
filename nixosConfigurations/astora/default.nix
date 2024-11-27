@@ -124,9 +124,5 @@
       enable = true;
       qemu.vhostUserPackages = with pkgs; [virtiofsd];
     };
-    test-share = {
-      source = "/home/l-nafaryus/vms/shared";
-      target = "/mnt/shared";
-    };
   };
 }
