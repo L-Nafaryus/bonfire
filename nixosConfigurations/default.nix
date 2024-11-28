@@ -31,4 +31,18 @@
     ];
     specialArgs = {bonPkgs = self.packages.x86_64-linux;};
   };
+
+  vinheim = lib.nixosSystem {
+    system = "x86_64-linux";
+    modules = with inputs; [
+      home-manager.nixosModules.home-manager
+      ./vinheim
+    ];
+    specialArgs = {
+      inherit inputs bonLib;
+      bonPkgs = self.packages.x86_64-linux;
+    };
+  };
+
+
 }
