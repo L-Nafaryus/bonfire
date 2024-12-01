@@ -13,7 +13,7 @@ in {
   users.users.l-nafaryus = {
     isNormalUser = true;
     description = "L-Nafaryus";
-    extraGroups = ["networkmanager" "wheel" "audio" "libvirtd" "input" "video" "disk" "wireshark"];
+    extraGroups = ["networkmanager" "wheel" "audio" "libvirtd" "input" "video" "disk" "wireshark" "adbusers"];
     group = "users";
     uid = 1000;
     initialPassword = "nixos";
@@ -394,7 +394,7 @@ in {
   };
 
   # Services
-  #services.spoofdpi.enable = true;
+  services.spoofdpi.enable = true;
 
   #services.zapret = {
   #  enable = true;
@@ -458,4 +458,8 @@ in {
     hostKeyAlgorithms = ["ssh-ed25519" "ssh-rsa"];
     startAgent = true;
   };
+
+  programs.adb.enable = true;
+
+  services.udev.packages = [pkgs.android-udev-rules];
 }
