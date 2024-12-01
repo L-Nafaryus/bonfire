@@ -38,7 +38,7 @@
       root = pkgs.element-web.override {
         conf = {
           default_theme = "dark";
-          default_server_name = "matrix.elnafo.ru";
+          default_server_name = "https://matrix.elnafo.ru";
           brand = "Elnafo Matrix";
           permalink_prefix = "https://element.elnafo.ru";
         };
