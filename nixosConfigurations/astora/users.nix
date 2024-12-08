@@ -447,7 +447,7 @@ in {
 
   programs.direnv.enable = true;
 
-  fonts.packages = with pkgs; [nerdfonts liberation_ttf];
+  fonts.packages = with pkgs; [nerd-fonts.jetbrains-mono liberation_ttf];
 
   programs.steam.enable = true;
   systemd.extraConfig = "DefaultLimitNOFILE=1048576";
