@@ -81,6 +81,12 @@ in
       builder = {pkgs, ...}: pkgs.callPackage;
     };
 
+    lego = {
+      source = ./lego;
+      platforms = ["x86_64-linux"];
+      builder = {pkgs, ...}: pkgs.callPackage;
+    };
+
     # Pass for cache
 
     # ISSUE: attribute 'targetPlatforms' missing
