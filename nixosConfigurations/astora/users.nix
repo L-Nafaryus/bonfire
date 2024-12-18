@@ -144,7 +144,7 @@ in {
     # Theme
     catppuccin = {
       # global, for all enabled programs
-      enable = true;
+      enable = false;
       flavor = "macchiato";
       accent = "green";
     };

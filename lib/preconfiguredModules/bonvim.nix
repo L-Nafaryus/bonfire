@@ -93,36 +93,39 @@
   };
 
   # Theme
-  colorschemes.catppuccin = {
-    enable = true;
-    settings = {
-      flavour = "macchiato";
-      no_bold = false;
-      no_italic = false;
-      no_underline = false;
-      integrations = {
-        cmp = true;
-        notify = true;
-        gitsigns = true;
-        neotree = true;
-        which_key = true;
-        illuminate = {
-          enabled = true;
-        };
-        treesitter = true;
-        telescope.enabled = true;
-        indent_blankline.enabled = true;
-        mini.enabled = true;
-        native_lsp = {
-          enabled = true;
-          inlay_hints = {
-            background = true;
+  colorschemes = {
+    gruvbox.enable = true;
+    catppuccin = {
+      enable = false;
+      settings = {
+        flavour = "macchiato";
+        no_bold = false;
+        no_italic = false;
+        no_underline = false;
+        integrations = {
+          cmp = true;
+          notify = true;
+          gitsigns = true;
+          neotree = true;
+          which_key = true;
+          illuminate = {
+            enabled = true;
           };
-          underlines = {
-            errors = ["undercurl"];
-            hints = ["undercurl"];
-            information = ["undercurl"];
-            warnings = ["undercurl"];
+          treesitter = true;
+          telescope.enabled = true;
+          indent_blankline.enabled = true;
+          mini.enabled = true;
+          native_lsp = {
+            enabled = true;
+            inlay_hints = {
+              background = true;
+            };
+            underlines = {
+              errors = ["undercurl"];
+              hints = ["undercurl"];
+              information = ["undercurl"];
+              warnings = ["undercurl"];
+            };
           };
         };
       };
