@@ -4,7 +4,7 @@
   fetchFromGitHub,
   buildGoModule,
   nixosTests,
-  version ? "0bbf5ab59cda8beaedf5b1ce21a3d1bf0eb48fc5",
+  version ? "bfe36067932e4594d3baf01cb6545c43b8e1f79c",
   hash ? "sha256-j6AlA9+whDxvpbZBCnJinKTb0+bJrSqnMgCqmWWfLig=",
   vendorHash ? "sha256-r9R+d5H5RjwzksbAlcFPyRtCGXSH1JBVfNHr5QiHA7Y=",
   ...
@@ -35,6 +35,7 @@ buildGoModule rec {
     license = licenses.mit;
     homepage = "https://go-acme.github.io/lego/";
     maintainers = with bonLib.maintainers; [L-Nafaryus];
+    mainProgram = "lego";
   };
 
   passthru.tests.lego = nixosTests.acme;

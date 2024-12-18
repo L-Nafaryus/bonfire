@@ -54,6 +54,10 @@
     hostPlatform = lib.mkDefault "x86_64-linux";
     config.allowUnfree = true;
     config.cudaSupport = false;
+
+    overlays = [
+      (final: prev: {lego = bonPkgs.lego;})
+    ];
   };
 
   # Services
@@ -101,7 +105,7 @@
     certs = {
       "elnafo.ru" = {
         extraDomainNames = ["*.elnafo.ru"];
-        dnsProvider = "webnames";
+        dnsProvider = "timewebcloud";
         credentialsFile = config.sops.secrets."dns".path;
         webroot = null;
       };
