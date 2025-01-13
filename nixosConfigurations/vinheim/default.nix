@@ -70,6 +70,10 @@
     settings.KbdInteractiveAuthentication = false;
   };
 
+  services.printing = {
+    enable = true;
+  };
+
   programs.ssh.extraConfig = ''
     Host catarina
         HostName 77.242.105.50
@@ -82,6 +86,7 @@
     podman = {
       enable = true;
       dockerCompat = true;
+      dockerSocket.enable = true;
       defaultNetwork.settings.dns_enabled = true;
     };
     libvirtd.enable = true;
