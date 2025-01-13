@@ -17,6 +17,8 @@ with lib; let
           (lib.splitString "\n" (lib.removeSuffix "\n" str))))
   );
 in {
+  disabledModules = ["services/networking/zapret.nix"];
+
   options.services.zapret = {
     enable = mkEnableOption "DPI bypass multi platform service";
 

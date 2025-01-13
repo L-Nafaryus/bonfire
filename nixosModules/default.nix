@@ -11,7 +11,7 @@
     ./services/qbittorrent-nox.nix
     ./services/spoofdpi.nix
     # ISSUE: collision with nixos module zapret
-    #./services/zapret.nix
+    ./services/zapret.nix
     ./services/conduit.nix
   ];
 
