@@ -51,6 +51,8 @@
 
     pumblend = 10;
     pumheight = 10;
+
+    autochdir = false;
   };
 
   globals = {
@@ -135,12 +137,16 @@
   # File tree
   plugins.neo-tree = {
     enable = true;
+    enableDiagnostics = true;
+    enableGitStatus = true;
     filesystem = {
       useLibuvFileWatcher = true;
       filteredItems = {
         hideDotfiles = false;
         hideGitignored = false;
       };
+      followCurrentFile.leaveDirsOpen = true;
+      cwdTarget.current = null;
     };
     defaultComponentConfigs = {
       indent = {
@@ -400,6 +406,7 @@
         volar.enable = true;
         tailwindcss.enable = true;
         marksman.enable = true;
+        nushell.enable = true;
       };
     };
   };
@@ -710,6 +717,18 @@
       key = "<leader>e";
       action = "<cmd>Neotree toggle<cr>";
       options = {desc = "Open/Close Neotree";};
+    }
+    {
+      mode = "n";
+      key = "<leader>E";
+      action = "<cmd>Neotree reveal<cr>";
+      options = {desc = "Open/Close Neotree (cwd)";};
+    }
+    {
+      mode = "n";
+      key = "<leader>R";
+      action = "<cmd>Spectre<cr>";
+      options = {desc = "Replace Spectre";};
     }
     {
       mode = "n";
