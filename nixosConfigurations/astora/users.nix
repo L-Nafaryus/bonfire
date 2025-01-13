@@ -157,7 +157,7 @@ in {
         # for editing directly to config.nu
         extraConfig = ''
           let carapace_completer = {|spans|
-              carapace $spans.0 nushell $spans | from json
+              carapace $spans.0 nushell ...$spans | from json
           }
           $env.config = {
            show_banner: false,
@@ -464,26 +464,26 @@ in {
   # Services
   services.spoofdpi.enable = true;
 
-  #services.zapret = {
-  #  enable = true;
-  #  mode = "nfqws";
-  #  firewallType = "iptables";
-  #  disableIpv6 = true;
-  #  settings = ''
-  #    MODE_HTTP=1
-  #    MODE_HTTP_KEEPALIVE=0
-  #    MODE_HTTPS=1
-  #    MODE_QUIC=1
-  #    MODE_FILTER=ipset
-  #    TPWS_OPT="--split-http-req=method --split-pos=1 --oob"
-  #    NFQWS_OPT_DESYNC="--dpi-desync=fake --dpi-desync-ttl=5"
-  #    NFQWS_OPT_DESYNC_HTTP="--dpi-desync=fake --dpi-desync-ttl=5"
-  #    NFQWS_OPT_DESYNC_HTTPS="--dpi-desync=fake --dpi-desync-ttl=5"
-  #    NFQWS_OPT_DESYNC_QUIC="--dpi-desync=fake --dpi-desync-ttl=5"
-  #    INIT_APPLY_FW=1
-  #  '';
-  #  filterAddressesSource = "https://antifilter.network/download/ipsmart.lst";
-  #};
+  services.zapret = {
+    enable = true;
+    mode = "nfqws";
+    firewallType = "iptables";
+    disableIpv6 = true;
+    settings = ''
+      MODE_HTTP=1
+      MODE_HTTP_KEEPALIVE=0
+      MODE_HTTPS=1
+      MODE_QUIC=1
+      MODE_FILTER=ipset
+      TPWS_OPT="--split-http-req=method --split-pos=1 --oob"
+      NFQWS_OPT_DESYNC="--dpi-desync=fake --dpi-desync-ttl=3"
+      NFQWS_OPT_DESYNC_HTTP="--dpi-desync=fake --dpi-desync-ttl=3"
+      NFQWS_OPT_DESYNC_HTTPS="--dpi-desync=fake --dpi-desync-ttl=3"
+      NFQWS_OPT_DESYNC_QUIC="--dpi-desync=fake --dpi-desync-ttl=5"
+      INIT_APPLY_FW=1
+    '';
+    filterAddressesSource = "https://antifilter.network/download/ipsmart.lst";
+  };
 
   # TODO: remember who use gvfs
   services.gvfs.enable = true;
