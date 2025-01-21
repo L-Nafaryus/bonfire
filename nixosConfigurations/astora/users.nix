@@ -17,7 +17,7 @@ in {
     group = "users";
     uid = 1000;
     initialPassword = "nixos";
-    shell = pkgs.fish;
+    shell = pkgs.nushell;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG1YGp8AI48hJUSQBZpuKLpbj2+3Q09vq64NxFr0N1MS"
     ];
@@ -40,6 +40,8 @@ in {
       inputs.catppuccin.homeManagerModules.catppuccin
       inputs.ags.homeManagerModules.default
       #bonLib.preconfiguredModules.homeManager.hyprland
+      ../common/hm/helix.nix
+      ../common/hm/nushell.nix
     ];
 
     home.packages = with pkgs; [
@@ -147,73 +149,6 @@ in {
       enable = false;
       flavor = "macchiato";
       accent = "green";
-    };
-
-    programs = {
-      nushell = {
-        enable = true;
-        # The config.nu can be anywhere you want if you like to edit your Nushell with Nu
-        #configFile.source = ./.../config.nu;
-        # for editing directly to config.nu
-        extraConfig = ''
-          let carapace_completer = {|spans|
-              carapace $spans.0 nushell ...$spans | from json
-          }
-          $env.config = {
-           show_banner: false,
-           completions: {
-               case_sensitive: false # case-sensitive completions
-               quick: true    # set to false to prevent auto-selecting completions
-               partial: true    # set to false to prevent partial filling of the prompt
-               algorithm: "fuzzy"
-               external: {
-                   enable: true
-                   max_results: 100
-                   completer: $carapace_completer
-                 }
-               }
-          }
-        '';
-      };
-      carapace = {
-        enable = true;
-        enableNushellIntegration = true;
-        enableBashIntegration = true;
-      };
-
-      starship = {
-        enable = true;
-        enableNushellIntegration = true;
-        enableBashIntegration = true;
-        settings = {
-          add_newline = true;
-          format = ''
-            $all $fill $time
-            $character
-          '';
-          fill = {
-            symbol = " ";
-          };
-          line_break = {
-            disabled = true;
-          };
-          directory = {
-            truncate_to_repo = false;
-          };
-          time = {
-            disabled = false;
-            use_12hr = true;
-          };
-          character = {
-            success_symbol = "[❯](bold green)";
-            error_symbol = "[❯](bold red)";
-          };
-          nix_shell = {
-            symbol = " ";
-            heuristic = true;
-          };
-        };
-      };
     };
 
     programs = {

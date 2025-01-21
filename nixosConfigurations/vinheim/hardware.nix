@@ -94,7 +94,7 @@
     networkmanager = {
       enable = true;
       enableStrongSwan = true;
-      packages = with pkgs; [
+      plugins = with pkgs; [
         networkmanager-l2tp
       ];
     };
