@@ -131,6 +131,7 @@ in {
       ksshaskpass
 
       # virtiofsd
+      wl-clipboard
     ];
 
     xdg.portal = {
@@ -262,12 +263,11 @@ in {
       # Graphical
 
       wezterm = {
-        enable = false;
+        enable = true;
         package = inputs.wezterm.packages.x86_64-linux.default;
         extraConfig = ''
           return {
-              color_scheme = "Catppuccin Macchiato",
-              default_prog = { "fish" },
+              default_prog = { "nu" },
               font_size = 10.0,
               enable_tab_bar = true,
               hide_tab_bar_if_only_one_tab = true,
@@ -278,10 +278,43 @@ in {
                   top = 0,
                   bottom = 0
               },
-              -- ISSUE: the terminal does not update after some time of use. It only updates with mouse movements. [Wayland, Hyprland]
-              enable_wayland = false
+              enable_wayland = true,
+              color_scheme = "gruvbox-dark",
+              color_schemes = {
+                ["gruvbox-dark"] = {
+                    foreground = "#D4BE98",
+                    background = "#282828",
+                    cursor_bg = "#D4BE98",
+                    cursor_border = "#D4BE98",
+                    cursor_fg = "#282828",
+                    selection_bg = "#D4BE98",
+                    selection_fg = "#45403d",
+
+                    ansi = { "#282828", "#ea6962", "#a9b665", "#d8a657", "#7daea3", "#d3869b", "#89b482", "#d4be98" },
+                    brights = { "#eddeb5", "#ea6962", "#a9b665", "#d8a657", "#7daea3", "#d3869b", "#89b482", "#d4be98" }
+                  }
+              },
+              keys = {
+                { key = 'F11', action = wezterm.action.ToggleFullScreen }
+              }
           }
         '';
+      };
+
+      zellij = {
+        enable = true;
+        settings = {
+          theme = "gruvbox-dark";
+          default_mode = "normal";
+          copy_command = "${lib.getExe' pkgs.wl-clipboard "wl-copy"}";
+          copy_clipboard = "primary";
+        };
+      };
+
+      yazi = {
+        enable = true;
+        enableNushellIntegration = true;
+        enableBashIntegration = true;
       };
 
       rofi = {
@@ -465,4 +498,9 @@ in {
   programs.adb.enable = true;
 
   services.udev.packages = [pkgs.android-udev-rules];
+
+  services.ollama = {
+    enable = true;
+    acceleration = "cuda";
+  };
 }
