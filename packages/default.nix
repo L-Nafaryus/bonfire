@@ -89,12 +89,11 @@ in
 
     # Pass for cache
 
-    # ISSUE: attribute 'targetPlatforms' missing
-    #wezterm = {
-    #  source = ./wezterm;
-    #  platforms = ["x86_64-linux"];
-    #  builder = {...}: import;
-    #};
+    wezterm = {
+      source = ./wezterm;
+      platforms = ["x86_64-linux"];
+      builder = {...}: import;
+    };
 
     # Container images
 
