@@ -32,6 +32,7 @@
 
     environmentVariables = {
       GNUPGHOME = hmConfig.programs.gpg.homedir;
+      SSH_AUTH_SOCK = "/run/user/1000/ssh-agent";
     };
   };
 

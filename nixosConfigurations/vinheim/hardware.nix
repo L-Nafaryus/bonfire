@@ -87,6 +87,7 @@
 
     bluetooth.enable = true;
 
+    bluetooth.powerOnBoot = true;
     pulseaudio.enable = false;
   };
 

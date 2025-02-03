@@ -134,7 +134,7 @@
 
     neovim = {
       enable = true;
-      defaultEditor = true;
+      defaultEditor = false;
     };
   };
 }
