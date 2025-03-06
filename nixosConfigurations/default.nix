@@ -22,6 +22,7 @@
   catarina = lib.nixosSystem {
     system = "x86_64-linux";
     modules = with inputs; [
+      home-manager.nixosModules.home-manager
       elnafo-radio.nixosModules.elnafo-radio
       nixos-mailserver.nixosModules.mailserver
       sops-nix.nixosModules.sops
@@ -43,6 +44,4 @@
       bonPkgs = self.packages.x86_64-linux;
     };
   };
-
-
 }

@@ -1,8 +1,16 @@
 {
   config,
   pkgs,
+  lib,
+  bonPkgs,
+  bonLib,
+  inputs,
   ...
 }: {
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.backupFileExtension = "hmbackup";
+
   # Users
   users.users.root.hashedPasswordFile = config.sops.secrets."users/root".path;
 
@@ -12,10 +20,33 @@
     description = "L-Nafaryus";
     extraGroups = ["networkmanager" "wheel"];
     group = "users";
-    shell = pkgs.fish;
+    shell = pkgs.nushell;
     hashedPasswordFile = config.sops.secrets."users/l-nafaryus".path;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG1YGp8AI48hJUSQBZpuKLpbj2+3Q09vq64NxFr0N1MS nafaryus"
+    ];
+  };
+
+  home-manager.users.l-nafaryus = {pkgs, ...}: let
+    hmConfig = config.home-manager.users.l-nafaryus;
+  in {
+    home.stateVersion = "23.11";
+    home.username = "l-nafaryus";
+    home.homeDirectory = "/home/l-nafaryus";
+    imports = [
+      (bonLib.injectArgs {
+        inherit hmConfig;
+        inherit inputs;
+      })
+      ../common/hm/helix.nix
+      ../common/hm/nushell.nix
+      ../common/hm/zellij.nix
+      ../common/hm/yazi.nix
+    ];
+
+    home.packages = with pkgs; [
+      ripgrep
+      repgrep
     ];
   };
 
