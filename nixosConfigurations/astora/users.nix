@@ -123,6 +123,7 @@ in {
       kdePackages.kmail
       kdePackages.kmail-account-wizard
       kdePackages.krdc
+      kdePackages.ksshaskpass
 
       flacon
       picard
@@ -131,8 +132,6 @@ in {
       podman-compose
       dive
       lazydocker
-
-      ksshaskpass
 
       # virtiofsd
       wl-clipboard
@@ -444,7 +443,7 @@ in {
 
   programs.ssh = {
     enableAskPassword = true;
-    askPassword = "${lib.getExe' pkgs.ksshaskpass "ksshaskpass"}";
+    askPassword = "${lib.getExe' pkgs.kdePackages.ksshaskpass "ksshaskpass"}";
     hostKeyAlgorithms = ["ssh-ed25519" "ssh-rsa"];
     startAgent = true;
   };
