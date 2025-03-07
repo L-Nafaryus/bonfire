@@ -5,8 +5,8 @@
   buildGoModule,
   nixosTests,
   version ? "bfe36067932e4594d3baf01cb6545c43b8e1f79c",
-  hash ? "sha256-j6AlA9+whDxvpbZBCnJinKTb0+bJrSqnMgCqmWWfLig=",
-  vendorHash ? "sha256-r9R+d5H5RjwzksbAlcFPyRtCGXSH1JBVfNHr5QiHA7Y=",
+  hash ? "sha256-ye5O1HYjzpuF4k2G5KUKHNyi33fJV8K0uxyeIXieX9Q=",
+  vendorHash ? "sha256-aW5Olj9t19R6J9NvuXhSXvfxdpC1yDk5/cHxZMRVJpY=",
   ...
 }:
 buildGoModule rec {

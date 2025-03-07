@@ -41,9 +41,9 @@
     graphics.enable32Bit = true;
 
     bluetooth.enable = true;
-
-    pulseaudio.enable = false;
   };
+
+  services.pulseaudio.enable = false;
 
   networking = {
     networkmanager = {
