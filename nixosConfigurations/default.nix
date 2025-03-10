@@ -44,4 +44,11 @@
       bonPkgs = self.packages.x86_64-linux;
     };
   };
+
+  priscilla = lib.nixosSystem {
+    system = "x86_64-linux";
+    modules = [
+      ./priscilla
+    ];
+  };
 }
