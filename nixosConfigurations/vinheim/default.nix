@@ -70,6 +70,17 @@
     settings.KbdInteractiveAuthentication = false;
   };
 
+  services.autossh = {
+    sessions = [
+      {
+        extraArguments = "-N -R 42022:localhost:22 l-nafaryus@elnafo.ru";
+        monitoringPort = 20000;
+        name = "elnafo-peer";
+        user = "l-nafaryus";
+      }
+    ];
+  };
+
   services.printing = {
     enable = true;
   };
