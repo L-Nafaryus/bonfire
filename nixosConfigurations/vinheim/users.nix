@@ -90,7 +90,7 @@ in {
       podman-compose
       dive
 
-      ksshaskpass
+      kdePackages.ksshaskpass
 
       dbeaver-bin
 

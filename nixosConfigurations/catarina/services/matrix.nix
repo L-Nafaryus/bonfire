@@ -44,6 +44,7 @@
         };
       };
     };
+    # Federation tester: https://federationtester.matrix.org/#elnafo.ru
     virtualHosts."matrix-federation" = {
       serverName = "elnafo.ru";
       forceSSL = true;

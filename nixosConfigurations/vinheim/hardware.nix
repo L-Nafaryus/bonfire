@@ -88,8 +88,9 @@
     bluetooth.enable = true;
 
     bluetooth.powerOnBoot = true;
-    pulseaudio.enable = false;
   };
+
+  services.pulseaudio.enable = false;
 
   networking = {
     networkmanager = {

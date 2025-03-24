@@ -129,6 +129,26 @@
         forceSSL = true;
         enableACME = true;
         root = "/var/www";
+
+        listen = [
+          {
+            port = 8448;
+            addr = "0.0.0.0";
+            ssl = true;
+          }
+          {
+            port = 443;
+            addr = "0.0.0.0";
+            ssl = true;
+          }
+        ];
+        locations."~ ^/(_matrix|.well_known)" = {
+          proxyPass = "http://127.0.0.1:6167";
+          extraConfig = ''
+            proxy_http_version 1.0;
+            client_max_body_size 50M;
+          '';
+        };
       };
 
       "*.elnafo.ru" = {

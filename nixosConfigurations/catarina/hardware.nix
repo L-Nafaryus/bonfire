@@ -123,9 +123,9 @@
     cpu.intel.updateMicrocode = true;
 
     bluetooth.enable = true;
-
-    pulseaudio.enable = false;
   };
+
+  services.pulseaudio.enable = false;
 
   networking = {
     networkmanager.enable = true;
