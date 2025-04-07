@@ -55,6 +55,10 @@
     };
   };
 
+  swapDevices = [
+    {device = "/swap/swapfile";}
+  ];
+
   services.fstrim.enable = true;
 
   # Hardware etc

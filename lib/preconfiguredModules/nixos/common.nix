@@ -28,36 +28,36 @@
   };
 
   # Filesystem
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "btrfs";
-      options = ["subvol=root" "compress=zstd"];
-    };
+  # fileSystems = {
+  #   "/" = {
+  #     device = "/dev/disk/by-label/nixos";
+  #     fsType = "btrfs";
+  #     options = ["subvol=root" "compress=zstd"];
+  #   };
 
-    "/boot" = {
-      device = "/dev/disk/by-label/boot";
-      fsType = "vfat";
-    };
+  #   "/boot" = {
+  #     device = "/dev/disk/by-label/boot";
+  #     fsType = "vfat";
+  #   };
 
-    "/nix" = {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "btrfs";
-      options = ["subvol=nix" "compress=zstd" "noatime"];
-    };
+  #   "/nix" = {
+  #     device = "/dev/disk/by-label/nixos";
+  #     fsType = "btrfs";
+  #     options = ["subvol=nix" "compress=zstd" "noatime"];
+  #   };
 
-    "/home" = {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "btrfs";
-      options = ["subvol=home" "compress=zstd"];
-    };
+  #   "/home" = {
+  #     device = "/dev/disk/by-label/nixos";
+  #     fsType = "btrfs";
+  #     options = ["subvol=home" "compress=zstd"];
+  #   };
 
-    "/swap" = {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "btrfs";
-      options = ["subvol=swap" "noatime"];
-    };
-  };
+  #   "/swap" = {
+  #     device = "/dev/disk/by-label/nixos";
+  #     fsType = "btrfs";
+  #     options = ["subvol=swap" "noatime"];
+  #   };
+  # };
 
   swapDevices = [
     {device = "/swap/swapfile";}
