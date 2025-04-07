@@ -13,7 +13,35 @@
   users.users.root.initialPassword = "nixos";
 
   # Filesystem
-  fileSystems = {
+  fileSystems = lib.mkDefault {
+    "/" = {
+      device = "/dev/disk/by-label/abysswalker";
+      fsType = "btrfs";
+      options = ["subvol=root" "compress=zstd"];
+    };
+
+    "/boot" = {
+      device = "/dev/disk/by-label/ohmyboot";
+      fsType = "vfat";
+    };
+
+    "/nix" = {
+      device = "/dev/disk/by-label/abysswalker";
+      fsType = "btrfs";
+      options = ["subvol=nix" "compress=zstd" "noatime"];
+    };
+
+    "/home" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = ["subvol=home" "compress=zstd"];
+    };
+
+    "/swap" = {
+      device = "/dev/disk/by-label/abysswalker";
+      fsType = "btrfs";
+      options = ["subvol=swap" "noatime"];
+    };
     "/media/steam-library" = {
       device = "/dev/disk/by-label/siegward";
       fsType = "btrfs";
