@@ -81,16 +81,16 @@ in {
       tree
       bonPkgs.bonvim
 
-      kdePackages.kmail
-      kdePackages.kmail-account-wizard
-      kdePackages.krdc
+      # kdePackages.kmail
+      # kdePackages.kmail-account-wizard
+      # kdePackages.krdc
 
       lazydocker
       docker-compose
       podman-compose
       dive
 
-      kdePackages.ksshaskpass
+      # kdePackages.ksshaskpass
 
       dbeaver-bin
 
@@ -103,6 +103,7 @@ in {
       repgrep
       serpl
       delta
+      rainfrog
 
       networkmanagerapplet
     ];
@@ -111,12 +112,14 @@ in {
       enable = true;
       configPackages = with pkgs; [
         xdg-desktop-portal-hyprland
-        kdePackages.xdg-desktop-portal-kde
       ];
       extraPortals = with pkgs; [
         xdg-desktop-portal-gtk
+        kdePackages.xdg-desktop-portal-kde
       ];
     };
+
+    services.dunst.enable = true;
 
     programs.hyprlock = {
       enable = true;
@@ -191,8 +194,8 @@ in {
         ];
 
         exec-once = [
-          "nm-applet --indicator &"
-          "blueman-applet &"
+          # "nm-applet --indicator &"
+          # "blueman-applet &"
           "wl-gammarelay-rs run &"
           "systemctl --user start hypridle"
           "wl-paste --type text --watch cliphist store" #Stores only text data
@@ -309,11 +312,11 @@ in {
           "SUPER, Q, exec, $terminal"
           "SUPER, N, exec, $fileManager"
           "SUPER, R, exec, $menu"
-          "SUPER, X, exec, ags -t clock"
-          "SUPER, X, exec, ags -t control"
-          "SUPER, X, exec, ags -t systray"
-          "SUPER, X, exec, ags -t workspaces"
-          "SUPER, X, exec, ags -t window-title"
+          # "SUPER, X, exec, ags -t clock"
+          # "SUPER, X, exec, ags -t control"
+          # "SUPER, X, exec, ags -t systray"
+          # "SUPER, X, exec, ags -t workspaces"
+          # "SUPER, X, exec, ags -t window-title"
 
           "SUPER, L, exec, hyprlock --immediate"
 
@@ -359,8 +362,8 @@ in {
           "SUPER SHIFT, S, movetoworkspace, special:magic"
 
           "SUPER, SPACE, exec, hyprctl switchxkblayout keychron-keychron-k3-pro next"
-          ", PRINT, exec, hyprshot --freeze --mode region"
-          "CTRL, PRINT, exec, hyprshot --freeze --mode output"
+          ", PRINT, exec, ${pkgs.hyprshot}/bin/hyprshot --freeze --mode region"
+          "CTRL, PRINT, exec, ${pkgs.hyprshot}/bin/hyprshot --freeze --mode output"
           "SUPER, H, exec, ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi}/bin/rofi -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"
         ];
         # Move/resize windows with mainMod + LMB/RMB and dragging
