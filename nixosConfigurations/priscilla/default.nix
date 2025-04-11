@@ -100,4 +100,12 @@
       options = lib.mkDefault "--delete-older-than 7d";
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    helix
+    zellij
+    btop
+    shadowsocks-rust
+    shadowsocks-v2ray-plugin
+  ];
 }
