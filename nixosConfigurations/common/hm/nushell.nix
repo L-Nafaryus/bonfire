@@ -14,6 +14,7 @@
       let carapace_completer = {|spans|
           carapace $spans.0 nushell ...$spans | from json
       }
+
       $env.config = {
        show_banner: false,
        completions: {
@@ -34,6 +35,8 @@
       GNUPGHOME = hmConfig.programs.gpg.homedir;
       SSH_AUTH_SOCK = "/run/user/1000/ssh-agent";
       EDITOR = "${lib.getExe' hmConfig.programs.helix.package "hx"}";
+      SHELL = "${lib.getExe' hmConfig.programs.nushell.package "nu"}";
+      NU_LIB_DIRS = "${lib.hm.nushell.toNushell (lib.concatStringsSep ":" [./nu])}";
     };
   };
 
