@@ -53,6 +53,11 @@
     wayland.enable = true;
   };
 
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
   services.dbus = {
     enable = true;
     packages = with pkgs; [networkmanager];

@@ -40,3 +40,15 @@ nix-store --verify --check-contents --repair
 ```sh 
 nix flake prefetch --json github:OpenFOAM/OpenFOAM-11/20240704
 ```
+
+## GNUPG
+
+```sh
+systemctl stop --user gpg-agent.service
+systemctl stop --user gpg-agent.socket
+```
+
+```sh
+gpgconf --kill gpg-agent
+gpg-agent --homedir $"($env.HOME)/.config/gnupg" --daemon --pinentry-program /nix/store/99907s87fl7qqjhsa03gwdr9w8ddg3zg-pinentry-curses-1.3.1/bin/pinentry
+```
