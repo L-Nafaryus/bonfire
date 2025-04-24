@@ -106,7 +106,16 @@ in {
       rainfrog
 
       networkmanagerapplet
+
+      rofi-wayland
     ];
+
+    home.file = {
+      ".config/nushell/modules" = {
+        source = "${../common/hm/nu}";
+        recursive = true;
+      };
+    };
 
     xdg.portal = {
       enable = true;
@@ -311,7 +320,8 @@ in {
         bind = [
           "SUPER, Q, exec, $terminal"
           "SUPER, N, exec, $fileManager"
-          "SUPER, R, exec, $menu"
+          "SUPER, R, exec, nu -c 'use ~/.config/nushell/modules/mod.nu *; nurofi apps'"
+          "SUPER, P, exec, nu -c 'use ~/.config/nushell/modules/mod.nu *; nurofi powermenu'"
           # "SUPER, X, exec, ags -t clock"
           # "SUPER, X, exec, ags -t control"
           # "SUPER, X, exec, ags -t systray"

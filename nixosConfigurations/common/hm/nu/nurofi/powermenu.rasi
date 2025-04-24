@@ -44,7 +44,7 @@ mainbox {
     border-radius:               0px;
     border-color:                @selected;
     background-color:            transparent;
-    background-image:            url("assets/solair.gif", width);
+    background-image:            url("~/.config/nushell/modules/nurofi/assets/solair.gif", width);
     children:                    [ "inputbar", "message", "listview", dummy ];
 }
 

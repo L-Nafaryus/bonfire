@@ -50,7 +50,7 @@ mainbox {
 imagebox {
     padding:                     20px;
     background-color:            transparent;
-    background-image:            url("assets/knight.gif", width);
+    background-image:            url("~/.config/nushell/modules/nurofi/assets/knight.gif", width);
     orientation:                 vertical;
     children:                    [ "inputbar", "dummy", "mode-switcher" ];
 }

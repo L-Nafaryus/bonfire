@@ -100,8 +100,11 @@
         networkmanager-l2tp
       ];
     };
-    hostName = "nixos";
-    extraHosts = ''192.168.130.211 gitlab'';
+    hostName = "vinheim";
+    hosts = {
+      "192.168.130.211" = ["gitlab"];
+      "192.168.130.210" = ["vault.local" "youtrack.local"];
+    };
   };
 
   time.timeZone = "Asia/Yekaterinburg";

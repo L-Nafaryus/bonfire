@@ -1,3 +1,4 @@
+const base_directory = "~/.config/nushell/modules/nurofi";
 
 def is-installed [ app: string ] {
     ((which $app | length) > 0)
@@ -19,7 +20,7 @@ export def powermenu []: nothing -> nothing {
     let action = [lock suspend logout reboot shutdown];
     mut selected = null;
   
-    $selected = $action | to text | rofi -dmenu -p (date now | format date "%Y-%m-%d %H:%M:%S") -mesg $"Uptime: ($uptime)" -theme powermenu.rasi;
+    $selected = $action | to text | rofi -dmenu -p (date now | format date "%Y-%m-%d %H:%M:%S") -mesg $"Uptime: ($uptime)" -theme ($base_directory | path join powermenu.rasi);
 
     match $selected {
       "lock" => { hyprlock --immediate; }
@@ -32,5 +33,5 @@ export def powermenu []: nothing -> nothing {
 }
 
 export def apps []: nothing -> nothing {
-    rofi -show drun window -theme apps.rasi;
+    rofi -show drun window -theme ($base_directory | path join apps.rasi);
 }
