@@ -7,7 +7,7 @@
 }: {
   programs.helix = {
     enable = true;
-    extraPackages = with pkgs; [wl-clipboard pyright ruff alejandra];
+    extraPackages = with pkgs; [wl-clipboard pyright ruff alejandra bash-language-server];
 
     settings = {
       theme = "gruvbox";
@@ -65,6 +65,10 @@
           command = "ruff";
           args = ["server"];
           environment = {RUFF_TRACE = "messages";};
+        };
+        bash = {
+          command = "bash-language-server";
+          args = ["start"];
         };
       };
     };

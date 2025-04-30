@@ -117,6 +117,11 @@ in {
       };
     };
 
+    programs.zoxide = {
+      enable = true;
+      enableNushellIntegration = true;
+    };
+
     xdg.portal = {
       enable = true;
       configPackages = with pkgs; [
@@ -406,6 +411,8 @@ in {
       flavor = "macchiato";
       accent = "green";
     };
+
+    programs.bash.enable = true;
 
     programs.yazi = {
       enable = true;
