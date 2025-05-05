@@ -135,6 +135,20 @@ in {
 
     services.dunst.enable = true;
 
+    services.hyprpaper = {
+      enable = true;
+      settings = {
+        ipc = "on";
+        splash = true;
+        splash_offset = 2.0;
+        preload = ["~/Pictures/wallpapers/monochrome-bloodbourne.jpg"];
+        wallpaper = [
+          "Acer Technologies EK240Y E204018E03W01,~/Pictures/wallpapers/monochrome-bloodbourne.jpg"
+          "Acer Technologies EK240Y E204018873W01,~/Pictures/wallpapers/monochrome-bloodbourne.jpg"
+        ];
+      };
+    };
+
     programs.hyprlock = {
       enable = true;
       settings = {
