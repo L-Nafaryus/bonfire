@@ -50,6 +50,13 @@ in {
       ../common/hm/nushell.nix
     ];
 
+    home.file = {
+      ".config/nushell/modules" = {
+        source = "${../common/hm/nu}";
+        recursive = true;
+      };
+    };
+
     home.packages = with pkgs; [
       taskwarrior3
 
