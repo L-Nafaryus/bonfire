@@ -48,6 +48,13 @@ in {
       ../common/hm/yazi.nix
     ];
 
+    home.file = {
+      ".config/nushell/modules" = {
+        source = "${../common/hm/nu}";
+        recursive = true;
+      };
+    };
+
     home.packages = with pkgs; [
       taskwarrior3
 
@@ -108,7 +115,6 @@ in {
       #dunst
       #libnotify
       # btop
-      lua
       # bat
       mangohud
       gamescope
@@ -141,6 +147,24 @@ in {
       delta
 
       wl-gammarelay-rs
+
+      rofi-wayland
+
+      tdf
+      tui-journal
+      rustscan
+      flamelens
+      t-rec
+      taskwarrior-tui
+      trippy
+      # oryx # add support
+      ripgrep-all
+      httm
+      bluetui
+      systemctl-tui
+      iamb
+
+      rose-pine-hyprcursor
     ];
 
     xdg.portal = {
@@ -148,6 +172,7 @@ in {
       configPackages = with pkgs; [
         xdg-desktop-portal-hyprland
         kdePackages.xdg-desktop-portal-kde
+        tui-journal
       ];
       extraPortals = with pkgs; [
         xdg-desktop-portal-gtk
@@ -265,7 +290,8 @@ in {
         ];
 
         env = [
-          "XCURSOR_SIZE,14"
+          # "XCURSOR_SIZE,14"
+          "HYPRCURSOR_THEME,rose-pine-hyprcursor"
           "HYPRCURSOR_SIZE,14"
           "WLR_DRM_NO_ATOMIC,1"
           "HYPRSHOT_DIR,${hmConfig.xdg.userDirs.pictures}/screenshots"
@@ -303,7 +329,6 @@ in {
             color = "rgba(1a1a1aee)";
           };
 
-          # https://wiki.hyprland.org/Configuring/Variables/#blur
           blur = {
             enabled = true;
             size = 3;
@@ -372,7 +397,8 @@ in {
         bind = [
           "SUPER, Q, exec, $terminal"
           "SUPER, N, exec, $fileManager"
-          "SUPER, R, exec, $menu"
+          "SUPER, R, exec, nu -c 'use ~/.config/nushell/modules/mod.nu *; nurofi apps'"
+          "SUPER, P, exec, nu -c 'use ~/.config/nushell/modules/mod.nu *; nurofi powermenu'"
           # "SUPER, X, exec, ags -t clock"
           # "SUPER, X, exec, ags -t control"
           # "SUPER, X, exec, ags -t systray"
@@ -686,7 +712,7 @@ in {
   services.spoofdpi.enable = true;
 
   services.zapret = {
-    enable = true;
+    enable = false;
     mode = "nfqws";
     firewallType = "iptables";
     disableIpv6 = true;
@@ -736,7 +762,7 @@ in {
 
   programs.direnv.enable = true;
 
-  fonts.packages = with pkgs; [nerd-fonts.jetbrains-mono liberation_ttf];
+  fonts.packages = with pkgs; [nerd-fonts.jetbrains-mono liberation_ttf nerd-fonts.departure-mono];
 
   programs.steam.enable = true;
   systemd.extraConfig = "DefaultLimitNOFILE=1048576";
@@ -754,6 +780,38 @@ in {
 
   services.ollama = {
     enable = true;
+    settings = {
+      data_dir = "/var/lib/garage/data";
+    };
     acceleration = "cuda";
+  };
+
+  services.garage = {
+    enable = true;
+    package = pkgs.garage;
+    settings = {
+      data_dir = "/var/lib/garage/data";
+      # metadata_dir = "/var/lib/garaga/meta";
+      db_engine = "sqlite";
+      replication_factor = 1;
+      rpc_bind_addr = "[::]:3901";
+      rpc_public_addr = "127.0.0.1:3901";
+      rpc_secret = "e35682d22035c24473114c5e44bfa8b582589b7517b12b3aa8889cd073412baa";
+      s3_api = {
+        s3_region = "garage";
+        api_bind_addr = "[::]:3900";
+        root_domain = ".s3.garage.localhost";
+      };
+      s3_web = {
+        bind_addr = "[::]:3902";
+        root_domain = ".web.garage.localhost";
+        index = "index.html";
+      };
+      admin = {
+        api_bind_addr = "[::]:3903";
+        admin_token = "1ec1db228fba7dd0dd8c1a24bbb876f3a3d9bfb4063c0a7706afbf22061f19cf";
+        metrics_token = "f5a939b9dff86a6206da337ae2c2b322b2fad7a7ecb0d4d49c08dfa3a9c3f398";
+      };
+    };
   };
 }

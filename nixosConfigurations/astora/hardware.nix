@@ -83,5 +83,6 @@
       enableStrongSwan = true;
       plugins = with pkgs; [networkmanager-l2tp];
     };
+    hostName = "astora";
   };
 }
