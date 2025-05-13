@@ -7,7 +7,7 @@
 }: {
   programs.helix = {
     enable = true;
-    extraPackages = with pkgs; [wl-clipboard pyright ruff alejandra bash-language-server];
+    extraPackages = with pkgs; [wl-clipboard pyright ruff alejandra bash-language-server kotlin-language-server];
 
     settings = {
       theme = "gruvbox";
@@ -69,6 +69,9 @@
         bash = {
           command = "bash-language-server";
           args = ["start"];
+        };
+        kotlin = {
+          command = "kotlin-language-server";
         };
       };
     };
