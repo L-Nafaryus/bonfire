@@ -117,13 +117,6 @@ in {
       rofi-wayland
     ];
 
-    home.file = {
-      ".config/nushell/modules" = {
-        source = "${../common/hm/nu}";
-        recursive = true;
-      };
-    };
-
     programs.zoxide = {
       enable = true;
       enableNushellIntegration = true;
@@ -673,7 +666,7 @@ in {
     package = pkgs.wireshark;
   };
 
-  fonts.packages = with pkgs; [nerd-fonts.jetbrains-mono liberation_ttf];
+  fonts.packages = with pkgs; [nerd-fonts.jetbrains-mono liberation_ttf nerd-fonts.departure-mono];
 
   services.ollama = {
     enable = true;
