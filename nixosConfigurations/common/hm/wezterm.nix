@@ -10,7 +10,50 @@
     enable = true;
     package = inputs.wezterm.packages.x86_64-linux.default;
     extraConfig = ''
-      return {
+
+      function tab_title(tab_info)
+        local title = tab_info.tab_title
+
+        if title and #title > 0 then
+          return title
+        end
+
+        return tab_info.active_pane.title
+      end
+
+      wezterm.on(
+        "format-tab-title",
+        function(tab, tabs, panes, config, hover, max_width)
+          local background = "#333333"
+          local foreground = "#808080"
+
+          if tab.is_active then
+            background = "#98971a" -- "#b8bb26"
+            foreground = "#333333"
+          else
+            background = "#ebdbb2"
+            foreground = "#333333"
+          end
+
+          local title = tab_title(tab)
+
+          title = wezterm.truncate_right(string.format(" %s ", title), max_width - 2)
+
+          return {
+            { Background = { Color = background  } },
+            { Foreground = { Color = "#333333"} },
+            { Text = wezterm.nerdfonts.pl_left_hard_divider },
+            { Background = { Color = background } },
+            { Foreground = { Color = "#333333" } },
+            { Text = title },
+            { Background = { Color = "#333333" } },
+            { Foreground = { Color = background } },
+            { Text = wezterm.nerdfonts.pl_left_hard_divider },
+          }
+        end
+      )
+
+      local config = {
           default_prog = { "nu" },
           font_size = 10.0,
           enable_tab_bar = true,
@@ -40,8 +83,12 @@
           },
           keys = {
             { key = 'F11', action = wezterm.action.ToggleFullScreen }
-          }
+          },
+          position = "top",
+          use_fancy_tab_bar = false
       }
+
+      return config
     '';
   };
 }
