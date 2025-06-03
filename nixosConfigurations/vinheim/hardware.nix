@@ -6,15 +6,15 @@
 }: {
   # Boot
   boot = {
-    loader.grub = {
-      enable = true;
-      device = "/dev/nvme0n1";
-      useOSProber = true;
-    };
+    loader.systemd-boot.enable = true;
+    loader.systemd-boot.configurationLimit = 5;
+    loader.efi.canTouchEfiVariables = true;
+
     initrd = {
       availableKernelModules = ["xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod"];
       kernelModules = [];
     };
+
     kernelModules = ["kvm-intel" "tcp_bbr" "coretemp" "nct6775"];
     kernelParams = ["threadirqs"];
     extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
@@ -62,14 +62,41 @@
     };
   };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/nixos";
-    fsType = "ext4";
+  # Filesystem
+  fileSystems = lib.mkDefault {
+    "/" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = ["subvol=root" "compress=zstd"];
+    };
+
+    "/boot" = {
+      device = "/dev/disk/by-label/boot";
+      fsType = "vfat";
+    };
+
+    "/nix" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = ["subvol=nix" "compress=zstd" "noatime"];
+    };
+
+    "/home" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = ["subvol=home" "compress=zstd"];
+    };
+
+    "/swap" = {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = ["subvol=swap" "noatime"];
+    };
   };
 
-  swapDevices = [];
-
-  services.fstrim.enable = true;
+  swapDevices = [
+    {device = "/swap/swapfile";}
+  ];
 
   security = {
     protectKernelImage = true;

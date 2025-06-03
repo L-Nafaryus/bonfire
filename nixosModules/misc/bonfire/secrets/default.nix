@@ -54,6 +54,19 @@
           group = "conduit";
           key = "matrix/coturn-secret";
         };
+
+        "garage/rpc-secret" = lib.mkIf config.services.garage.enable {
+          owner = "garage";
+          group = "garage";
+        };
+        "garage/admin-token" = lib.mkIf config.services.garage.enable {
+          owner = "garage";
+          group = "garage";
+        };
+        "garage/metrics-token" = lib.mkIf config.services.garage.enable {
+          owner = "garage";
+          group = "garage";
+        };
       };
     };
 

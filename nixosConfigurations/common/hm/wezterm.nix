@@ -59,6 +59,7 @@
           enable_tab_bar = true,
           hide_tab_bar_if_only_one_tab = true,
           term = "wezterm",
+          audible_bell = "Disabled",
           window_padding = {
               left = 0,
               right = 0,
@@ -84,7 +85,6 @@
           keys = {
             { key = 'F11', action = wezterm.action.ToggleFullScreen }
           },
-          position = "top",
           use_fancy_tab_bar = false
       }
 

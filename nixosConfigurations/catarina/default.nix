@@ -15,6 +15,7 @@
     ./services/radio.nix
     ./services/matrix.nix
     ./services/metrics.nix
+    ./services/s3.nix
   ];
 
   # Nix settings
