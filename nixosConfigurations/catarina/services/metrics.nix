@@ -15,7 +15,7 @@
   services.prometheus = {
     enable = true;
     port = 9090;
-    globalConfig.scrape_interval = "10s"; # "1m"
+    globalConfig.scrape_interval = "5s"; # "1m"
 
     exporters = {
       node = {
@@ -30,6 +30,14 @@
         static_configs = [
           {
             targets = ["127.0.0.1:${toString config.services.prometheus.exporters.node.port}"];
+          }
+        ];
+      }
+      {
+        job_name = "anubis-vcs";
+        static_configs = [
+          {
+            targets = ["127.0.0.1:9923"];
           }
         ];
       }

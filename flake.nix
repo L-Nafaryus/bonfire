@@ -5,12 +5,10 @@
     extra-substituters = [
       "https://cache.elnafo.ru"
       "https://bonfire.cachix.org"
-      "https://cache.saumon.network/proxmox-nixos"
     ];
     extra-trusted-public-keys = [
       "cache.elnafo.ru:j3VD+Hn+is2Qk3lPXDSdPwHJQSatizk7V82iJ2RP1yo="
       "bonfire.cachix.org-1:mzAGBy/Crdf8NhKail5ciK7ZrGRbPJJobW6TwFb7WYM="
-      "proxmox-nixos:nveXDuVVhFDRFx8Dn19f1WDEaNRJjPrF2CPD2D+m1ys="
     ];
   };
 
@@ -70,7 +68,6 @@
       url = "github:snowfallorg/drift";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
   };
 
   outputs = {self, ...} @ inputs: let

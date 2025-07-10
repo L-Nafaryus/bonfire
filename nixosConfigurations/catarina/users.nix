@@ -47,6 +47,7 @@
     home.packages = with pkgs; [
       ripgrep
       repgrep
+      btop
     ];
   };
 

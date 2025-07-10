@@ -87,7 +87,19 @@
   services.nginx.virtualHosts."vcs.elnafo.ru" = {
     forceSSL = true;
     useACMEHost = "elnafo.ru";
-    locations."/".proxyPass = "http://127.0.0.1:3001";
+    locations."/".proxyPass = "http://127.0.0.1:8923";
+  };
+
+  services.anubis.instances.vcs = {
+    enable = true;
+    settings = {
+      BIND = ":8923";
+      BIND_NETWORK = "tcp";
+      DIFFICULTY = 5;
+      TARGET = "http://127.0.0.1:3001";
+      METRICS_BIND = ":9923";
+      METRICS_BIND_NETWORK = "tcp";
+    };
   };
 
   services.gitea-actions-runner = {

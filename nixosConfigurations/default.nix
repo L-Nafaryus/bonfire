@@ -6,6 +6,13 @@
   self,
   ...
 }: {
+  nixos-minimal-iso = lib.nixosSystem {
+    system = "x86_64-linux";
+    modules = with inputs; [
+      "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+    ];
+  };
+
   astora = lib.nixosSystem {
     system = "x86_64-linux";
     modules = with inputs; [
