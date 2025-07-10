@@ -165,6 +165,11 @@ in {
       iamb
 
       rose-pine-hyprcursor
+
+      rclone
+      ghostty
+      chromium
+      vscodium
     ];
 
     xdg.portal = {
@@ -257,6 +262,122 @@ in {
             on-resume = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
           }
         ];
+      };
+    };
+
+    wayland.windowManager.sway = {
+      enable = true;
+      config = {
+        modifier = "Mod4";
+        terminal = "ghostty";
+        bindkeysToCode = true;
+        keybindings = {
+          "Mod4+r" = "exec nu -c 'use ~/.config/nushell/modules/mod.nu *; nurofi apps'";
+          "Mod4+p" = "exec nu -c 'use ~/.config/nushell/modules/mod.nu *; nurofi powermenu'";
+          "Mod4+q" = "exec ${lib.getExe hmConfig.programs.wezterm.package}";
+
+          "Mod4+n" = "mode resize";
+          "Mod4+c" = "kill";
+          "Mod4+s" = "splith";
+          "Mod4+v" = "splitv";
+          "Mod4+f" = "fullscreen";
+          "Mod4+l" = "exec ${pkgs.swaylock}/bin/swaylock -c 333333";
+
+          "Mod4+Shift+space" = "floating toggle";
+          "Mod4+Shift+minus" = "move scratchpad";
+          "Mod4+minus" = "scratchpad show";
+
+          "Mod4+Left" = "focus left";
+          "Mod4+Right" = "focus right";
+          "Mod4+Up" = "focus up";
+          "Mod4+Down" = "focus down";
+
+          "Mod4+Shift+Left" = "move left";
+          "Mod4+Shift+Right" = "move right";
+          "Mod4+Shift+Up" = "move up";
+          "Mod4+Shift+Down" = "move down";
+
+          "Mod4+1" = "workspace number 1";
+          "Mod4+2" = "workspace number 2";
+          "Mod4+3" = "workspace number 3";
+          "Mod4+4" = "workspace number 4";
+          "Mod4+5" = "workspace number 5";
+          "Mod4+6" = "workspace number 6";
+          "Mod4+7" = "workspace number 7";
+          "Mod4+8" = "workspace number 8";
+          "Mod4+9" = "workspace number 9";
+          "Mod4+0" = "workspace number 10";
+
+          "Mod4+Shift+1" = "move container to workspace number 1";
+          "Mod4+Shift+2" = "move container to workspace number 2";
+          "Mod4+Shift+3" = "move container to workspace number 3";
+          "Mod4+Shift+4" = "move container to workspace number 4";
+          "Mod4+Shift+5" = "move container to workspace number 5";
+          "Mod4+Shift+6" = "move container to workspace number 6";
+          "Mod4+Shift+7" = "move container to workspace number 7";
+          "Mod4+Shift+8" = "move container to workspace number 8";
+          "Mod4+Shift+9" = "move container to workspace number 9";
+          "Mod4+Shift+0" = "move container to workspace number 10";
+
+          "XF86AudioRaiseVolume" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
+          "XF86AudioLowerVolume" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+          "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl previous";
+          "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next";
+          "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
+          "XF86MonBrightnessDown" = "exec busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.1";
+          "XF86MonBrightnessUp" = "exec busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d +0.1";
+        };
+        input = {
+          "type:keyboard" = {
+            xkb_layout = "us,ru";
+            xkb_options = "grp:win_space_toggle";
+          };
+        };
+        output = {
+          "DP-3" = {
+            mode = "2560x1440@74.968Hz";
+          };
+          "DP-2" = {
+            mode = "2560x1440@165Hz";
+            pos = "2560 0";
+          };
+          # "*".bg = "~/Pictures/wallpapers/current fill";
+        };
+        modes = {
+          resize = {
+            "Escape" = "mode default";
+            "Left" = "resize grow left 10 px";
+            "Right" = "resize grow right 10 px";
+            "Up" = "resize grow height 10 px";
+            "Down" = "resize grow height 10 px";
+            "Shift+Right" = "resize shrink right 10 px";
+            "Shift+Left" = "resize shrink left 10 px";
+            "Shift+Up" = "resize shrink height 10 px";
+            "Shift+Down" = "resize shrink height 10 px";
+          };
+        };
+        bars = [
+          {
+            position = "top";
+            # font = "pango:monospace 8.000000";
+            mode = "dock";
+            hidden_state = "hide";
+            swaybar_command = "${pkgs.waybar}/bin/waybar";
+            workspace_buttons = "yes";
+            strip_workspace_number = "no";
+            colors = {
+              background = "#3c3836";
+              statusline = "#ffffff";
+              separator = "#666666";
+              focused_workspace = "#4c7899 #285577 #ffffff";
+              active_workspace = "#333333 #5f676a #ffffff";
+              inactive_workspace = "#333333 #222222 #888888";
+              urgent_workspace = "#2f343a #900000 #ffffff";
+              binding_mode = "#2f343a #900000 #ffffff";
+            };
+          }
+        ];
+        # default_border = "pixel 2";
       };
     };
 
@@ -420,6 +541,11 @@ in {
           "SUPER, up, movefocus, u"
           "SUPER, down, movefocus, d"
 
+          "SUPER SHIFT, left, movewindow, l"
+          "SUPER SHIFT, right, movewindow, r"
+          "SUPER SHIFT, up, movewindow, u"
+          "SUPER SHIFT, down, movewindow, d"
+
           # Switch workspaces with mainMod + [0-9]
           "SUPER, 1, workspace, 1"
           "SUPER, 2, workspace, 2"
@@ -443,6 +569,8 @@ in {
           "SUPER SHIFT, 8, movetoworkspace, 8"
           "SUPER SHIFT, 9, movetoworkspace, 9"
           "SUPER SHIFT, 0, movetoworkspace, 10"
+
+          "SUPER, t, togglegroup"
 
           # special workspace (scratchpad)
           "SUPER, S, togglespecialworkspace, magic"
@@ -732,7 +860,7 @@ in {
     filterAddressesSource = "https://antifilter.network/download/ipsmart.lst";
   };
 
-  # TODO: remember who use gvfs
+  # gnome virtual fs (used by firefox and etc)
   services.gvfs.enable = true;
 
   services.mpd = {
@@ -780,10 +908,19 @@ in {
 
   services.ollama = {
     enable = true;
-    settings = {
-      data_dir = "/var/lib/garage/data";
-    };
     acceleration = "cuda";
+  };
+
+  systemd.user.services.wl-gammarelay-rs = {
+    enable = true;
+    after = ["graphical.target"];
+    wantedBy = ["default.target"];
+    description = "Gammarelay";
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = ''${pkgs.wl-gammarelay-rs}/bin/wl-gammarelay-rs run'';
+    };
+    unitConfig.ConditionUser = "l-nafaryus";
   };
 
   services.garage = {
