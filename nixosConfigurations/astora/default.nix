@@ -3,6 +3,7 @@
   lib,
   config,
   bonLib,
+  inputs,
   ...
 }: {
   system.stateVersion = "23.11";
@@ -37,8 +38,9 @@
     enable = true;
 
     xkb = {
-      layout = "us";
+      layout = "us,ru";
       variant = "";
+      xkbOptions = "grp:win_space_toggle";
     };
 
     videoDrivers = ["nvidia"];
@@ -46,16 +48,34 @@
     wacom.enable = true;
   };
 
-  services.desktopManager.plasma6.enable = true;
+  services.desktopManager.plasma6.enable = false;
 
   services.displayManager.sddm = {
-    enable = true;
+    enable = false;
     wayland.enable = true;
   };
+
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session.command = ''
+        ${pkgs.greetd.tuigreet}/bin/tuigreet --time --asterisks --user-menu --cmd sway
+      '';
+    };
+  };
+
+  environment.etc."greetd/environments".text = ''
+    sway
+    hyprland
+  '';
 
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
+  };
+
+  programs.sway = {
+    enable = true;
   };
 
   services.dbus = {
@@ -116,6 +136,12 @@
         HostName 192.168.156.102
         Port 22
         User l-nafaryus
+
+    Host vinheim
+        HostName 127.0.0.1
+        Port 43022
+        User l-nafaryus
+        ProxyJump l-nafaryus@catarina
   '';
 
   virtualisation = {
@@ -130,4 +156,20 @@
       qemu.vhostUserPackages = with pkgs; [virtiofsd];
     };
   };
+
+  services.k3s = {
+    enable = true;
+    role = "server";
+  };
+
+  networking.firewall = {
+    allowedTCPPorts = [6443];
+    allowedUDPPorts = [8472];
+  };
+
+  environment.systemPackages = with pkgs; [
+    kubectl
+    kubernetes-helm
+    k9s
+  ];
 }
