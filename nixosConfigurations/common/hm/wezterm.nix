@@ -85,7 +85,8 @@
           keys = {
             { key = 'F11', action = wezterm.action.ToggleFullScreen }
           },
-          use_fancy_tab_bar = false
+          use_fancy_tab_bar = false,
+          xcursor_theme="Banana"
       }
 
       return config

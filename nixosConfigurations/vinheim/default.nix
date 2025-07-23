@@ -43,10 +43,12 @@
     config.cudaSupport = false;
   };
 
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;
-  };
+  # services.displayManager.sddm = {
+  #   enable = true;
+  #   wayland.enable = true;
+  # };
+
+  programs.sway = {enable = true;};
 
   services.dbus = {
     enable = true;
@@ -64,14 +66,14 @@
   services.openssh = {
     enable = true;
     startWhenNeeded = true;
-    settings.PasswordAuthentication = false;
-    settings.KbdInteractiveAuthentication = false;
+    # settings.PasswordAuthentication = false;
+    # settings.KbdInteractiveAuthentication = false;
   };
 
   services.autossh = {
     sessions = [
       {
-        extraArguments = "-N -R 42022:localhost:22 l-nafaryus@elnafo.ru";
+        extraArguments = "-N -R 42022:localhost:22 l-nafaryus@catarina-rproxy";
         monitoringPort = 20000;
         name = "elnafo-peer";
         user = "l-nafaryus";
@@ -85,9 +87,22 @@
 
   programs.ssh.extraConfig = ''
     Host catarina
-        HostName 77.242.105.50
+        HostName elnafo.ru
         Port 22
         User l-nafaryus
+
+    Host catarina-rproxy
+        HostName elnafo.ru
+        Port 22
+        User l-nafaryus
+        IdentityFile ~/.ssh/vinheim.id_ed25519
+        # IdentitiesOnly yes
+
+    Host astora
+        HostName 192.168.156.101
+        Port 22
+        User l-nafaryus
+        ProxyJump l-nafaryus@elnafo.ru
   '';
 
   virtualisation = {
@@ -98,7 +113,10 @@
       dockerSocket.enable = true;
       defaultNetwork.settings.dns_enabled = true;
     };
-    libvirtd.enable = true;
+    libvirtd = {
+      enable = true;
+      qemu.vhostUserPackages = with pkgs; [virtiofsd];
+    };
   };
 
   # Base packages
@@ -136,6 +154,10 @@
     pass
 
     bat
+
+    kubectl
+    kubernetes-helm
+    k9s
   ];
 
   programs = {
@@ -144,6 +166,27 @@
     neovim = {
       enable = true;
       defaultEditor = false;
+    };
+  };
+
+  services.k3s = {
+    enable = true;
+    role = "server";
+  };
+
+  networking.firewall = {
+    allowedTCPPorts = [
+      6443
+      # distribution (registry)
+      5000
+    ];
+    allowedUDPPorts = [8472];
+  };
+
+  services.glpiAgent = {
+    enable = true;
+    settings = {
+      server = "https://glpi.soft72.ru";
     };
   };
 }

@@ -25,7 +25,7 @@
            external: {
                enable: true
                max_results: 100
-               completer: $carapace_completer
+               completer: { $carapace_completer }
              }
            }
       }

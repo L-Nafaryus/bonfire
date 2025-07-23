@@ -14,7 +14,7 @@
 
   inputs = {
     nixpkgs = {
-      url = "github:nixos/nixpkgs/292fa7d4f6519c074f0a50394dbbe69859bb6043";
+      url = "github:nixos/nixpkgs/6e987485eb2c77e5dcc5af4e3c70843711ef9251";
     };
     home-manager = {
       url = "github:nix-community/home-manager";

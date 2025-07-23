@@ -103,6 +103,10 @@
     sudo.extraConfig = ''Defaults timestamp_timeout=30'';
     rtkit.enable = true;
     polkit.enable = true;
+    pki.certificateFiles = [
+      ./certs/russian_trusted_root_ca_pem.crt
+      ./certs/russian_trusted_sub_ca_pem.crt
+    ];
   };
 
   # Hardware etc
@@ -123,16 +127,11 @@
   networking = {
     networkmanager = {
       enable = true;
-      enableStrongSwan = true;
-      plugins = with pkgs; [
-        networkmanager-l2tp
-      ];
+      # plugins = with pkgs; [
+      #   networkmanager-l2tp
+      # ];
     };
     hostName = "vinheim";
-    hosts = {
-      "192.168.130.211" = ["gitlab"];
-      "192.168.130.210" = ["vault.local" "youtrack.local"];
-    };
   };
 
   time.timeZone = "Asia/Yekaterinburg";
